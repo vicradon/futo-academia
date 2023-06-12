@@ -1,30 +1,8 @@
-import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
-	ModalBody,
-	ModalCloseButton,
-	Button,
-	useDisclosure,
-	Text,
-	Flex,
-	Box,
-	FormControl,
-	FormLabel,
-	FormErrorMessage,
-	FormHelperText,
-	Input,
-	InputRightElement,
-	InputGroup,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import Navlink from "../../components/Navlink";
+import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Button, useDisclosure, Text, Flex, FormControl, FormLabel, Input, Heading } from "@chakra-ui/react";
+import PasswordInput from "../../components/PasswordInput";
 
 export default function SignupModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [showPassword, setShowPassword] = useState(false);
 
 	return (
 		<>
@@ -37,11 +15,11 @@ export default function SignupModal() {
 				<ModalContent>
 					<ModalCloseButton />
 					<ModalBody>
-						<Flex alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"}>
-							<Text color={"brand.500"}>Sign Up (Student)</Text>
+						<Flex p={8} alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"}>
+							<Heading color={"brand.500"}>Sign Up (Student)</Heading>
 							<Text>Please fill in your details</Text>
 
-							<Flex alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"} as="form">
+							<Flex my={4} alignItems={"center"} rowGap={6} flexDirection={"column"} as="form">
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Full name</FormLabel>
 									<Input type="text" />
@@ -70,24 +48,18 @@ export default function SignupModal() {
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Password</FormLabel>
 
-									<InputGroup size="md">
-										<Input type={showPassword ? "text" : "password"} />
-
-										<InputRightElement width="4.5rem">
-											<Button h="1.75rem" size="sm" onClick={() => setShowPassword(!showPassword)}>
-												{showPassword ? "Hide" : "Show"}
-											</Button>
-										</InputRightElement>
-									</InputGroup>
+									<PasswordInput />
 								</FormControl>
 
 								<Button colorScheme="primary" size={"lg"}>
 									Continue
 								</Button>
 
-								<Flex columnGap={"0.5rem"}>
+								<Flex>
 									<Text>Already have an account?</Text>
-									<Button variant={"link"}>Login</Button>
+									<Button p={0} variant={"link"}>
+										Login
+									</Button>
 								</Flex>
 							</Flex>
 						</Flex>
