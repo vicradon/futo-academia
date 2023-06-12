@@ -1,32 +1,8 @@
-import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
-	ModalBody,
-	ModalCloseButton,
-	Button,
-	useDisclosure,
-	Text,
-	Flex,
-	Box,
-	FormControl,
-	FormLabel,
-	FormErrorMessage,
-	FormHelperText,
-	Input,
-	InputRightElement,
-	InputGroup,
-	Heading,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import Navlink from "../../components/Navlink";
+import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Button, useDisclosure, Text, Flex, FormControl, FormLabel, Input, Heading } from "@chakra-ui/react";
 import PasswordInput from "../../components/PasswordInput";
 
 export default function LoginModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [showPassword, setShowPassword] = useState(false);
 
 	return (
 		<>

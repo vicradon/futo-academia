@@ -2,7 +2,6 @@ import { Flex, Heading, Text, Box, Grid, Image } from "@chakra-ui/react";
 import HomeLayout from "../layout/HomeLayout";
 import SignupModal from "./Home/SignupModal";
 import students from "../assets/images/students.png";
-
 import line1 from "../assets/bg-images/line1.png";
 import line2 from "../assets/bg-images/line2.png";
 import line3 from "../assets/bg-images/line3.png";
