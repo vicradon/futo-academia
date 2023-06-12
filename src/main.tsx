@@ -1,12 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import { extendTheme } from "@chakra-ui/react";
-import Home from "./pages/Home.tsx";
+import Home from "./pages/Home";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import StudentHome from "./pages/student/Home.tsx";
+import StudentHome from "./pages/student/StudentHome";
 
 const colors = {
 	brand: {
@@ -23,7 +22,14 @@ const colors = {
 	},
 };
 
-const theme = extendTheme({ colors });
+const Button = {
+	defaultProps: {
+		rounded: "sm",
+		backgroundColor: "red",
+	},
+};
+
+const theme = extendTheme({ colors, components: { Button } });
 
 const router = createBrowserRouter([
 	{
@@ -36,10 +42,10 @@ const router = createBrowserRouter([
 	},
 ]);
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<React.StrictMode>
+createRoot(document.getElementById("root") as HTMLElement).render(
+	<StrictMode>
 		<ChakraProvider theme={theme}>
 			<RouterProvider router={router} />
 		</ChakraProvider>
-	</React.StrictMode>
+	</StrictMode>
 );
