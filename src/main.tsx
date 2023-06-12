@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import { extendTheme } from "@chakra-ui/react";
+import Home from "./pages/Home.tsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import StudentHome from "./pages/student/Home.tsx";
 
-// 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
 	brand: {
 		900: "#232455",
@@ -24,10 +25,21 @@ const colors = {
 
 const theme = extendTheme({ colors });
 
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <Home />,
+	},
+	{
+		path: "/student/home",
+		element: <StudentHome />,
+	},
+]);
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
 		<ChakraProvider theme={theme}>
-			<App />
+			<RouterProvider router={router} />
 		</ChakraProvider>
 	</React.StrictMode>
 );

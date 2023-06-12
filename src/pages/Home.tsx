@@ -1,13 +1,9 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import HomeLayout from "./layout/HomeLayout";
+import HomeLayout from "../layout/HomeLayout";
+import { Link } from "react-router-dom";
+import SignupModal from "./Home/SignupModal";
 
-function App() {
-	const [count, setCount] = useState(0);
-
+export default function Home() {
 	return (
 		<HomeLayout>
 			<Heading>Futo</Heading>
@@ -17,10 +13,10 @@ function App() {
 
 			<Flex>
 				<Button>Log In</Button>
-				<Button colorScheme="brand">Sign Up</Button>
+				<SignupModal />
 			</Flex>
+
+			<Link to="/about">About</Link>
 		</HomeLayout>
 	);
 }
-
-export default App;
