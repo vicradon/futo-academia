@@ -1,8 +1,28 @@
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Button, useDisclosure, Text, Flex, FormControl, FormLabel, Input, Heading } from "@chakra-ui/react";
+import { FormEvent, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
+import OtherBioModal from "./OtherBioModal";
 
 export default function SignupModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { isOpen: otherBioModalIsOpen, onOpen: openOtherBioModal, onClose: closeOtherBioModal } = useDisclosure();
+	const [userMode, setUserMode] = useState<"Student" | "Lecturer">("Student");
+	const params = useSearchParams();
+
+	useEffect(() => {
+		if (params[0].get("userMode") === "Student") {
+			setUserMode("Student");
+		} else {
+			setUserMode("Lecturer");
+		}
+	}, []);
+
+	const handleSignup = async (event: FormEvent) => {
+		event.preventDefault();
+		onClose();
+		openOtherBioModal();
+	};
 
 	return (
 		<>
@@ -16,10 +36,10 @@ export default function SignupModal() {
 					<ModalCloseButton />
 					<ModalBody>
 						<Flex p={8} alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"}>
-							<Heading color={"brand.500"}>Sign Up (Student)</Heading>
+							<Heading color={"brand.500"}>Sign Up ({userMode})</Heading>
 							<Text>Please fill in your details</Text>
 
-							<Flex my={4} alignItems={"center"} rowGap={6} flexDirection={"column"} as="form">
+							<Flex onSubmit={handleSignup} my={4} alignItems={"center"} rowGap={6} flexDirection={"column"} as="form">
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Full name</FormLabel>
 									<Input type="text" />
@@ -51,7 +71,7 @@ export default function SignupModal() {
 									<PasswordInput />
 								</FormControl>
 
-								<Button colorScheme="primary" size={"lg"}>
+								<Button type="submit" colorScheme="brand" size={"lg"}>
 									Continue
 								</Button>
 
@@ -66,6 +86,7 @@ export default function SignupModal() {
 					</ModalBody>
 				</ModalContent>
 			</Modal>
+			<OtherBioModal isOpen={otherBioModalIsOpen} onClose={closeOtherBioModal} />
 		</>
 	);
 }
