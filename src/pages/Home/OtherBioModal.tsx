@@ -1,23 +1,4 @@
-import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalBody,
-	ModalCloseButton,
-	Button,
-	useDisclosure,
-	Text,
-	Flex,
-	FormControl,
-	FormLabel,
-	Input,
-	Heading,
-	HStack,
-	Box,
-	Grid,
-	Textarea,
-	Image,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalBody, Button, Text, Flex, FormControl, FormLabel, Input, HStack, Box, Grid, Textarea, Image } from "@chakra-ui/react";
 import PlaceholderPerson from "../../assets/icons/placeholder-person.svg";
 
 interface Props {
@@ -29,7 +10,6 @@ export default function OtherBioModal({ isOpen, onClose }: Props) {
 		<Modal isOpen={isOpen} onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				{/* <ModalCloseButton /> */}
 				<ModalBody>
 					<Box as="form" p={8}>
 						<Text textAlign={"center"}>Welcome to FUTO Academia, Delvin</Text>

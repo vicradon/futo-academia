@@ -189,6 +189,23 @@ export default function StudentHome() {
 								</Box>
 							</Box>
 						))}
+						{rainSemesterCourses.map((course) => (
+							<Box width={{ base: "280px", sm: "313px" }}>
+								<Image height={"300px"} backgroundSize="cover" src={course.image_url} alt={course.title} />
+								<Box borderRadius={"0 0 0.5rem 0.5rem"} shadow={"lg"} padding={"1rem"}>
+									<Box mb={6}>
+										<Text fontSize={"2xl"} mb={0} color={"brand.500"}>
+											{course.title}
+										</Text>
+										<Text color={"brand.500"}>{course.course_code}</Text>
+									</Box>
+
+									<Button width={"100%"} colorScheme={"brand"}>
+										Add Course
+									</Button>
+								</Box>
+							</Box>
+						))}
 					</Grid>
 
 					<Flex my={12} justifyContent={"center"}>
