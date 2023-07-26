@@ -5,6 +5,8 @@ import { extendTheme } from "@chakra-ui/react";
 import Home from "./pages/Home";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import StudentHome from "./pages/student/StudentHome";
+import Courses from "./pages/lecturer/Courses";
+import UploadCourse from "./pages/lecturer/UploadCourse";
 
 const colors = {
 	brand: {
@@ -87,6 +89,14 @@ const router = createBrowserRouter([
 	{
 		path: "/student/home",
 		element: <StudentHome />,
+	},
+	{
+		path: "/lecturer/courses",
+		element: <Courses />,
+	},
+	{
+		path: "/lecturer/courses-upload",
+		element: <UploadCourse />,
 	},
 ]);
 
