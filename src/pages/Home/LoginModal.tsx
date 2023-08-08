@@ -1,8 +1,16 @@
+import { useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Button, useDisclosure, Text, Flex, FormControl, FormLabel, Input, Heading } from "@chakra-ui/react";
 import PasswordInput from "../../components/PasswordInput";
+import useLogin from "../../hooks/useLogin";
 
 export default function LoginModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [user, setUser] = useState({
+		username: "",
+		password: "",
+	});
+
+	const loginMutation = useLogin();
 
 	return (
 		<>
@@ -21,13 +29,33 @@ export default function LoginModal() {
 
 							<Flex my={8} alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"} as="form">
 								<FormControl>
-									<FormLabel textTransform={"uppercase"}>Email</FormLabel>
-									<Input type="email" />
+									<FormLabel textTransform={"uppercase"}>username</FormLabel>
+									<Input
+										type="text"
+										id="username"
+										name="username"
+										autoComplete="name"
+										required
+										onChange={(e) => {
+											setUser({
+												...user,
+												username: e.target.value,
+											});
+										}}
+									/>
 								</FormControl>
 
-								<PasswordInput />
+								<PasswordInput
+									onChange={(e: any) => {
+										console.log("Password", e.target.value);
+										setUser({
+											...user,
+											password: e.target.value,
+										});
+									}}
+								/>
 
-								<Button my={8} w={"60%"} colorScheme="brand" size={"lg"}>
+								<Button my={8} w={"60%"} colorScheme="brand" onClick={() => loginMutation.mutate(user)} size={"lg"}>
 									Continue
 								</Button>
 
