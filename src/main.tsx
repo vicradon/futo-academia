@@ -7,13 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import StudentHome from "./pages/student/StudentHome";
 import Courses from "./pages/lecturer/Courses";
 import UploadCourse from "./pages/lecturer/UploadCourse";
-import {
-	useQuery,
-	useMutation,
-	useQueryClient,
-	QueryClient,
-	QueryClientProvider,
-  } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const colors = {
 	brand: {
@@ -107,7 +101,7 @@ const router = createBrowserRouter([
 	},
 ]);
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root") as HTMLElement).render(
 	<StrictMode>

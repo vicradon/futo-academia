@@ -3,7 +3,6 @@ import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/Sidebar";
 import BiologyImage from "../../assets/images/biology.png";
-import ChemistryImage from "../../assets/images/chemistry.png";
 import PhysicsImage from "../../assets/images/physics.png";
 import EnglishImage from "../../assets/images/english.png";
 import HumanitiesImage from "../../assets/images/humanities.png";

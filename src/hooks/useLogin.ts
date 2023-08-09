@@ -7,20 +7,19 @@ function useLogin() {
 	return useMutation({
 		mutationFn: async ({ username, password }: { username: string; password: string }) => {
 			try {
-				const res = await http.post("/login", {
-					username,
-					password,
-				});
-				return res.data;
+				const formData = new FormData();
+
+				formData.append("username", username);
+				formData.append("password", password);
+
+				const res = await http.post("/login", formData);
+
+				localStorage.setItem("token", res.data.access_token);
+
+				navigate("/lecturer/courses");
 			} catch (error) {
 				return error;
 			}
-		},
-		onError: (error) => {
-			console.log(error);
-		},
-		onSuccess: () => {
-			navigate("/");
 		},
 	});
 }

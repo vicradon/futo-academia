@@ -7,9 +7,9 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 const Sidebar = () => {
-	const reloadPage = () => {
-		window.location.reload();
-	};
+	// const reloadPage = () => {
+	// 	window.location.reload();
+	// };
 
 	const [activeItem, setActiveItem] = useState("");
 	const location = useLocation();
