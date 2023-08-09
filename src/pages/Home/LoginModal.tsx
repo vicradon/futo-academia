@@ -55,7 +55,7 @@ export default function LoginModal() {
 									}}
 								/>
 
-								<Button my={8} w={"60%"} colorScheme="brand" onClick={() => loginMutation.mutate(user)} size={"lg"}>
+								<Button my={8} w={"60%"} colorScheme="brand" onClick={() => loginMutation.mutate(user)} isLoading={loginMutation.isLoading} size={"lg"}>
 									Continue
 								</Button>
 
