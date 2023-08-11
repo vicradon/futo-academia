@@ -21,6 +21,7 @@ function useLogin() {
 				return error;
 			}
 		},
+		onError: (err) => console.log("Toast error"),
 	});
 }
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-var token: any;
-var access_token: any;
+let token: any;
+let access_token: any;
 
 axios.defaults.headers.common["x-auth-token"] = `Bearer ${token}`;
 axios.defaults.headers.common["Content-Type"] = "application/json";
