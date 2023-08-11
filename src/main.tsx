@@ -8,6 +8,7 @@ import StudentHome from "./pages/student/StudentHome";
 import Courses from "./pages/lecturer/Courses";
 import UploadCourse from "./pages/lecturer/UploadCourse";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import CourseHeader from "./components/CourseHeader";
 
 const colors = {
 	brand: {
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
 	{
 		path: "/lecturer/courses-upload",
 		element: <UploadCourse />,
+	},
+	{
+		path: "/course/header",
+		element: <CourseHeader />,
 	},
 ]);
 
