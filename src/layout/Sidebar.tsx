@@ -18,7 +18,10 @@ const Sidebar = () => {
 	const navigate = useNavigate();
 	const handleLogout = () => {
 		sessionStorage.clear();
-		navigate("/login");
+		localStorage.clear();
+
+		console.log(localStorage.getItem("token"));
+		navigate("/");
 	};
 
 	// update activeItem based on current location
@@ -27,7 +30,7 @@ const Sidebar = () => {
 			setActiveItem("profile");
 		} else if (location.pathname === "/announcement") {
 			setActiveItem("announcement");
-		} else if (location.pathname === "/lecturer/courses" || location.pathname.startsWith("/lecturer/courses")) {
+		} else if (location.pathname === "/lecturer/courses" || location.pathname.includes("courses") || location.pathname.startsWith("/lecturer/courses")) {
 			setActiveItem("courses");
 		}
 	}, [location]);
