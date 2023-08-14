@@ -17,6 +17,7 @@ export default function CourseTabs({ children }: IProps) {
 	const tabData = [
 		{
 			name: "Course Summary",
+			path: "/lecturer/courses/ECE501",
 		},
 		{
 			name: "Assignments",
@@ -63,7 +64,7 @@ export default function CourseTabs({ children }: IProps) {
 									onClick={() => {
 										setActive(i);
 
-										navigate(x?.name.toLowerCase());
+										navigate(x?.path ?? x?.name.toLowerCase());
 									}}
 									mr={4}
 									cursor="pointer"

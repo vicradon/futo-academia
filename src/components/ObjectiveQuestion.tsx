@@ -6,16 +6,18 @@ import { v4 as uuidv4 } from "uuid";
 import { useParams } from "react-router-dom";
 
 import { useEffect, useState } from "react";
+import ObjectiveAnswer from "./ObjectiveAnswer";
 
 export default function ObjectiveQuestion() {
 	const [questionChoice, setQuestionChoice] = useState("");
-	const [questionObj, setQuestionObj] = useState<any>({});
 	const [openAnswer, setOpenAnswer] = useState(false);
 	const [answers, setAnswers] = useState("");
 	const [tolerence, setTolerance] = useState("");
 	const [dataID, setDataID] = useState("");
 
 	const { idx } = useParams();
+
+	console.log("Idx", idx);
 	const toast = useToast();
 
 	const queryClient = useQueryClient();
@@ -24,24 +26,16 @@ export default function ObjectiveQuestion() {
 		id: uuidv4(),
 		question: "",
 		mark: 0,
-		question_type: "obj",
+		question_type: "",
 		tolerance: questionChoice === "maths" ? tolerence : 0,
 		is_multi_choice: false,
 		num_answer: 0,
 		assessment_id: idx,
 	});
 
-	const { data: questionsData } = useQuery({
-		queryKey: ["getQuestions", idx],
-		queryFn: () => http.get(`/assessments/${idx}/questions`).then((r) => r.data),
-		// onSuccess: (data: any) => console.log("Query Successful", data),
-		onError: (err) => console.log("error", err),
-	});
-
 	const { data: answerData } = useQuery({
 		queryKey: ["getAnswersss", idx],
 		queryFn: () => http.get(`/assessments/${idx}/review`).then((r) => r.data),
-		onSuccess: (data: any) => console.log("Answer Query Successful", data.questions),
 		onError: (err) => console.log("error", err),
 	});
 
@@ -79,11 +73,22 @@ export default function ObjectiveQuestion() {
 			return http.post("/answers", question);
 		},
 		onSuccess: ({ data }) => {
-			console.log("Success creation Data", data);
-			setQuestionArr({});
+			queryClient.invalidateQueries({ queryKey: ["getQuestions"] });
 			toast({
 				title: "Successful saved answer",
 			});
+			setQuestionArr({
+				id: uuidv4(),
+				question: "",
+				mark: "",
+				question_type: "obj",
+				tolerance: questionChoice === "maths" ? tolerence : 0,
+				is_multi_choice: false,
+				num_answer: 0,
+				assessment_id: idx,
+			});
+			setOpenAnswer(false);
+			setDataID("");
 		},
 		onError: (err) => {
 			console.log("Mutation errror", err);
@@ -97,16 +102,17 @@ export default function ObjectiveQuestion() {
 	return (
 		<>
 			<Box>
-				<Text fontWeight="bold" fontSize="2xl" my={8}>
-					Questions
-				</Text>
-				<Flex>
-					<Box>
-						{questionsData?.questions?.map((x: any) => (
-							<PreviewQuestion {...x} />
+				<Flex alignItems="center" justifyContent={"space-between"}>
+					<Text fontWeight="bold" fontSize="2xl" my={8}>
+						Questions
+					</Text>
+				</Flex>
+				<Flex w="100%" justifyContent="space-around">
+					<Box width="100%">
+						{answerData?.questions.map((x: any, i: number) => (
+							<ObjectiveAnswer {...x} index={i + 1} />
 						))}
 					</Box>
-					<Box></Box>
 				</Flex>
 			</Box>
 			<Box my={6} border="1px solid grey" p={4} borderRadius="8px">
@@ -114,7 +120,7 @@ export default function ObjectiveQuestion() {
 					<Text fontWeight="bold" my={3} mt={18}>
 						Question type
 					</Text>
-					<Textarea bgColor="#fff" name="question" onChange={handleChange} placeholder="Type Question here" my={2} />
+					<Textarea bgColor="#fff" name="question" value={questionArr["question"]} onChange={handleChange} placeholder="Type Question here" my={2} />
 					<Flex>
 						<Select
 							placeholder="Question type"
@@ -123,6 +129,7 @@ export default function ObjectiveQuestion() {
 								handleChange(e);
 							}}
 							name="question_type"
+							value={questionArr["question_type"]}
 						>
 							<option value="obj">Objective</option>
 							<option value="nlp">Theory</option>
@@ -131,7 +138,7 @@ export default function ObjectiveQuestion() {
 						</Select>
 					</Flex>
 
-					<Input placeholder="Mark (in number)" name="mark" type="number" onChange={handleChange} my={2} bgColor={"white"} />
+					<Input placeholder="Mark (in number)" name="mark" value={questionArr["mark"]} type="number" onChange={handleChange} my={2} bgColor={"white"} />
 					<Box mt={3}>{questionChoice === "nlp" && openAnswer && <Textarea onChange={(e) => setAnswers(e?.target?.value)} placeholder="Hello world" bgColor="white" />}</Box>
 					<Box mt={3}>{questionChoice === "sub_obj" && openAnswer && <Textarea placeholder="Hello world" onChange={(e) => setAnswers(e?.target?.value)} bgColor="white" />}</Box>
 					<Box>{questionChoice === "obj" && openAnswer && <ObjectiveComponent dataId={dataID} answersMutation={answersMutation} />}</Box>
@@ -235,8 +242,13 @@ const ObjectiveComponent = ({ dataId, answersMutation }: any) => {
 				isLoading={answersMutation.isLoading}
 				my={8}
 				onClick={() => {
-					constructObject();
 					answersMutation.mutate(constructObject());
+
+					setCorrect("");
+					setA("");
+					setB("");
+					setC("");
+					setD("");
 				}}
 			>
 				Save Answer

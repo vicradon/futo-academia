@@ -13,43 +13,7 @@ import { useToast } from "@chakra-ui/react";
 export default function AddExam() {
 	const [examSetUp, setExamSetUp] = useState<any>({});
 
-	const [mutationData, setMutationData] = useState<any>();
-
-	const [openAnswer, setOpenAnswer] = useState(false);
-
 	const [isDisabled, setIsDisabled] = useState(false);
-	const toast = useToast();
-
-	// const questionMutations = useMutation({
-	// 	mutationFn: (question) => {
-	// 		return http.post("/questions", question);
-	// 	},
-	// 	onSuccess: (data) => {
-	// 		setOpenAnswer(true);
-	// 		setMutationData(data.status);
-	// 		toast({
-	// 			title: "Successful",
-	// 		});
-	// 	},
-	// 	onError: (err) => {
-	// 		console.log("Mutation errror", err);
-	// 	},
-	// });
-
-	// const handleQuestionUpdate = (id: any, updatedQues?: any) => {
-	// 	const question = questionArr.find((x: any) => x.id === id);
-	// 	const updateQuestion = { ...question, ...updatedQues };
-
-	// 	console.log("Updated Question", updateQuestion);
-	// 	const updatedQuestions = questionArr.map((quest: any) => {
-	// 		if (quest.id === question.id) {
-	// 			questionMutations.mutate(updateQuestion);
-	// 			return updateQuestion;
-	// 		}
-	// 	});
-
-	// 	setQuestionArr(updatedQuestions);
-	// };
 
 	const { id } = useParams();
 
@@ -129,7 +93,6 @@ export default function AddExam() {
 						<Button
 							isLoading={examSetUpMutation.isLoading}
 							onClick={() => {
-								console.log(examSetUp);
 								examSetUpMutation.mutate(examSetUp);
 							}}
 							disabled={isDisabled}
@@ -159,11 +122,8 @@ export default function AddExam() {
 						/>
 					</Box>
 				</Flex>
-				{/* {questionArr.map((x: any) => ( */}
-				<ObjectiveQuestion />
-				{/* ))} */}
 
-				{/* <button onClick={() => setQuestionArr([...questionArr, {}])}>Add Question</button> */}
+				<ObjectiveQuestion />
 			</Box>
 		</CourseTabs>
 	);
