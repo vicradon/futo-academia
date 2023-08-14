@@ -10,6 +10,7 @@ import UploadCourse from "./pages/lecturer/UploadCourse";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ViewCourse from "./pages/ViewCourse";
 import CourseHeader from "./components/CourseHeader";
+import ObjectiveAnswer from "./components/ObjectiveAnswer";
 
 const colors = {
 	brand: {
@@ -103,11 +104,12 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/lecturer/courses/:id",
-		element: <ViewCourse />
-		
+		element: <ViewCourse />,
 	},
-	{path: "/course/header",
-	element: <CourseHeader />,}
+
+	{ path: "/course/header", element: <ObjectiveAnswer /> },
+
+	{ path: "/course/header", element: <CourseHeader /> },
 ]);
 
 const queryClient = new QueryClient();
