@@ -16,6 +16,7 @@ import AddExam from "./pages/AddExam";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Assignments from "./pages/Assignments";
+import ObjectiveAnswer from "./components/ObjectiveAnswer";
 
 const colors = {
 	brand: {
@@ -124,6 +125,10 @@ const router = createBrowserRouter([
 		path: "/lecturer/courses/:id/assignments",
 		element: <Assignments />,
 	},
+
+	{ path: "/course/header/obj", element: <ObjectiveAnswer /> },
+
+	{ path: "/course/header", element: <CourseHeader /> },
 ]);
 
 const queryClient = new QueryClient();
