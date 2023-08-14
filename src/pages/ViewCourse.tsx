@@ -1,8 +1,12 @@
 import AppTable from "../components/Table";
+import http from "../utils/http";
 import { Box, Tab, TabList, TabPanels, TabPanel, Tabs, Text, Flex } from "@chakra-ui/react";
-import StudentDashboardLayout from "../layout/StudentDashboardLayout";
 import AdminLayout from "../layout/AdminLayout";
 import TimerBox from "../components/TimerBox";
+import CourseHeader from "../components/CourseHeader";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import CourseTabs from "../layout/CourseTabs";
 
 export default function ViewCourse() {
 	const tabData = [
@@ -19,26 +23,20 @@ export default function ViewCourse() {
 			name: "Examination",
 		},
 	];
+	const { id } = useParams();
+
+	const { data } = useQuery({
+		queryKey: ["getCourseID", id],
+		queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
+		onSuccess: (data: any) => console.log("Query per course Successful", data),
+		onError: (err) => console.log("error", err),
+	});
+
+	const navigate = useNavigate();
+
 	return (
 		<>
-			<AdminLayout>
-				<Box>
-					<Tabs variant="unstyled">
-						<TabList bgColor="#DAE4FF">
-							{tabData?.map((x) => (
-								<Tab _selected={{ color: "white", bg: "#343680" }}>{x?.name}</Tab>
-							))}
-						</TabList>
-						<TabPanels>
-							<TabPanel>
-								<p>one!</p>
-							</TabPanel>
-							<TabPanel>
-								<p>two!</p>
-							</TabPanel>
-						</TabPanels>
-					</Tabs>
-				</Box>
+			<CourseTabs>
 				<Box>
 					<Text fontSize="24px" color="#585AD4" fontWeight="bold">
 						Currently up
@@ -59,7 +57,7 @@ export default function ViewCourse() {
 					</Flex>
 				</Box>
 				<AppTable></AppTable>
-			</AdminLayout>
+			</CourseTabs>
 		</>
 	);
 }
