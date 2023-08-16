@@ -7,7 +7,7 @@ export const useUser = () => {
 		onError: (error) => {
 			console.log("error", error);
 		},
-		onSuccess(data) {
+		onSuccess() {
 			// console.log("user data", data);
 		},
 	});

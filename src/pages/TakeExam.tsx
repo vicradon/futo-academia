@@ -16,7 +16,6 @@ import {
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
-	Skeleton,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -79,7 +78,7 @@ export default function TakeExam() {
 		mutationFn: (question) => {
 			return http.post("/submissions", question);
 		},
-		onSuccess: ({ data }) => {
+		onSuccess: () => {
 			onClose();
 			toast({
 				title: "Submitted",
@@ -255,7 +254,7 @@ export default function TakeExam() {
 	);
 }
 
-function ObjectiveAnswer({ question, answers, question_id, question_type, mark, index, submissions, setSubmissions, ...props }: any) {
+function ObjectiveAnswer({ question, answers, question_id, question_type, mark, index, submissions, setSubmissions }: any) {
 	const [radio, setRadio] = useState("0");
 
 	const handleAnswering = (event: any) => {

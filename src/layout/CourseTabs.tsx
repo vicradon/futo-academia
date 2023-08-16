@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 
 import AppTable from "../components/Table";
 import http from "../utils/http";
-import { Box, Tab, TabList, TabPanels, TabPanel, Tabs, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import AdminLayout from "../layout/AdminLayout";
 import TimerBox from "../components/TimerBox";
 import CourseHeader from "../components/CourseHeader";

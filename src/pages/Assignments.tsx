@@ -25,7 +25,7 @@ export default function Assignments() {
 
 	const [examSetUp, setExamSetUp] = useState<any>({});
 
-	const [isDisabled, setIsDisabled] = useState(false);
+	const [isDisabled] = useState(false);
 
 	const queryClient = useQueryClient();
 

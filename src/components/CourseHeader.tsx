@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text, Square, Box, Button, Image } from "@chakra-ui/react";
+import { Flex, Text, Square, Box, Button, Image } from "@chakra-ui/react";
 import img from "../assets/images/courseheader.jpg";
 
 function CourseHeader({ course_code, title, description, units }: any) {

@@ -1,4 +1,4 @@
-import { TabPanels, TabPanel, Box, Input, Text, Flex } from "@chakra-ui/react";
+import { Box, Input, Text, Flex } from "@chakra-ui/react";
 
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiPencil } from "react-icons/bi";

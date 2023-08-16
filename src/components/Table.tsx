@@ -1,4 +1,4 @@
-import { Box, Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Flex, Text, Input, Select } from "@chakra-ui/react";
+import { Box, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Flex, Text, Input } from "@chakra-ui/react";
 
 import EmptyIcon from "../assets/images/emptyfile.svg";
 import Loader from "./Loaders";

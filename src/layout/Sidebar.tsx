@@ -1,6 +1,6 @@
 import { Box, Flex, Link, List, ListItem, Stack, Text, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
@@ -14,7 +14,7 @@ const Sidebar = () => {
 	const location = useLocation();
 
 	//Logout Functionality
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const handleLogout = () => {
 		sessionStorage.clear();
 		localStorage.clear();

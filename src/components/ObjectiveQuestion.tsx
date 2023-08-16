@@ -5,7 +5,7 @@ import http from "../utils/http";
 import { v4 as uuidv4 } from "uuid";
 import { useParams } from "react-router-dom";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ObjectiveAnswer from "./ObjectiveAnswer";
 import { handleToast } from "../utils/handleToast";
 
@@ -72,7 +72,7 @@ export default function ObjectiveQuestion() {
 		mutationFn: (question) => {
 			return http.post("/answers", question);
 		},
-		onSuccess: ({ data }) => {
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["getQuestions"] });
 			toast({
 				title: "Successful saved answer",
@@ -261,23 +261,23 @@ const ObjectiveComponent = ({ dataId, answersMutation }: any) => {
 	);
 };
 
-const PreviewQuestion = ({ question, mark, question_type }: any) => {
-	return (
-		<Box bgColor={"#fff"} my={2} p={3}>
-			<Text fontSize={"2xl"}>Question: {question ?? "--"}</Text>
-			<Text>Question Type: {question_type?.toUpperCase() ?? "--"}</Text>
-			<Text>Mark: {mark ?? "--"}</Text>
-		</Box>
-	);
-};
+// const PreviewQuestion = ({ question, mark, question_type }: any) => {
+// 	return (
+// 		<Box bgColor={"#fff"} my={2} p={3}>
+// 			<Text fontSize={"2xl"}>Question: {question ?? "--"}</Text>
+// 			<Text>Question Type: {question_type?.toUpperCase() ?? "--"}</Text>
+// 			<Text>Mark: {mark ?? "--"}</Text>
+// 		</Box>
+// 	);
+// };
 
-const PreviewAnswer = () => {
-	return (
-		<Box bgColor={"#fff"} my={2} p={3}>
-			<Text fontSize={"2xl"}>Answer</Text>
-			<Flex>
-				<Text></Text>
-			</Flex>
-		</Box>
-	);
-};
+// const PreviewAnswer = () => {
+// 	return (
+// 		<Box bgColor={"#fff"} my={2} p={3}>
+// 			<Text fontSize={"2xl"}>Answer</Text>
+// 			<Flex>
+// 				<Text></Text>
+// 			</Flex>
+// 		</Box>
+// 	);
+// };

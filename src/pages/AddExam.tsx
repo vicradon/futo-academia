@@ -1,12 +1,6 @@
-import { useEffect, useState } from "react";
 import ObjectiveQuestion from "../components/ObjectiveQuestion";
 import CourseTabs from "../layout/CourseTabs";
-import { Box, Text, Flex, Textarea, Input, Select, Button } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import http from "../utils/http";
-
-import { useToast } from "@chakra-ui/react";
+import { Box, Text, Flex, Textarea } from "@chakra-ui/react";
 
 // import { toast } from "react-toastify";
 
@@ -45,6 +39,7 @@ export default function AddExam() {
 	);
 }
 
+/*
 const NoOfQuestions = () => {
 	return (
 		<Box display="flex" flexDir="column" justifyContent="center" mr={2}>
@@ -88,3 +83,5 @@ const AllocatedTime = () => {
 		</Box>
 	);
 };
+
+*/

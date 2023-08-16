@@ -12,28 +12,28 @@ import Countdown from "react-countdown";
 import { useToast } from "@chakra-ui/react";
 
 export default function ViewCourse() {
-	const tabData = [
-		{
-			name: "Course Summary",
-		},
-		{
-			name: "Assignments",
-		},
-		{
-			name: "Tests",
-		},
-		{
-			name: "Examination",
-		},
-	];
+	// const tabData = [
+	// 	{
+	// 		name: "Course Summary",
+	// 	},
+	// 	{
+	// 		name: "Assignments",
+	// 	},
+	// 	{
+	// 		name: "Tests",
+	// 	},
+	// 	{
+	// 		name: "Examination",
+	// 	},
+	// ];
 	const { id } = useParams();
 
 	const toast = useToast();
 
-	const { data } = useQuery({
-		queryKey: ["getCourseID", id],
-		queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
-	});
+	// const { data } = useQuery({
+	// 	queryKey: ["getCourseID", id],
+	// 	queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
+	// });
 
 	const { data: currUp, isLoading } = useQuery({
 		queryKey: ["getCurrUp", id],
@@ -133,7 +133,7 @@ export default function ViewCourse() {
 							</Stack>
 						)}
 						{currUp
-							?.filter((x: any, i: number) => {
+							?.filter((x: any) => {
 								return x?.is_active && !(Math.floor(Date?.now() / 1000) > convertToEpoch(x?.end_date));
 							})
 							?.map((x: any) => (
