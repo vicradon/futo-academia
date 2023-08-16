@@ -1,0 +1,133 @@
+@media screen and (max-width: 1000px) {
+body{
+    max-width: 100%;
+}
+
+/* MEDIA QUERY FOR CREATE ASSIGNMENT */
+.navi{
+    /* outline: 2px solid red; */
+    max-width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    
+}
+.bod{
+    display: flex;
+    flex-direction: column;
+    /* outline: 2px solid blue; */
+    width: 100%;
+}
+.boxi{
+    width: 100%;
+}
+.chakra-text{
+    width: 100% !important;
+    /* outline: 2px solid red; */
+    margin: auto;
+    display: flex;
+    align-items: center;
+  
+}
+.chakra-stack{
+    width: 100%;
+}
+.side{
+    width: 100%;
+}
+.css-1ytspx6{
+    margin-top: 0%!important;
+}
+.css-1s3macg {
+    width: 100% !important;
+    padding: 0!important;
+}
+.css-t1axpg {
+    margin-bottom: var(--chakra-space-5) !important;
+}
+.board{
+    width: 100%;
+}
+.futo{
+    display: flex;
+    margin: auto;
+    width: 80%;
+    flex-direction: column;
+    margin-top: 0;
+    height: 90vh;
+}
+.txt{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 20vh;
+}
+.interest{
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+.course{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 20vh;
+}
+.bk{
+    display: flex;
+    margin-left: 2rem;
+}
+.assign{
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
+.inc{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+}
+.instruct{
+    padding: 50px 0px;
+}
+.ins{
+    margin-top: 2rem;
+}
+.luname{
+    width: 300px;
+    margin-top: 1rem;
+}
+.editor{
+    width: 350px !important;
+    margin: auto;
+}
+.anodaans{
+    margin-top: 8rem !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 13vh;
+}
+.laname{
+    margin: auto;
+}
+.css-6dxypv {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 100% !important;
+}
+.science{
+    font-size: 26px;
+    text-align: center;
+}
+.tobe{
+    font-size: 16px;
+    text-align: center;
+}
+
+
+
+}

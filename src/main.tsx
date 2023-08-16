@@ -2,12 +2,21 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
+import "./App.css"
+import "./create.css"
+import "./mediaquery.css"
 import Home from "./pages/Home";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import StudentHome from "./pages/student/StudentHome";
 import Courses from "./pages/lecturer/Courses";
 import UploadCourse from "./pages/lecturer/UploadCourse";
+import CreateAssignment from "./pages/lecturer/CreateAssignment";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import HtmlEditor from "./pages/lecturer/HtmlEditor";
+import AssessTwo from "./pages/lecturer/AssessTwo";
+import Assessthree from "./pages/lecturer/Assessthree";
+import Assessfour from "./pages/lecturer/Assessfour";
+import Assessfive from "./pages/lecturer/Assessfive";
 
 const colors = {
 	brand: {
@@ -94,6 +103,30 @@ const router = createBrowserRouter([
 	{
 		path: "/lecturer/courses",
 		element: <Courses />,
+	},
+	{
+		path: "/lecturer/CreateAssignment",
+		element: <CreateAssignment />,
+	},
+	{
+		path: "/lecturer/HtmlEditor",
+		element: <HtmlEditor />,
+	},
+	{
+		path: "/lecturer/AssessTwo",
+		element: <AssessTwo />,
+	},
+	{
+		path: "/lecturer/Assessthree",
+		element: <Assessthree />,
+	},
+	{
+		path: "/lecturer/Assessfour",
+		element: <Assessfour />,
+	},
+	{
+		path: "/lecturer/Assessfive",
+		element: <Assessfive />,
 	},
 	{
 		path: "/lecturer/courses-upload",

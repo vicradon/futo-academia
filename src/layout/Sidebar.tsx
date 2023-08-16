@@ -44,7 +44,7 @@ const Sidebar = () => {
 	};
 
 	return (
-		<Box w="25vw" p="4" ml={"50px"}>
+		<Box w="25vw" p="4" ml={"50px"} className="boxi">
 			<Stack justify="center" mb="20">
 				<Text fontWeight="bold" fontSize="30px" color={"#696CFF"} textAlign={"center"}>
 					Hi Delvin
@@ -57,7 +57,7 @@ const Sidebar = () => {
 					<Link href="/lecturer/courses" sx={{ textDecoration: "none" }}>
 						<Flex alignItems={"center"}>
 							<AutoStoriesOutlinedIcon sx={{ marginRight: "20px" }} />
-							Courses
+							<p className="round">Courses</p>
 						</Flex>
 					</Link>
 				</ListItem>

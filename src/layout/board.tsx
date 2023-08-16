@@ -2,6 +2,7 @@ import { Container, Flex, Image } from "@chakra-ui/react";
 import Logo from "./Logo";
 import Profile from "../assets/images/profile.png";
 import Bell from "../assets/icons/bell.png";
+import HumanitiesImage from "../../assets/images/humanities.png";
 
 interface NavbarProps {
 	bgColor: string;
@@ -9,7 +10,7 @@ interface NavbarProps {
 
 export default function Navbar({ bgColor }: NavbarProps) {
 	return (
-		<Container className="navi"
+		<Container
 			maxW={"100%"}
 			sx={{
 				bgColor: bgColor,
