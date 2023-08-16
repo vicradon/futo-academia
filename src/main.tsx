@@ -8,7 +8,17 @@ import StudentHome from "./pages/student/StudentHome";
 import Courses from "./pages/lecturer/Courses";
 import UploadCourse from "./pages/lecturer/UploadCourse";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ViewCourse from "./pages/ViewCourse";
+import CourseHeader from "./components/CourseHeader";
+import Examination from "./pages/Examination";
+import AddExam from "./pages/AddExam";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Assignments from "./pages/Assignments";
 import ObjectiveAnswer from "./components/ObjectiveAnswer";
+import TakeExam from "./pages/TakeExam";
+import ExamResult from "./pages/ExamResult";
 
 const colors = {
 	brand: {
@@ -101,9 +111,33 @@ const router = createBrowserRouter([
 		element: <UploadCourse />,
 	},
 	{
-		path: "/course/header",
-		element: <ObjectiveAnswer />,
+		path: "/lecturer/courses/:id",
+		element: <ViewCourse />,
 	},
+	{ path: "/course/header", element: <CourseHeader /> },
+	{
+		path: "/lecturer/courses/:id/examination",
+		element: <Examination />,
+	},
+	{
+		path: "/lecturer/courses/:id/examination/add/:idx",
+		element: <AddExam />,
+	},
+	{
+		path: "/lecturer/courses/:id/assignments",
+		element: <Assignments />,
+	},
+	{
+		path: "exams/:id/:courseId",
+		element: <TakeExam />,
+	},
+	{
+		path: "exam/:id/:idx/results",
+		element: <ExamResult />,
+	},
+	{ path: "/course/header/obj", element: <ObjectiveAnswer /> },
+
+	{ path: "/course/header", element: <CourseHeader /> },
 ]);
 
 const queryClient = new QueryClient();
@@ -112,6 +146,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<ChakraProvider theme={theme}>
+				<ToastContainer />
 				<RouterProvider router={router} />
 			</ChakraProvider>
 		</QueryClientProvider>
