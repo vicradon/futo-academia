@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Assignments from "./pages/Assignments";
 import ObjectiveAnswer from "./components/ObjectiveAnswer";
 import TakeExam from "./pages/TakeExam";
+import ExamResult from "./pages/ExamResult";
 
 const colors = {
 	brand: {
@@ -129,6 +130,10 @@ const router = createBrowserRouter([
 	{
 		path: "exams/:id/:courseId",
 		element: <TakeExam />,
+	},
+	{
+		path: "exam/:id/:idx/results",
+		element: <ExamResult />,
 	},
 	{ path: "/course/header/obj", element: <ObjectiveAnswer /> },
 

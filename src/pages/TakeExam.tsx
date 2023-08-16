@@ -16,6 +16,7 @@ import {
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
+	Skeleton,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -23,18 +24,55 @@ import confirmAlert from "../assets/alert.gif";
 
 import http from "../utils/http";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Loader from "../components/Loaders";
+
+import TimerBox from "../components/TimerBox";
+import Countdown from "react-countdown";
 
 export default function TakeExam() {
 	const { courseId: idx, id } = useParams();
 	const navigate = useNavigate();
 	const toast = useToast();
-	const { data: answerData } = useQuery({
+
+	const [examDate, setExamDate] = useState<any>(Date.now());
+
+	useEffect(() => {
+		setExamDate(Date.now());
+	}, []);
+
+	const { data: answerData, isLoading } = useQuery({
 		queryKey: ["getAnswersss", idx],
 		queryFn: () => http.get(`/assessments/${idx}/assessment_questions`).then((r) => r.data),
+		onSuccess(data) {
+			console.log("Quess", data);
+		},
+		onError: (err: any) => {
+			console.log("Error", err);
+			if (err?.response?.status === 405) {
+				toast({
+					title: "Your submission has been recorded" || err?.response?.data?.detail,
+					containerStyle: {
+						backgroundColor: "red",
+						color: "white",
+					},
+				});
+				setTimeout(() => {
+					navigate(`/lecturer/courses/${id}`);
+				}, 1000);
+			}
+		},
+	});
+
+	const { data: examData } = useQuery({
+		queryKey: ["getCourseID", id],
+		queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
+		onSuccess: (data: any) => console.log("Exam Successful", data),
+		onError: (err) => console.log("error", err),
 	});
 
 	const [submissions, setSubmissions] = useState<any>([]);
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const submissionMutation: any = useMutation({
@@ -48,20 +86,50 @@ export default function TakeExam() {
 			});
 			navigate(`/lecturer/courses/${id}`);
 		},
-		onError: (err) => {
-			console.log("Mutation errror", err);
+		onError: (err: any) => {
+			toast({
+				title: err?.response?.data?.detail,
+				position: "top",
+				containerStyle: {
+					backgroundColor: "red",
+					color: "white",
+				},
+			});
 		},
 	});
 
 	const handleSubmit = () => {
-		const data = {
-			assessment_id: idx,
-			submissions,
-		};
-
 		onOpen();
+	};
 
-		console.log("Assessment ID", data);
+	if (isLoading) {
+		return (
+			<>
+				<Loader height="50vh" />
+			</>
+		);
+	}
+
+	const renderer = ({ hours, minutes, seconds, completed }: any) => {
+		if (completed) {
+			return (
+				<Box
+					sx={{
+						border: "1px solid #B6B3C7",
+					}}
+					borderRadius="8px"
+					p={4}
+					my={2}
+					width="20%"
+				>
+					<Text fontWeight={"bold"} textAlign={"center"}>
+						Completed!
+					</Text>
+				</Box>
+			);
+		} else {
+			return <TimerBox hours={hours} minutes={minutes} seconds={seconds} />;
+		}
 	};
 
 	return (
@@ -110,38 +178,54 @@ export default function TakeExam() {
 			</Modal>
 			<Box bgColor={"#f3f6ff"} w="100%" minH={"100vh"}>
 				<Box mx={100} py={50}>
-					<Text textAlign={"center"} color="#232455" fontWeight={"bold"}>
-						FUTO <br /> DEPARTMENT OF FOOD SCIENCE TECHNOLOGY <br /> HARMATTAN SEMESTER EXAMINATION (2022/2023)
-					</Text>
-
 					<Box w="50%" mx="auto" mt={10}>
-						<Text>COURSE TITLE: FOOD DEVELOPMENT SCIENCE</Text>
-						<Flex justifyContent={"space-between"}>
-							<Text my={1}>
-								{" "}
-								<b>COURSE CODE:</b> 202
-							</Text>
-							<Text my={1}>
-								{" "}
-								<b>DATE:</b> 22 MAY, 2023
-							</Text>
-						</Flex>
-						<Flex justifyContent={"space-between"}>
-							<Text my={1}>
-								{" "}
-								<b> NO OF CREDITS:</b> 3 UNITS
-							</Text>
-							<Text my={1}>
-								<b>ALLOCATED TIME:</b> 1HOUR 30MINUTES
-							</Text>
-						</Flex>
-						<b>ANSWER ALL QUESTIONS FROM SECTION A AND ONE(1) FROM SECTION B</b>
+						{answerData?.questions?.length > 0 && (
+							<>
+								<Text textAlign={"center"} color="#232455" fontWeight={"bold"}>
+									{"Federal University of Technology Owerri".toUpperCase()} <br /> FACULTY OF {examData?.faculty} <br /> {examData?.semester === 1 ? "HARMATTAN" : "RAIN"} SEMESTER
+									EXAMINATION (2022/2023)
+								</Text>
+								<Text>COURSE TITLE: {examData?.title.toString().toUpperCase()}</Text>
+								<Flex justifyContent={"space-between"}>
+									<Text my={1}>
+										{" "}
+										<b>COURSE CODE:</b> {examData?.course_code}
+									</Text>
+									<Text my={1}>
+										{" "}
+										<b>DATE:</b> {answerData.start_date.split?.("T")[0]}{" "}
+									</Text>
+								</Flex>
+								<Flex justifyContent={"space-between"}>
+									<Text my={1}>
+										{" "}
+										<b> NO OF CREDITS:</b> {examData?.units} UNITS
+									</Text>
+									<Text my={1}>
+										<b>ALLOCATED TIME:</b> {answerData?.duration} MINUTES
+									</Text>
+								</Flex>
 
-						<Box textAlign={"center"} my={10}>
-							<Text>OBJECTIVES</Text>
-							<b>INSTRUCTION: ANSWER ALL QUESTIONS</b>
-						</Box>
+								<Box textAlign={"center"} my={10}>
+									<b>INSTRUCTION: ANSWER ALL QUESTIONS</b>
+								</Box>
 
+								<Box mx="auto">
+									{!(Math.floor(Date?.now() / 1000) > convertToEpoch(answerData?.end_date)) && (
+										<Countdown
+											renderer={renderer}
+											onComplete={() => {
+												submissionMutation.mutate({
+													assessment_id: idx,
+													submissions,
+												});
+											}}
+											date={examDate + answerData?.duration * 1000 * 60}
+										/>
+									)}
+								</Box>
+							</>
+						)}
 						{answerData?.questions.map((x: any, i: number) => (
 							<ObjectiveAnswer
 								question_id={x?.id}
@@ -154,11 +238,11 @@ export default function TakeExam() {
 								{...x}
 							/>
 						))}
-
-						<Flex justifyContent={"end"}>
-							<Button onClick={handleSubmit}>Submit</Button>
-						</Flex>
-
+						{answerData?.questions?.length > 0 && (
+							<Flex justifyContent={"end"}>
+								<Button onClick={handleSubmit}>Submit</Button>
+							</Flex>
+						)}
 						{answerData?.questions.length === 0 && (
 							<Box>
 								<Text textAlign={"center"}>No Questions</Text>
@@ -237,3 +321,10 @@ function ObjectiveAnswer({ question, answers, question_id, question_type, mark, 
 		</div>
 	);
 }
+
+const convertToEpoch = (timestamp: any) => {
+	const dt = new Date(timestamp);
+	const epochTime = dt.getTime() / 1000;
+
+	return Math.floor(epochTime);
+};

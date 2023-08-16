@@ -11,96 +11,12 @@ import { useToast } from "@chakra-ui/react";
 // import { toast } from "react-toastify";
 
 export default function AddExam() {
-	const [examSetUp, setExamSetUp] = useState<any>({});
-
-	const [isDisabled, setIsDisabled] = useState(false);
-
-	const { id } = useParams();
-
-	useEffect(() => {
-		setExamSetUp({ ...examSetUp, course_id: id, is_active: false });
-	}, []);
-
-	const examSetUpMutation = useMutation({
-		mutationFn: (examSetUp) => {
-			return http.post("/assessments", examSetUp);
-		},
-		onSuccess: ({ data }) => {
-			setIsDisabled(true);
-			setExamSetUp(data);
-		},
-		onError: (err) => {
-			console.log("Mutation errror", err);
-		},
-	});
-
 	return (
 		<CourseTabs>
 			<Box>
 				<Text fontSize="24px" color="#585AD4" fontWeight="bold" my={5}>
 					Assesment
 				</Text>
-
-				<Box bgColor={"white"} p={3}>
-					<Text fontWeight="bold">Create Exam</Text>
-					<Input placeholder="Title" name="title" my={3} disabled={isDisabled} onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })} />
-					<Input
-						placeholder="Start Date"
-						name="start_date"
-						disabled={isDisabled}
-						my={3}
-						type="datetime-local"
-						onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })}
-					/>
-					<Input
-						placeholder="Duration"
-						name="duration"
-						disabled={isDisabled}
-						my={3}
-						type="number"
-						onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })}
-					/>
-					<Input
-						placeholder="Total Mark"
-						name="total_mark"
-						disabled={isDisabled}
-						my={3}
-						type="number"
-						onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })}
-					/>
-					<Input
-						placeholder="End date"
-						name="end_date"
-						disabled={isDisabled}
-						my={3}
-						type="datetime-local"
-						onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })}
-					/>
-
-					<Select
-						placeholder="Assesment type"
-						my={3}
-						disabled={isDisabled}
-						name="assessment_type"
-						onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })}
-					>
-						<option value="Assignment">Assignment</option>
-						<option value="Exam">Examination</option>
-						<option value="Test">Test</option>
-					</Select>
-
-					<Box display="flex" justifyContent="flex-end">
-						<Button
-							isLoading={examSetUpMutation.isLoading}
-							onClick={() => {
-								examSetUpMutation.mutate(examSetUp);
-							}}
-							disabled={isDisabled}
-						>
-							Setup Exam
-						</Button>
-					</Box>
-				</Box>
 
 				{/* <Flex alignItems="center" justifyContent={"space-between"} my={5}>
 					<NoOfQuestions />

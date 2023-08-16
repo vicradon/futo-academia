@@ -1,10 +1,6 @@
-import { Box, Button, Checkbox, CheckboxGroup, Flex, Radio, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Radio, Stack, Text } from "@chakra-ui/react";
 
-function ObjectiveAnswer({ question, answers, question_type, mark, index }: any) {
-	const property = {
-		title: "Which of these is not a type of rock?",
-		question: "Igneous Rock",
-	};
+function ObjectiveAnswer({ question, answers, question_type, mark, studentAnswer, index }: any) {
 	return (
 		<div
 			style={{
@@ -40,6 +36,12 @@ function ObjectiveAnswer({ question, answers, question_type, mark, index }: any)
 							);
 						})}
 					</Stack>
+					{studentAnswer() && (
+						<Text mt={5}>
+							{" "}
+							<b> Candidate Answer:</b> {studentAnswer()}
+						</Text>
+					)}
 				</Box>
 			</Box>
 		</div>

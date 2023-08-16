@@ -20,13 +20,15 @@ export default function CourseTabs({ children }: IProps) {
 			path: "/lecturer/courses/ECE501",
 		},
 		{
-			name: "Assignments",
+			name: "Assessments",
+			path: "/lecturer/courses/ECE501/assignments",
 		},
 		{
 			name: "Tests",
 		},
 		{
 			name: "Examination",
+			path: "/lecturer/courses/ECE501/examination",
 		},
 	];
 	const { id } = useParams();
