@@ -71,14 +71,6 @@ const Sidebar = () => {
 						</Flex>
 					</Link>
 				</ListItem>
-				<ListItem padding={"10px"} mb={4} style={activeItem === "profile" ? activeLinkStyle : {}}>
-					<Link href="/announcements">
-						<Flex alignItems={"center"}>
-							<NotificationsOutlinedIcon sx={{ marginRight: "20px" }} />
-							Announcements{" "}
-						</Flex>
-					</Link>
-				</ListItem>
 			</List>
 
 			<Flex mt="20" padding={"10px"}>
