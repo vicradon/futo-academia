@@ -57,7 +57,7 @@ export default function Courses() {
 
 						<Grid justifyItems={"center"} rowGap={"3rem"} columnGap={"1.5rem"} templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}>
 							{data?.map((course: any) => (
-								<Box width={{ base: "260px", sm: "310px" }} sx={{ background: "#fff" }}>
+								<Box width={{ base: "260px", sm: "310px" }} sx={{ background: "#fff" }} display="flex" flexDir="column" justifyContent="space-between">
 									<Image height={"240px"} width={"100%"} backgroundSize="cover" src={course.course_photo_url} alt={course.title} />
 									<Box borderRadius={"  0.5rem 0.5rem"} shadow={"lg"} padding={"1rem"}>
 										<Box mb={6}>

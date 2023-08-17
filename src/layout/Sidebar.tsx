@@ -1,27 +1,25 @@
-import { Box, Flex, Link, List, ListItem, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, List, ListItem, Stack, Text, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { useUser } from "../hooks/useUser";
 
 const Sidebar = () => {
-	// const reloadPage = () => {
-	// 	window.location.reload();
-	// };
+	const user = useUser();
 
 	const [activeItem, setActiveItem] = useState("");
 	const location = useLocation();
 
 	//Logout Functionality
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const handleLogout = () => {
 		sessionStorage.clear();
 		localStorage.clear();
 
-		console.log(localStorage.getItem("token"));
-		navigate("/");
+		window.location.href = "/";
 	};
 
 	// update activeItem based on current location
@@ -48,10 +46,11 @@ const Sidebar = () => {
 
 	return (
 		<Box w="25vw" p="4" ml={"50px"}>
-			<Stack justify="center" mb="20">
-				<Text fontWeight="bold" fontSize="30px" color={"#696CFF"} textAlign={"center"}>
-					Hi Delvin
+			<Stack justify="center" mb="20" textAlign={"center"}>
+				<Text fontWeight="bold" fontSize="30px" color={"#696CFF"} textAlign={"center"} textTransform={"capitalize"}>
+					Hi {user?.name}
 				</Text>
+
 				<Text fontSize="16px">What are we learning today?</Text>
 			</Stack>
 
@@ -84,7 +83,7 @@ const Sidebar = () => {
 
 			<Flex mt="20" padding={"10px"}>
 				<LogoutRoundedIcon sx={{ marginRight: "20px" }} />
-				<Link onClick={handleLogout}>Logout</Link>
+				<Button onClick={handleLogout}>Logout</Button>
 			</Flex>
 		</Box>
 	);

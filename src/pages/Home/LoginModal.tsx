@@ -24,7 +24,7 @@ export default function LoginModal() {
 					<ModalCloseButton />
 					<ModalBody>
 						<Flex pt={8} alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"}>
-							<Heading color={"brand.500"}>Login (Student)</Heading>
+							<Heading color={"brand.500"}>Login </Heading>
 							<Text>Please fill in your details</Text>
 
 							<Flex my={8} alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"} as="form">
