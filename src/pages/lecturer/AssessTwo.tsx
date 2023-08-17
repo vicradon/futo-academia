@@ -2,13 +2,11 @@ import { useState } from "react";
 import { Flex, Box, Button, chakra, FormControl, FormLabel, Input, Select, Textarea, VStack, Heading } from "@chakra-ui/react";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/Sidebar";
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+
 import HumanitiesImage from "../../assets/images/humanities.png";
-import HtmlEditor from "../lecturer/HtmlEditor";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider } from "@chakra-ui/react";
+
+
+
 
 const CreateAssignment = () => {
 	
@@ -69,7 +67,7 @@ const CreateAssignment = () => {
 						</div>
 						<div className="space">
                             <form>
-                            <label for="fname" className="qname">Q 1.</label><br/>
+                            <label for ="fname" className="qname">Q 1.</label><br/>
                             <input type="text" id="fname" className="laname" name="fname" value="What is Nutrition?"/><br/>
 							</form>
 							<div className="lastbtn">
