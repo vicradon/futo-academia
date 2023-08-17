@@ -1,9 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import http from "../utils/http";
 
 function useLogin() {
-	const navigate = useNavigate();
 	return useMutation({
 		mutationFn: async ({ username, password }: { username: string; password: string }) => {
 			try {
@@ -18,7 +16,7 @@ function useLogin() {
 
 				localStorage.setItem("token", res.data.access_token);
 
-				navigate("/lecturer/courses");
+				window.location.href = "/lecturer/courses";
 			} catch (error) {
 				return error;
 			}

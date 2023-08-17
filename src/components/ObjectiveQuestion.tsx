@@ -61,7 +61,6 @@ export default function ObjectiveQuestion() {
 			toast({
 				title: "Successful saved question",
 			});
-			queryClient.invalidateQueries({ queryKey: ["getQuestions"] });
 		},
 		onError: (err) => {
 			handleToast(err);
@@ -73,7 +72,7 @@ export default function ObjectiveQuestion() {
 			return http.post("/answers", question);
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["getQuestions"] });
+			queryClient.invalidateQueries({ queryKey: ["getAnswersss"] });
 			toast({
 				title: "Successful saved answer",
 			});
@@ -99,6 +98,7 @@ export default function ObjectiveQuestion() {
 		setQuestionArr({ ...questionArr, [e?.target?.name]: e?.target?.value });
 	};
 
+	console.log({ questionChoice });
 	return (
 		<>
 			<Box>
@@ -139,8 +139,8 @@ export default function ObjectiveQuestion() {
 					</Flex>
 
 					<Input placeholder="Mark (in number)" name="mark" value={questionArr["mark"]} type="number" onChange={handleChange} my={2} bgColor={"white"} />
-					<Box mt={3}>{questionChoice === "nlp" && openAnswer && <Textarea onChange={(e) => setAnswers(e?.target?.value)} placeholder="Hello world" bgColor="white" />}</Box>
-					<Box mt={3}>{questionChoice === "sub_obj" && openAnswer && <Textarea placeholder="Hello world" onChange={(e) => setAnswers(e?.target?.value)} bgColor="white" />}</Box>
+					<Box mt={3}>{questionChoice === "nlp" && openAnswer && <Textarea onChange={(e) => setAnswers(e?.target?.value)} placeholder="input answer" bgColor="white" />}</Box>
+					<Box mt={3}>{questionChoice === "sub_obj" && openAnswer && <Textarea placeholder="input answer" onChange={(e) => setAnswers(e?.target?.value)} bgColor="white" />}</Box>
 					<Box>{questionChoice === "obj" && openAnswer && <ObjectiveComponent dataId={dataID} answersMutation={answersMutation} />}</Box>
 					<Box>
 						{questionChoice === "maths" && questionArr["question_type"] === "maths" && (
@@ -162,9 +162,13 @@ export default function ObjectiveQuestion() {
 								Save Question
 							</Button>
 						) : (
-							<Button isLoading={answersMutation.isLoading} onClick={() => answersMutation.mutate(constructAnswer())} my={2}>
-								Save answer
-							</Button>
+							<>
+								{questionChoice !== "obj" && (
+									<Button isLoading={answersMutation.isLoading} onClick={() => answersMutation.mutate(constructAnswer())} my={2}>
+										Save answer
+									</Button>
+								)}
+							</>
 						)}
 					</Box>
 				</Box>
@@ -242,21 +246,23 @@ const ObjectiveComponent = ({ dataId, answersMutation }: any) => {
 				<option value={d}>D</option>
 			</Select>
 
-			<Button
-				isLoading={answersMutation.isLoading}
-				my={8}
-				onClick={() => {
-					answersMutation.mutate(constructObject());
+			<Flex justifyContent={"right"}>
+				<Button
+					isLoading={answersMutation.isLoading}
+					my={8}
+					onClick={() => {
+						answersMutation.mutate(constructObject());
 
-					setCorrect("");
-					setA("");
-					setB("");
-					setC("");
-					setD("");
-				}}
-			>
-				Save Answer
-			</Button>
+						setCorrect("");
+						setA("");
+						setB("");
+						setC("");
+						setD("");
+					}}
+				>
+					Save Answer Objective
+				</Button>
+			</Flex>
 		</Box>
 	);
 };

@@ -5,6 +5,7 @@ import { extendTheme } from "@chakra-ui/react";
 import Home from "./pages/Home";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import StudentHome from "./pages/student/StudentHome";
+import Profile from "./pages/Profile/index";
 import Courses from "./pages/lecturer/Courses";
 import UploadCourse from "./pages/lecturer/UploadCourse";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
 	{ path: "/course/header/obj", element: <ObjectiveAnswer /> },
 
 	{ path: "/course/header", element: <CourseHeader /> },
+	{
+		path: "/profile",
+		element: <Profile />,
+	},
 ]);
 
 const queryClient = new QueryClient();

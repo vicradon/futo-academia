@@ -46,6 +46,7 @@ export default function LoginModal() {
 								</FormControl>
 
 								<PasswordInput
+									name="password"
 									onChange={(e: any) => {
 										console.log("Password", e.target.value);
 										setUser({

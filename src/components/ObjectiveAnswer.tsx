@@ -1,6 +1,6 @@
 import { Box, Flex, Radio, Stack, Text } from "@chakra-ui/react";
 
-function ObjectiveAnswer({ question, answers, question_type, mark, studentAnswer, index }: any) {
+function ObjectiveAnswer({ question, answers, question_type, stu_mark, mark, studentAnswer = () => {}, index }: any) {
 	return (
 		<div
 			style={{
@@ -16,7 +16,7 @@ function ObjectiveAnswer({ question, answers, question_type, mark, studentAnswer
 						</Text>
 						<Box bgColor={"#696cfe"} height={"50px"} width={"50px"} alignItems={"center"} flexDirection={"column"} display={"flex"} justifyContent={"center"} p={4}>
 							<Text fontWeight={"bold"} color={"#fff"}>
-								{mark ?? "--"}
+								{stu_mark !== undefined ? `${stu_mark}/${mark}` : mark ?? "--"}
 							</Text>
 							<Text fontWeight={"bold"} color={"white"}>
 								Marks
@@ -28,7 +28,6 @@ function ObjectiveAnswer({ question, answers, question_type, mark, studentAnswer
 				<Box p="6">
 					<Stack spacing={4} direction="column">
 						{answers?.map((x: any) => {
-							// console.log("X check", x);
 							return (
 								<Radio isChecked={Boolean(x?.is_correct)} colorScheme="brand">
 									{x?.option}

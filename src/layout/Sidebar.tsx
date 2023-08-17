@@ -27,7 +27,7 @@ const Sidebar = () => {
 		if (location.pathname === "/profile") {
 			setActiveItem("profile");
 		} else if (location.pathname === "/announcement") {
-			setActiveItem("announcement");
+			// setActiveItem("announcement");
 		} else if (location.pathname === "/lecturer/courses" || location.pathname.includes("courses") || location.pathname.startsWith("/lecturer/courses")) {
 			setActiveItem("courses");
 		}

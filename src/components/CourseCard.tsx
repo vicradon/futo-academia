@@ -6,8 +6,9 @@ import http from "../utils/http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useToast } from "@chakra-ui/react";
+import { handleToast } from "../utils/handleToast";
 
-export default function CourseCard({ is_active, title, start_date, id, onClick, isLoading, idx, is_marked, overAllClick }: Partial<any>) {
+export default function CourseCard({ is_active, title, start_date, id, idx, is_marked, overAllClick, setExamSetUp }: Partial<any>) {
 	const navigate = useNavigate();
 	const user = useUser();
 	const toast = useToast();
@@ -24,6 +25,20 @@ export default function CourseCard({ is_active, title, start_date, id, onClick, 
 		onError: (err: any) => {
 			console.log("toast err", err);
 			toast({ title: err?.response?.data?.detail || err?.message });
+		},
+	});
+
+	const uploadMutation = useMutation({
+		mutationFn: (id) => {
+			return http.put(`/assessments/${id}/activate`);
+		},
+		onSuccess: () => {
+			toast({ title: "Sucessfully updated", variant: "solid" });
+			queryClient.invalidateQueries({ queryKey: ["getassesments"] });
+			setExamSetUp({});
+		},
+		onError: (err: any) => {
+			handleToast(err);
 		},
 	});
 
@@ -61,7 +76,7 @@ export default function CourseCard({ is_active, title, start_date, id, onClick, 
 								Edit
 							</Text>
 							<Text mx={3}>|</Text>
-							<Button cursor="pointer" isLoading={isLoading} as="button" onClick={onClick}>
+							<Button cursor="pointer" isLoading={uploadMutation.isLoading} as="button" onClick={() => uploadMutation.mutate(id)}>
 								Upload
 							</Button>
 						</>

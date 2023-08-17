@@ -48,20 +48,6 @@ export default function Assignments() {
 		},
 	});
 
-	const uploadMutation = useMutation({
-		mutationFn: (id) => {
-			return http.put(`/assessments/${id}/activate`);
-		},
-		onSuccess: () => {
-			toast({ title: "Sucessfully updated", variant: "solid" });
-			queryClient.invalidateQueries({ queryKey: ["getassesments"] });
-			setExamSetUp({});
-		},
-		onError: (err: any) => {
-			handleToast(err);
-		},
-	});
-
 	const markMutation = useMutation({
 		mutationFn: (id) => {
 			return http.post(`/marks/${id}/`);
@@ -162,7 +148,7 @@ export default function Assignments() {
 					{data
 						?.filter((x: any) => x?.is_marked === false && x?.is_active === false)
 						?.map((x: any, i: number) => {
-							return <CourseCard idx={id} key={i} onClick={() => uploadMutation.mutate(x?.id)} isLoading={uploadMutation?.isLoading} {...x} />;
+							return <CourseCard setExamSetUp={setExamSetUp} idx={id} key={i} {...x} />;
 						})}
 					{data?.filter((x: any) => x?.is_marked === false && x?.is_active === false)?.length === 0 && <Text textAlign={"center"}>No Data here</Text>}
 				</>
@@ -174,9 +160,7 @@ export default function Assignments() {
 			{data
 				?.filter((x: any) => x?.is_active)
 				.map((x: any, i: number) => {
-					return (
-						<CourseCard is_active={true} markMutation={markMutation} idx={id} key={i} onClick={() => uploadMutation.mutate(x?.id)} isLoading={uploadMutation?.isLoading} {...x} />
-					);
+					return <CourseCard is_active={true} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
 				})}
 
 			{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"}>No Data here</Text>}
@@ -189,11 +173,10 @@ export default function Assignments() {
 					return (
 						<CourseCard
 							idx={id}
+							setExamSetUp={setExamSetUp}
 							overAllClick={() => (!user?.is_instructor ? navigate(`/exam/${x?.id}/${id}/results`) : "")}
 							is_marked={true}
 							key={i}
-							onClick={() => uploadMutation.mutate(x?.id)}
-							isLoading={uploadMutation?.isLoading}
 							{...x}
 						/>
 					);
