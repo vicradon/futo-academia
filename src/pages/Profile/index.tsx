@@ -1,15 +1,20 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Flex, Button, Box, Container, Input, FormControl, FormLabel, Center, Avatar, Heading, Textarea } from "@chakra-ui/react";
 
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/Sidebar";
+import { useUser } from "../../hooks/useUser";
 
 export default function Profile() {
 	const [, setSemester] = useState(1);
 	const fileInputRef = useRef(null);
 
-	const [formData, setFormData] = useState({
-		title: "",
+	const user = useUser();
+
+	console.log("User", user);
+
+	const [formData, setFormData] = useState<any>({
+		name: "",
 		firstName: "",
 		middleName: "",
 		lastName: "",
@@ -19,9 +24,13 @@ export default function Profile() {
 		profilePicture: "",
 	});
 
+	useEffect(() => {
+		setFormData(user);
+	}, []);
+
 	const handleChange = (event: any) => {
 		const { name, value } = event.target;
-		setFormData((prevData) => ({
+		setFormData((prevData: any) => ({
 			...prevData,
 			[name]: value,
 		}));
@@ -44,10 +53,8 @@ export default function Profile() {
 	};
 
 	const handleFileChange = (event: any) => {
-		// const file = event.target.files[0];
-		// setSelectedFile(file);
 		const file = event.target.files[0];
-		setFormData((prevData) => ({
+		setFormData((prevData: any) => ({
 			...prevData,
 			profilePicture: file,
 		}));
@@ -83,19 +90,6 @@ export default function Profile() {
 								}}
 							>
 								My Profile
-							</Button>
-							<Button
-								// bgColor='#343680'
-								width={"auto"}
-								sx={{ height: "2rem", margin: "0 0", borderRadius: 0 }}
-								variant={!showHarmattan ? "solid" : "ghost"}
-								colorScheme="purple"
-								onClick={() => {
-									setSemester(2);
-									handleSemesterToggle();
-								}}
-							>
-								Password & Security
 							</Button>
 						</Flex>
 						<form onSubmit={handleSubmit}>
@@ -137,7 +131,7 @@ export default function Profile() {
 													mr="2"
 													placeholder="Professsor"
 													name="title"
-													value={formData.title}
+													value={formData.name}
 													onChange={handleChange}
 													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 												/>
@@ -151,32 +145,7 @@ export default function Profile() {
 													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 												/>
 											</Flex>
-											<Flex width="100%" mt="8">
-												<FormLabel width="50%">Middle Name</FormLabel>
-												<FormLabel width="50%" ml="4">
-													Last Name
-												</FormLabel>
-											</Flex>
-											<Flex width="100%" mb="8">
-												<Input
-													width="50%"
-													mr="2"
-													placeholder="Kene"
-													name="middleName"
-													value={formData.middleName}
-													onChange={handleChange}
-													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
-												/>
-												<Input
-													width="50%"
-													ml="2"
-													placeholder="Eze"
-													name="lastName"
-													value={formData.lastName}
-													onChange={handleChange}
-													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
-												/>
-											</Flex>
+
 											<Flex width="100%" mt="8">
 												<FormLabel width="50%">Faculty </FormLabel>
 												<FormLabel width="50%" ml="4">
