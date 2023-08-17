@@ -14,24 +14,25 @@ interface IProps {
 }
 
 export default function CourseTabs({ children }: IProps) {
+	const { id } = useParams();
 	const tabData = [
 		{
 			name: "Course Summary",
-			path: "/lecturer/courses/ECE501",
+			path: `/lecturer/courses/${id}`,
 		},
 		{
 			name: "Assessments",
-			path: "/lecturer/courses/ECE501/assignments",
+			path: `/lecturer/courses/${id}/assignments`,
 		},
 		{
 			name: "Tests",
 		},
 		{
 			name: "Examination",
-			path: "/lecturer/courses/ECE501/examination",
+			path: `/lecturer/courses/${id}/examination`,
 		},
 	];
-	const { id } = useParams();
+
 	const location = useLocation();
 
 	const { data } = useQuery({
