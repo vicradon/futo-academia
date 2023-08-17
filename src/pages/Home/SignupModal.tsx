@@ -11,26 +11,20 @@ import {
 	FormControl,
 	FormLabel,
 	Heading,
-	useToast,
 	Select,
 	Input,
-	InputGroup,
-	Image,
-	InputRightElement,
 } from "@chakra-ui/react";
 import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
-import EyeIcon from "../../assets/icons/eye.svg";
 import OtherBioModal from "./OtherBioModal";
 import useSignUp from "../../hooks/useSignUp";
 
 export default function SignupModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { isOpen: otherBioModalIsOpen, onOpen: openOtherBioModal, onClose: closeOtherBioModal } = useDisclosure();
-	const [userMode, setUserMode] = useState<"Student" | "Lecturer">("Student");
+	const { isOpen: otherBioModalIsOpen, onClose: closeOtherBioModal } = useDisclosure();
+	const [, setUserMode] = useState<"Student" | "Lecturer">("Student");
 	const params = useSearchParams();
-	const toast = useToast();
 
 	const [formData, setFormData] = useState<any>({
 		name: "",
@@ -41,8 +35,6 @@ export default function SignupModal() {
 		role: "",
 		password: "",
 	});
-
-	const [showPassword, setShowPassword] = useState(false);
 
 	useEffect(() => {
 		if (params[0].get("userMode") === "Student") {
@@ -63,8 +55,6 @@ export default function SignupModal() {
 
 		console.log("Form", formData);
 		signUpMutation.mutate(formData);
-
-		// openOtherBioModal();
 	};
 
 	const signUpMutation = useSignUp();
