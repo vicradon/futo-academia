@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Flex, Box, Button, chakra, FormControl, FormLabel, Input, Select, Textarea, VStack, Heading } from "@chakra-ui/react";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/Sidebar";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { useCreateCourse, useUploadCourseCover } from "../../hooks/useCourses";
+import { useEnrollStudents } from "../../hooks/useEnrollments";
 
 const UploadCourse = () => {
 	const navigate = useNavigate();
 	const [courseTitle, setCourseTitle] = useState("");
-	const [courseUnit, setCourseUnit] = useState("");
+	const [courseUnit, setCourseUnit] = useState("2");
 	const [courseCode, setCourseCode] = useState("");
+	const [courseFaculty, setCourseFaculty] = useState("");
+	const [courseLevel, setCourseLevel] = useState("100");
 	const [courseDescription, setCourseDescription] = useState("");
 	const [courseCoverImage, setCourseCoverImage] = useState<File | null>(null);
-	const [semester, setSemester] = useState("");
-	const [courseMaterial, setCourseMaterial] = useState<File[]>([]);
-	const [submittedData, setSubmittedData] = useState<any>(null);
+	const [semester, setSemester] = useState("1");
+	const [classList, setClassList] = useState<File | null>(null);
 
 	const handleGoBack = () => {
 		navigate(-1);
@@ -56,9 +59,9 @@ const UploadCourse = () => {
 		setSemester(event.target.value);
 	};
 
-	const handleCourseMaterialChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.files) {
-			setCourseMaterial(Array.from(event.target.files));
+	const handleClassListChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files?.length === 1) {
+			setClassList(event.target.files[0]);
 		}
 	};
 
@@ -66,17 +69,37 @@ const UploadCourse = () => {
 		window.history.back();
 	};
 
-	const handleSubmit = () => {
-		const data = {
-			courseTitle,
-			courseUnit,
-			courseCode,
-			courseDescription,
-			courseCoverImage,
-			semester,
-			courseMaterial,
-		};
-		setSubmittedData(data);
+	const createCourseMutation = useCreateCourse();
+	const coursePhotoMutation = useUploadCourseCover(createCourseMutation.isSuccess);
+	const enrollStudentMutation = useEnrollStudents(createCourseMutation.isSuccess);
+
+	const handleSubmit = async (event: FormEvent) => {
+		try {
+			event.preventDefault();
+
+			createCourseMutation.mutate({
+				course_code: courseCode,
+				title: courseTitle,
+				description: courseDescription,
+				units: courseUnit,
+				faculty: courseFaculty,
+				semester: semester,
+				level: courseLevel,
+			});
+
+			enrollStudentMutation.mutate({
+				file: classList,
+				course_code: courseCode,
+			});
+
+			coursePhotoMutation.mutate({ course_code: courseCode, file: courseCoverImage });
+
+			if (coursePhotoMutation.isSuccess && enrollStudentMutation.isSuccess && createCourseMutation.isSuccess) {
+				// navigate('/somewhere')
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -87,112 +110,116 @@ const UploadCourse = () => {
 				<Box paddingTop={"20px"} sx={{ marginRight: "50px" }}>
 					<HoverableArrowBackIcon onClick={handleGoBack} />
 					<Box padding={"40px 80px"} width={"73vw"}>
-						{submittedData ? (
-							<>
-								<Box fontSize="xl" fontWeight="bold" mb={4}>
-									Uploaded Course Details
-								</Box>
-								<Box>
-									<strong>Course Title:</strong> {submittedData.courseTitle}
-								</Box>
-								<Box>
-									<strong>Course Unit:</strong> {submittedData.courseUnit}
-								</Box>
+						<>
+							<Box fontWeight="bold" mb={10} color={"#585AD4"} textAlign={"center"}>
+								<Heading size="lg">Upload New Course</Heading>
+							</Box>
+							<VStack spacing={4} align="stretch">
+								{" "}
+								<Flex justifyContent={"space-between"} columnGap={4} as="form" onSubmit={handleSubmit}>
+									<Box>
+										<FormControl isRequired>
+											<FormLabel display={"flex"} columnGap={4}>
+												<Heading size="sm" color={"#151633"}>
+													Title
+												</Heading>
+											</FormLabel>
+											<Input value={courseTitle} required onChange={handleCourseTitleChange} bg="#fff" placeholder="Enter title here" />
+										</FormControl>
+										<FormControl>
+											<FormLabel display={"flex"} columnGap={4}>
+												<Heading size="sm" color={"#151633"}>
+													Course Unit
+												</Heading>
+											</FormLabel>
 
-								<Button mt={4} onClick={handleGoBack}>
-									Go Back
-								</Button>
-							</>
-						) : (
-							<>
-								<Box fontWeight="bold" mb={10} color={"#585AD4"} textAlign={"center"}>
-									<Heading size="lg">Upload New Course</Heading>
-								</Box>
-								<VStack spacing={4} align="stretch">
-									{" "}
-									<Flex justifyContent={"space-between"}>
-										<Box>
-											<FormControl>
-												<FormLabel>
-													<Heading size="sm" color={"#151633"}>
-														Title
-													</Heading>
-												</FormLabel>
-												<Input value={courseTitle} onChange={handleCourseTitleChange} bg="#fff" placeholder="Enter title here" sx={{ marginBottom: "20px", width: "350px" }} />
-											</FormControl>
-											<FormControl>
-												<FormLabel>
-													<Heading size="sm" color={"#151633"}>
-														Course Unit
-													</Heading>
-												</FormLabel>
-
-												<Select value={courseUnit} onChange={handleCourseUnitChange} sx={{ marginBottom: "20px" }} bg="#fff">
-													<option value="2">2 Units</option>
-													<option value="3">3 Units</option>
-													<option value="4">4 Units</option>
-													<option value="5">5 Units</option>
-													<option value="6">6 Units</option>
-												</Select>
-											</FormControl>
-											<FormControl>
-												<FormLabel>
-													<Heading size="sm" color={"#151633"}>
-														Course Code
-													</Heading>
-												</FormLabel>
-												<Input value={courseCode} onChange={handleCourseCodeChange} sx={{ marginBottom: "20px" }} bg="#fff" />
-											</FormControl>
-											<FormControl>
-												<FormLabel>
-													<Heading size="sm" color={"#151633"}>
-														Description
-													</Heading>
-												</FormLabel>
-												<Textarea value={courseDescription} onChange={handleCourseDescriptionChange} sx={{ marginBottom: "20px" }} bg="#fff" />
-											</FormControl>
-										</Box>
-										<Box>
-											<FormControl>
-												<FormLabel>
-													<Heading size="sm" color={"#151633"}>
-														Cover Image
-													</Heading>
-												</FormLabel>
-												<Input type="file" accept="image/*" onChange={handleCourseCoverImageChange} sx={{ marginBottom: "20px" }} bg="#fff" />
-											</FormControl>
-											<FormControl>
-												<FormLabel>
-													<Heading size="sm" color={"#151633"}>
-														Semester
-													</Heading>
-												</FormLabel>
-												<Select value={semester} onChange={handleSemesterChange} sx={{ marginBottom: "20px" }} bg="#fff">
-													<option value="harmattan">Harmattan Semester</option>
-													<option value="rain">Rain Semester</option>
-												</Select>
-											</FormControl>
-											<FormControl>
-												<FormLabel>
-													<Heading size="sm" color={"#151633"}>
-														Uploading Course Material
-													</Heading>
-												</FormLabel>
-												<Input type="file" multiple onChange={handleCourseMaterialChange} sx={{ marginBottom: "20px" }} bg="#fff" />
-											</FormControl>
-										</Box>
-									</Flex>
-									<Flex alignItems={"center"} justifyContent={"center"} gap={"20px"}>
-										<Button onClick={handleCancel} width={"200px"} border={"1px solid #EB5757"} color={"#EB5757"}>
-											Cancel
-										</Button>
-										<Button onClick={handleSubmit} colorScheme="brand" mr={2} width={"200px"}>
-											Done
-										</Button>
-									</Flex>
-								</VStack>
-							</>
-						)}
+											<Select value={courseUnit} onChange={handleCourseUnitChange} sx={{ marginBottom: "20px" }} bg="#fff">
+												<option value="2">2 Units</option>
+												<option value="3">3 Units</option>
+												<option value="4">4 Units</option>
+												<option value="5">5 Units</option>
+												<option value="6">6 Units</option>
+											</Select>
+										</FormControl>
+										<FormControl isRequired>
+											<FormLabel display={"flex"} columnGap={4}>
+												<Heading size="sm" color={"#151633"}>
+													Course Code
+												</Heading>
+											</FormLabel>
+											<Input value={courseCode} onChange={handleCourseCodeChange} sx={{ marginBottom: "20px" }} bg="#fff" />
+										</FormControl>
+										<FormControl>
+											<FormLabel>
+												<Heading size="sm" color={"#151633"}>
+													Description
+												</Heading>
+											</FormLabel>
+											<Textarea value={courseDescription} onChange={handleCourseDescriptionChange} sx={{ marginBottom: "20px" }} bg="#fff" />
+										</FormControl>
+									</Box>
+									<Box>
+										<FormControl>
+											<FormLabel>
+												<Heading size="sm" color={"#151633"}>
+													Cover Image
+												</Heading>
+											</FormLabel>
+											<Input type="file" accept="image/*" onChange={handleCourseCoverImageChange} sx={{ marginBottom: "20px" }} bg="#fff" />
+										</FormControl>
+										<FormControl isRequired>
+											<FormLabel display={"flex"} columnGap={4}>
+												<Heading size="sm" color={"#151633"}>
+													Course Faculty
+												</Heading>
+											</FormLabel>
+											<Input value={courseFaculty} required onChange={({ target }) => setCourseFaculty(target.value)} bg="#fff" placeholder="Enter course's faculty" />
+										</FormControl>
+										<FormControl isRequired>
+											<FormLabel display={"flex"} columnGap={4}>
+												<Heading size="sm" color={"#151633"}>
+													Course Level
+												</Heading>
+											</FormLabel>
+											<Select isRequired value={courseLevel} onChange={({ target }) => setCourseLevel(target.value)} sx={{ marginBottom: "20px" }} bg="#fff">
+												<option value={"100"}>100</option>
+												<option value={"200"}>200</option>
+												<option value={"300"}>300</option>
+												<option value={"400"}>400</option>
+												<option value={"500"}>500</option>
+											</Select>
+										</FormControl>
+										<FormControl>
+											<FormLabel>
+												<Heading size="sm" color={"#151633"}>
+													Semester
+												</Heading>
+											</FormLabel>
+											<Select required value={semester} onChange={handleSemesterChange} sx={{ marginBottom: "20px" }} bg="#fff">
+												<option value={"1"}>Harmattan Semester</option>
+												<option value={"2"}>Rain Semester</option>
+											</Select>
+										</FormControl>
+										<FormControl isRequired>
+											<FormLabel display={"flex"} columnGap={4}>
+												<Heading size="sm" color={"#151633"}>
+													Upload Class List
+												</Heading>
+											</FormLabel>
+											<Input required type="file" multiple onChange={handleClassListChange} sx={{ marginBottom: "20px" }} bg="#fff" accept="application/csv" />
+										</FormControl>
+									</Box>
+								</Flex>
+								<Flex alignItems={"center"} justifyContent={"center"} gap={"20px"}>
+									<Button onClick={handleCancel} width={"200px"} border={"1px solid #EB5757"} color={"#EB5757"}>
+										Cancel
+									</Button>
+									<Button type="submit" onClick={handleSubmit} colorScheme="brand" mr={2} width={"200px"}>
+										Done
+									</Button>
+								</Flex>
+							</VStack>
+						</>
 					</Box>
 				</Box>
 			</Flex>

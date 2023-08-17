@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 
 import Countdown from "react-countdown";
 import { useToast } from "@chakra-ui/react";
+import { useAssessment } from "../hooks/useAssessment";
 
 export default function ViewCourse() {
 	// const tabData = [
@@ -48,20 +49,11 @@ export default function ViewCourse() {
 	};
 
 	const onSelectChange = (e: any) => {
-		console.log(e?.target?.value);
+		console.log("The id of select change", e?.target?.value);
 		setAssessment(e?.target?.value);
 	};
 
-	const {
-		data: tableData,
-		isLoading: isTableLoading,
-		isFetching,
-	} = useQuery({
-		queryKey: ["getTableData", { assessment }],
-		queryFn: () => http.get(`assessments/${assessment}/results?name=${name}`).then((r) => r.data),
-		onSuccess: (data: any) => console.log("Res Successful", data),
-		onError: (err) => console.log("error", err),
-	});
+	const { data: tableData, isLoading: isTableLoading, isFetching } = useAssessment(assessment, name);
 
 	useEffect(() => {
 		console.log(

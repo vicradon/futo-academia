@@ -5,19 +5,14 @@ import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/Sidebar";
 
 import AddCourse from "../../components/AddCourse";
-import { useQuery } from "@tanstack/react-query";
-import http from "../../utils/http";
+import JoinCourse from "../../components/JoinCourse";
+import { useFetchCourses } from "../../hooks/useCourses";
 
 export default function Courses() {
 	const [semester, setSemester] = useState(1);
 	const navigate = useNavigate();
 
-	const { data } = useQuery({
-		queryKey: ["getCourse", semester],
-		queryFn: () => http.get(`/courses/enrollments?semester=${semester}`).then((r) => r.data),
-		onSuccess: (data: any) => console.log("Query Successful", data),
-		onError: (err) => console.log("error", err),
-	});
+	const courseQuery = useFetchCourses(semester);
 
 	const [showHarmattan, setShowHarmattan] = useState(true);
 	const handleSemesterToggle = () => {
@@ -56,7 +51,7 @@ export default function Courses() {
 						</Flex>
 
 						<Grid justifyItems={"center"} rowGap={"3rem"} columnGap={"1.5rem"} templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}>
-							{data?.map((course: any) => (
+							{courseQuery.data?.map((course: any) => (
 								<Box width={{ base: "260px", sm: "310px" }} sx={{ background: "#fff" }} display="flex" flexDir="column" justifyContent="space-between">
 									<Image height={"240px"} width={"100%"} backgroundSize="cover" src={course.course_photo_url} alt={course.title} />
 									<Box borderRadius={"  0.5rem 0.5rem"} shadow={"lg"} padding={"1rem"}>
@@ -72,7 +67,9 @@ export default function Courses() {
 									</Box>
 								</Box>
 							))}
+
 							<AddCourse />
+							<JoinCourse />
 						</Grid>
 
 						<Flex my={12} justifyContent={"center"}>
