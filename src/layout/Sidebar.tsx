@@ -27,7 +27,7 @@ const Sidebar = () => {
 		if (location.pathname === "/profile") {
 			setActiveItem("profile");
 		} else if (location.pathname === "/announcement") {
-			setActiveItem("announcement");
+			// setActiveItem("announcement");
 		} else if (location.pathname === "/lecturer/courses" || location.pathname.includes("courses") || location.pathname.startsWith("/lecturer/courses")) {
 			setActiveItem("courses");
 		}
@@ -71,7 +71,7 @@ const Sidebar = () => {
 						</Flex>
 					</Link>
 				</ListItem>
-				<ListItem padding={"10px"} mb={4} style={activeItem === "profile" ? activeLinkStyle : {}}>
+				<ListItem padding={"10px"} mb={4} style={activeItem === "announcement" ? activeLinkStyle : {}}>
 					<Link href="/announcements">
 						<Flex alignItems={"center"}>
 							<NotificationsOutlinedIcon sx={{ marginRight: "20px" }} />
