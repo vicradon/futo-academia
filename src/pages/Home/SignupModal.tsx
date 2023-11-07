@@ -28,7 +28,7 @@ export default function SignupModal() {
 
 	const [formData, setFormData] = useState<any>({
 		name: "",
-		id: "",
+		id: null,
 		faculty: "",
 		department: "",
 		email: "",
@@ -46,7 +46,7 @@ export default function SignupModal() {
 
 	useEffect(() => {
 		if (formData?.role === "lecturer") {
-			setFormData({ ...formData, id: 0 });
+			setFormData({ ...formData, id: null });
 		}
 	}, [formData?.role]);
 
@@ -83,7 +83,7 @@ export default function SignupModal() {
 							<Flex onSubmit={handleSignup} my={4} alignItems={"center"} rowGap={6} flexDirection={"column"} as="form">
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Full name</FormLabel>
-									<Input type="text" id="name" name="name" autoComplete="name" required onChange={handleInputChange} />
+									<Input type="text" id="name" name="name" autoComplete='off' required onChange={handleInputChange} />
 								</FormControl>
 
 								<FormControl>
@@ -97,23 +97,23 @@ export default function SignupModal() {
 								{formData?.role === "student" && (
 									<FormControl>
 										<FormLabel textTransform={"uppercase"}>Registration Number</FormLabel>
-										<Input type="text" id="regNo" name="id" autoComplete="" required onChange={handleInputChange} />
+										<Input type="text" id="id" name="id" autoComplete='off' required onChange={handleInputChange} />
 									</FormControl>
 								)}
 
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Faculty</FormLabel>
-									<Input type="text" id="faculty" name="faculty" autoComplete="" required onChange={handleInputChange} />
+									<Input type="text" id="faculty" name="faculty" autoComplete="off" required onChange={handleInputChange} />
 								</FormControl>
 
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Department</FormLabel>
-									<Input type="text" id="dept" name="department" autoComplete="" required onChange={handleInputChange} />
+									<Input type="text" id="dept" name="department" autoComplete="off" required onChange={handleInputChange} />
 								</FormControl>
 
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Email</FormLabel>
-									<Input type="email" id="email" name="email" autoComplete="email" required onChange={handleInputChange} />
+									<Input type="email" id="email" name="email" autoComplete="off" required onChange={handleInputChange} />
 								</FormControl>
 
 								<FormControl>
