@@ -44,7 +44,6 @@ export default function LoginModal({ isOpen, openSignUp, onClose }:{isOpen: bool
 								<PasswordInput
 									name="password"
 									onChange={(e: any) => {
-										console.log("Password", e.target.value);
 										setUser({
 											...user,
 											password: e.target.value,

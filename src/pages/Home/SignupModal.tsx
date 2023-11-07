@@ -28,6 +28,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 	const [formData, setFormData] = useState<any>({
 		name: "",
 		id: null,
+		title: "Student",
 		faculty: "",
 		department: "",
 		email: "",
@@ -46,6 +47,9 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 	useEffect(() => {
 		if (formData?.role === "lecturer") {
 			setFormData({ ...formData, id: null });
+		}
+		if (formData?.role === "student") {
+			setFormData({ ...formData, title: "Student" });
 		}
 	}, [formData?.role]);
 
@@ -77,18 +81,21 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 							<Text>Please fill in your details</Text>
 							<Flex onSubmit={handleSignup} my={4} alignItems={"center"} rowGap={6} flexDirection={"column"} as="form">
 								<FormControl>
-									<FormLabel textTransform={"uppercase"}>Full name</FormLabel>
-									<Input type="text" id="name" name="name" autoComplete='off' required onChange={handleInputChange} />
-								</FormControl>
-
-								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Role</FormLabel>
 									<Select name="role" required onChange={handleInputChange} defaultValue="student">
 										<option value={"student"}>Student</option>
 										<option value={"lecturer"}>Lecturer</option>
 									</Select>
-
 								</FormControl>
+								{formData?.role === "lecturer" && <FormControl>
+									<FormLabel textTransform={"uppercase"}>Title</FormLabel>
+									<Input type="text" id="title" name="title" autoComplete='off' required onChange={handleInputChange} />
+								</FormControl>}
+								<FormControl>
+									<FormLabel textTransform={"uppercase"}>Full name</FormLabel>
+									<Input type="text" id="name" name="name" autoComplete='off' required onChange={handleInputChange} />
+								</FormControl>
+
 
 								{formData?.role === "student" && (
 									<FormControl>

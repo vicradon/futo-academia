@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Flex, Button, Box, Container, Input, FormControl, FormLabel, Center, Avatar, Heading, Textarea } from "@chakra-ui/react";
+import { Flex, Button, Box, Container, Input, FormControl, FormLabel, Text, Center, Avatar, Heading, Textarea } from "@chakra-ui/react";
 
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/Sidebar";
@@ -8,6 +8,7 @@ import { useUser } from "../../hooks/useUser";
 export default function Profile() {
 	const [, setSemester] = useState(1);
 	const fileInputRef = useRef(null);
+	const [edit, setEdit] = useState(false)
 
 	const user = useUser();
 
@@ -15,6 +16,7 @@ export default function Profile() {
 
 	const [formData, setFormData] = useState<any>({
 		name: "",
+		title: "",
 		firstName: "",
 		middleName: "",
 		lastName: "",
@@ -95,7 +97,7 @@ export default function Profile() {
 						<form onSubmit={handleSubmit}>
 							<Box>
 								<Center>
-									<Heading as="h1" size="md" sx={{ color: "#585AD4", margin: "1rem 0" }}>
+									<Heading as="h1" size="sm" sx={{ color: "#585AD4", margin: "1rem 0" }}>
 										Edit Profile
 									</Heading>{" "}
 									<br />
@@ -126,24 +128,43 @@ export default function Profile() {
 												</FormLabel>
 											</Flex>
 											<Flex width="100%" mb="8">
+												{!edit ? 
+												<Text
+													width="50%"
+													mr="2"
+													fontSize={'1.2rem'}
+												>
+													{formData.title}
+												</Text>
+												:
 												<Input
 													width="50%"
 													mr="2"
-													placeholder="Professsor"
+													placeholder={formData.title}
 													name="title"
-													value={formData.name}
+													value={formData.title }
 													onChange={handleChange}
 													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
-												/>
+												/>}
+												{!edit ? 
+												<Text
+													width="50%"
+													mr="2"
+													fontSize={'1.2rem'}
+												>
+													{formData.name}
+												</Text>
+												:
 												<Input
 													width="50%"
 													ml="2"
 													placeholder="Thomas"
 													name="firstName"
-													value={formData.firstName}
+													value={formData.name}
 													onChange={handleChange}
 													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 												/>
+											}
 											</Flex>
 
 											<Flex width="100%" mt="8">
@@ -153,6 +174,15 @@ export default function Profile() {
 												</FormLabel>
 											</Flex>
 											<Flex width="100%" mb="8">
+											{!edit ? 
+												<Text
+													width="50%"
+													mr="2"
+													fontSize={'1.2rem'}
+												>
+													{formData.faculty}
+												</Text>
+												:
 												<Input
 													width="50%"
 													mr="2"
@@ -162,6 +192,16 @@ export default function Profile() {
 													onChange={handleChange}
 													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 												/>
+												}
+												{!edit ? 
+												<Text
+													width="50%"
+													mr="2"
+													fontSize={'1.2rem'}
+												>
+													{formData.department}
+												</Text>
+												:
 												<Input
 													width="50%"
 													ml="2"
@@ -171,6 +211,7 @@ export default function Profile() {
 													onChange={handleChange}
 													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 												/>
+												}
 											</Flex>
 											{/* <Flex width="100%" mt="8">
                                             <FormLabel width="50%">Faculty </FormLabel>
@@ -183,22 +224,31 @@ export default function Profile() {
 												<FormLabel width="50%">Bio </FormLabel>
 											</Flex>
 											<Flex width="100%" mb="8">
+											{!edit ? 
+												<Text
+													width="50%"
+													mr="2"
+													fontSize={'1.2rem'}
+												>
+													{formData.bio ? formData.bio : <i>No bio</i>}
+												</Text>
+												:
 												<Textarea
 													width="100%"
 													mr="2"
-													placeholder="I am a  professor in Computer Science. Born  on  May 2nd 1972. I acquired My Bachelor Degree at the Federal 
-University Technology Owerri, Imo in the year 1994.  "
+													placeholder="I am a  professor in Computer Science. Born  on  May 2nd 1972. I acquired My Bachelor Degree at the Federal University Technology Owerri, Imo in the year 1994.  "
 													name="bio"
 													value={formData.bio}
 													onChange={handleChange}
 													sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "10rem" }}
 												/>
+												}
 											</Flex>
 										</FormControl>
 
-										<Button width="40%" mt="2" colorScheme="purple" bgColor="#696CFF" type="submit">
+										{edit && <Button width="40%" mt="2" colorScheme="purple" bgColor="#696CFF" type="submit">
 											Submit
-										</Button>
+										</Button>}
 									</div>
 								</Flex>
 							</Box>
