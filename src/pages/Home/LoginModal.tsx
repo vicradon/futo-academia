@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Button, useDisclosure, Text, Flex, FormControl, FormLabel, Input, Heading } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalBody, ModalCloseButton, Button, Text, Flex, FormControl, FormLabel, Input, Heading } from "@chakra-ui/react";
 import PasswordInput from "../../components/PasswordInput";
 import useLogin from "../../hooks/useLogin";
 
-export default function LoginModal() {
-	const { isOpen, onOpen, onClose } = useDisclosure();
+export default function LoginModal({ isOpen, openSignUp, onClose }:{isOpen: boolean, openSignUp: () => void, onClose: () => void}) {
+
 	const [user, setUser] = useState({
 		username: "",
 		password: "",
@@ -14,10 +14,6 @@ export default function LoginModal() {
 
 	return (
 		<>
-			<Button variant={"secondary"} onClick={onOpen}>
-				Login
-			</Button>
-
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
@@ -56,10 +52,13 @@ export default function LoginModal() {
 									}}
 								/>
 
-								<Button my={8} w={"60%"} colorScheme="brand" isLoading={loginMutation.isLoading} onClick={() => loginMutation.mutate(user)} size={"lg"}>
+								<Button my={6} w={"60%"} colorScheme="brand" isLoading={loginMutation.isLoading} onClick={() => loginMutation.mutate(user)} size={"lg"}>
 									Continue
 								</Button>
-
+								<Flex>
+									<Text>New User?</Text>
+									<Button variant={"link"} onClick={openSignUp}>Sign up</Button>
+								</Flex>
 								<Flex>
 									<Text>Forgot Password?</Text>
 									<Button variant={"link"}>Click Here</Button>

@@ -20,8 +20,7 @@ import PasswordInput from "../../components/PasswordInput";
 import OtherBioModal from "./OtherBioModal";
 import useSignUp from "../../hooks/useSignUp";
 
-export default function SignupModal() {
-	const { isOpen, onOpen, onClose } = useDisclosure();
+export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: boolean, openLogin: () => void, onClose: () => void}) {
 	const { isOpen: otherBioModalIsOpen, onClose: closeOtherBioModal } = useDisclosure();
 	const [, setUserMode] = useState<"Student" | "Lecturer">("Student");
 	const params = useSearchParams();
@@ -68,10 +67,6 @@ export default function SignupModal() {
 
 	return (
 		<>
-			<Button colorScheme="brand" onClick={onOpen}>
-				Signup
-			</Button>
-
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
@@ -88,10 +83,11 @@ export default function SignupModal() {
 
 								<FormControl>
 									<FormLabel textTransform={"uppercase"}>Role</FormLabel>
-									<Select name="role" placeholder="Select Role" onChange={handleInputChange}>
+									<Select name="role" placeholder="Select Role" onChange={handleInputChange} defaultValue="student">
 										<option value={"student"}>Student</option>
 										<option value={"lecturer"}>Lecturer</option>
 									</Select>
+
 								</FormControl>
 
 								{formData?.role === "student" && (
@@ -146,7 +142,7 @@ export default function SignupModal() {
 
 								<Flex>
 									<Text>Already have an account?</Text>
-									<Button p={0} variant={"link"}>
+									<Button p={0} variant={"link"} onClick={openLogin}>
 										Login
 									</Button>
 								</Flex>

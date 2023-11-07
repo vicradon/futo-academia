@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, Box, Grid, Image } from "@chakra-ui/react";
+import { Flex, Heading, Text, Box, Grid, Image, Button } from "@chakra-ui/react";
 import HomeLayout from "../layout/HomeLayout";
 import SignupModal from "./Home/SignupModal";
 import students from "../assets/images/students.png";
@@ -7,8 +7,17 @@ import line2 from "../assets/bg-images/line2.png";
 import line3 from "../assets/bg-images/line3.png";
 import line4 from "../assets/bg-images/line4.png";
 import LoginModal from "./Home/LoginModal";
+import { useState } from "react";
 
 export default function Home() {
+
+	const [isOpenSignUp, setIsOpenSignUp] = useState(false)
+	const [isOpenLogin, setIsOpenLogin] = useState(false)
+
+	const onOpenLogin = () => {setIsOpenLogin(true); setIsOpenSignUp(false)}
+	const onOpenSignUP = () => {setIsOpenLogin(false); setIsOpenSignUp(true)}
+	const onClose = () => {setIsOpenLogin(false); setIsOpenSignUp(false)}
+
 	return (
 		<HomeLayout
 			height={"100vh"}
@@ -32,8 +41,14 @@ export default function Home() {
 					<Text mb={12}>An Open Source Website For FUTO students with Over 10,000 Courses, Professional degrees and Certificates</Text>
 
 					<Flex columnGap={4}>
-						<SignupModal />
-						<LoginModal />
+					<Button variant={"secondary"} onClick={onOpenLogin}>
+						Login
+					</Button>
+					<Button colorScheme="brand" onClick={onOpenSignUP}>
+						Signup
+					</Button>
+						<LoginModal isOpen={isOpenLogin} openSignUp={onOpenSignUP} onClose={onClose} />
+						<SignupModal isOpen={isOpenSignUp} openLogin={onOpenLogin} onClose={onClose}/>
 					</Flex>
 				</Box>
 
