@@ -1,11 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import http from "../utils/http";
 
 import { useToast } from "@chakra-ui/react";
 
-function useSignUp() {
+function useSignUp(openLogin: () => void) {
 	// const navigate = useNavigate();
 	const toast = useToast();
 	return useMutation({
@@ -30,7 +29,7 @@ function useSignUp() {
 				const res = await http.post("/users", formData);
 				console.log(res);
 				toast({ title: "Signed Up!!" });
-				// navigate("/lecturer/courses");
+				openLogin()
 			} catch (error) {
 				return error;
 			}
