@@ -10,7 +10,7 @@ import { useEnrollStudents } from "../../hooks/useEnrollments";
 const UploadCourse = () => {
 	const navigate = useNavigate();
 	const [courseTitle, setCourseTitle] = useState("");
-	const [courseUnit, setCourseUnit] = useState("2");
+	const [courseUnit, setCourseUnit] = useState("1");
 	const [courseCode, setCourseCode] = useState("");
 	const [courseFaculty, setCourseFaculty] = useState("");
 	const [courseLevel, setCourseLevel] = useState("100");
@@ -109,7 +109,7 @@ const UploadCourse = () => {
 				<Sidebar />
 				<Box paddingTop={"20px"} sx={{ marginRight: "50px" }}>
 					<HoverableArrowBackIcon onClick={handleGoBack} />
-					<Box padding={"40px 80px"} width={"73vw"}>
+					<Box padding={"40px 80px"} width={"73vw"} maxWidth={"1200px"}>
 						<>
 							<Box fontWeight="bold" mb={10} color={"#585AD4"} textAlign={"center"}>
 								<Heading size="lg">Upload New Course</Heading>
@@ -129,16 +129,17 @@ const UploadCourse = () => {
 										<FormControl>
 											<FormLabel display={"flex"} columnGap={4}>
 												<Heading size="sm" color={"#151633"}>
-													Course Unit
+													Course Units
 												</Heading>
 											</FormLabel>
 
 											<Select value={courseUnit} onChange={handleCourseUnitChange} sx={{ marginBottom: "20px" }} bg="#fff">
-												<option value="2">2 Units</option>
-												<option value="3">3 Units</option>
-												<option value="4">4 Units</option>
-												<option value="5">5 Units</option>
-												<option value="6">6 Units</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
 											</Select>
 										</FormControl>
 										<FormControl isRequired>

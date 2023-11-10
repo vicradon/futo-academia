@@ -1,13 +1,21 @@
 import { Container, Flex, Image } from "@chakra-ui/react";
 import Logo from "./Logo";
-import Profile from "../assets/images/profile.png";
 import Bell from "../assets/icons/bell.png";
+import { useUser } from "../hooks/useUser";
+import { useEffect, useState } from "react";
 
 interface NavbarProps {
 	bgColor: string;
 }
 
 export default function Navbar({ bgColor }: NavbarProps) {
+	const user = useUser()
+	const [userData, setUserData] = useState(user)
+	useEffect(() => {
+	  setUserData(user)
+	}, [user.isLoading])
+	
+	
 	return (
 		<Container
 			maxW={"100%"}
@@ -22,7 +30,7 @@ export default function Navbar({ bgColor }: NavbarProps) {
 				<Logo />
 				<Flex display={{ base: "none", md: "flex" }} columnGap={2}>
 					<Image src={Bell} boxSize="35px" />
-					<Image src={Profile} objectFit="cover" boxSize="35px" />
+					<Image src={userData.photo_url} objectFit="cover" boxSize="35px" borderRadius={"50px"}/>
 				</Flex>
 			</Flex>
 		</Container>

@@ -45,12 +45,10 @@ const Sidebar = () => {
 
 	return (
 		<Box w="25vw" p="4" ml={"50px"}>
-			<Stack justify="center" mb="20" textAlign={"center"}>
+			<Stack flexDir="row" justify="center" mb="20" textAlign={"center"}>
 				<Text fontWeight="bold" fontSize="30px" color={"#696CFF"} textAlign={"center"} textTransform={"capitalize"}>
-					Hi {user?.name}
+					{user?.name}
 				</Text>
-
-				<Text fontSize="16px">What are we learning today?</Text>
 			</Stack>
 
 			<List spacing="2">
