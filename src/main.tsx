@@ -3,9 +3,8 @@ import { createRoot } from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import Home from "./pages/Home";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Route, RouterProvider, Routes, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import StudentHome from "./pages/student/StudentHome";
-import Profile from "./pages/Profile/index";
 import Courses from "./pages/lecturer/Courses";
 import UploadCourse from "./pages/lecturer/UploadCourse";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -20,6 +19,9 @@ import Assignments from "./pages/Assignments";
 import ObjectiveAnswer from "./components/ObjectiveAnswer";
 import TakeExam from "./pages/TakeExam";
 import ExamResult from "./pages/ExamResult";
+import UserProfile from "./layout/UserProfile";
+import Profile from "./pages/Profile/Profile";
+import Password from "./pages/Profile/Password";
 
 const colors = {
 	brand: {
@@ -94,56 +96,89 @@ const fonts = {
 
 const theme = extendTheme({ colors, components, fonts });
 
-const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <Home />,
-	},
-	{
-		path: "/student/home",
-		element: <StudentHome />,
-	},
-	{
-		path: "/lecturer/courses",
-		element: <Courses />,
-	},
-	{
-		path: "/lecturer/courses-upload",
-		element: <UploadCourse />,
-	},
-	{
-		path: "/lecturer/courses/:id",
-		element: <ViewCourse />,
-	},
-	{ path: "/course/header", element: <CourseHeader /> },
-	{
-		path: "/lecturer/courses/:id/examination",
-		element: <Examination />,
-	},
-	{
-		path: "/lecturer/courses/:id/examination/add/:idx",
-		element: <AddExam />,
-	},
-	{
-		path: "/lecturer/courses/:id/assignments",
-		element: <Assignments />,
-	},
-	{
-		path: "exams/:id/:courseId",
-		element: <TakeExam />,
-	},
-	{
-		path: "exam/:id/:idx/results",
-		element: <ExamResult />,
-	},
-	{ path: "/course/header/obj", element: <ObjectiveAnswer /> },
+const router = createBrowserRouter(
+	createRoutesFromElements(
+		<Route path="/">
+			<Route index element={<Home />} />
+			<Route path="student/home" element={<StudentHome />} />
+			<Route path="lecturer/courses" element={<Courses />} />
+			<Route path="lecturer/courses-upload" element={<UploadCourse />} />
+			<Route path="lecturer/courses/:id" element={<ViewCourse />} />
+			<Route path="course/header" element={<CourseHeader />} />
+			<Route path="lecturer/courses/:id/examination" element={<Examination />} />
+			<Route path="lecturer/courses/:id/examination/add/:idx" element={<AddExam />} />
+			<Route path="lecturer/courses/:id/assignments" element={<Assignments />} />
+			<Route path="exams/:id/:courseId" element={<TakeExam />} />
+			<Route path="exam/:id/:idx/results" element={<ExamResult />} />
+			<Route path="course/header/obj" element={<ObjectiveAnswer />} />
+			<Route path="profile" element={<UserProfile />}>
+				<Route index element={<Profile />} />
+			  	<Route path="password" element={<Password />} />
+			</Route>
+		</Route>
 
-	{ path: "/course/header", element: <CourseHeader /> },
-	{
-		path: "/profile",
-		element: <Profile />,
-	},
-]);
+	)
+)
+
+// const router = createBrowserRouter([
+// 	{
+// 		path: "/",
+// 		element: <Home />,
+// 	},
+// 	{
+// 		path: "/student/home",
+// 		element: <StudentHome />,
+// 	},
+// 	{
+// 		path: "/lecturer/courses",
+// 		element: <Courses />,
+// 	},
+// 	{
+// 		path: "/lecturer/courses-upload",
+// 		element: <UploadCourse />,
+// 	},
+// 	{
+// 		path: "/lecturer/courses/:id",
+// 		element: <ViewCourse />,
+// 	},
+// 	{ path: "/course/header", element: <CourseHeader /> },
+// 	{
+// 		path: "/lecturer/courses/:id/examination",
+// 		element: <Examination />,
+// 	},
+// 	{
+// 		path: "/lecturer/courses/:id/examination/add/:idx",
+// 		element: <AddExam />,
+// 	},
+// 	{
+// 		path: "/lecturer/courses/:id/assignments",
+// 		element: <Assignments />,
+// 	},
+// 	{
+// 		path: "exams/:id/:courseId",
+// 		element: <TakeExam />,
+// 	},
+// 	{
+// 		path: "exam/:id/:idx/results",
+// 		element: <ExamResult />,
+// 	},
+// 	{ path: "/course/header/obj", element: <ObjectiveAnswer /> },
+
+// 	{ path: "/course/header", element: <CourseHeader /> },
+// 	{
+// 		path: "/profile",
+// 		element: (
+// 			<Routes>
+// 				createRoutesFromElements(
+// 			  <Route path="" element={<UserProfile />}>
+// 			  	<Route index element={<Profile />} />
+// 			  	<Route path="/password" element={<Password />} />
+// 			  </Route>
+// 			  )
+// 			</Routes>
+// 		  ),
+// 	}
+// ]);
 
 const queryClient = new QueryClient();
 
