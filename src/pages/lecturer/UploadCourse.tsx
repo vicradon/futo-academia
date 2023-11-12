@@ -103,28 +103,27 @@ const UploadCourse = () => {
 	};
 
 	return (
-		<Box bg={"#F3F6FF"}>
+		<Box bg={"#F3F6FF"} >
 			<Navbar bgColor="#F3F6FF" />
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<Sidebar />
 				<Box paddingTop={"20px"} sx={{ marginRight: "50px" }}>
-					<HoverableArrowBackIcon onClick={handleGoBack} />
-					<Box padding={"40px 80px"} width={"73vw"} maxWidth={"1200px"}>
+					<HoverableArrowBackIcon onClick={handleGoBack} marginLeft={"30px"} />
+					<Box padding={"20px 20px"} width={{base: "100vw", md: "73vw"}} maxWidth={"1200px"}>
 						<>
 							<Box fontWeight="bold" mb={10} color={"#585AD4"} textAlign={"center"}>
 								<Heading size="lg">Upload New Course</Heading>
 							</Box>
-							<VStack spacing={4} align="stretch">
-								{" "}
-								<Flex justifyContent={"space-between"} columnGap={4} as="form" onSubmit={handleSubmit}>
-									<Box>
+							<VStack spacing={4} >
+								<Flex justifyContent={"space-between"} columnGap={4} as="form" onSubmit={handleSubmit} width={"100%"} p={"0rem"} flexDir={{base: "column", md: "row"}}>
+									<Box  width={{base: "100%", md: "50%"}}>
 										<FormControl isRequired>
 											<FormLabel display={"flex"} columnGap={4}>
-												<Heading size="sm" color={"#151633"}>
+												<Heading size="sm" color={"#151633"} >
 													Title
 												</Heading>
 											</FormLabel>
-											<Input value={courseTitle} required onChange={handleCourseTitleChange} bg="#fff" placeholder="Enter title here" />
+											<Input value={courseTitle} required onChange={handleCourseTitleChange} bg="#fff" placeholder="Title" mb={"20px"} />
 										</FormControl>
 										<FormControl>
 											<FormLabel display={"flex"} columnGap={4}>
@@ -159,7 +158,7 @@ const UploadCourse = () => {
 											<Textarea value={courseDescription} onChange={handleCourseDescriptionChange} sx={{ marginBottom: "20px" }} bg="#fff" />
 										</FormControl>
 									</Box>
-									<Box>
+									<Box width={{base: "100%", md: "50%"}} >
 										<FormControl>
 											<FormLabel>
 												<Heading size="sm" color={"#151633"}>
@@ -212,10 +211,10 @@ const UploadCourse = () => {
 									</Box>
 								</Flex>
 								<Flex alignItems={"center"} justifyContent={"center"} gap={"20px"}>
-									<Button onClick={handleCancel} width={"200px"} border={"1px solid #EB5757"} color={"#EB5757"}>
+									<Button onClick={handleCancel} maxWidth={"200px"} border={"1px solid #EB5757"} color={"#EB5757"}>
 										Cancel
 									</Button>
-									<Button type="submit" onClick={handleSubmit} colorScheme="brand" mr={2} width={"200px"}>
+									<Button type="submit" onClick={handleSubmit} colorScheme="brand" mr={2} maxWidth={"200px"}>
 										Done
 									</Button>
 								</Flex>

@@ -13,7 +13,7 @@ export default function UserProfile() {
 			<Navbar bgColor="#F3F6FF" />
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<Sidebar />
-				<Box display={"flex"} flexDir={"column"} my={8} w="100%" sx={{ marginRight: "50px" }} p={"10px"}>
+				<Box display={"flex"} flexDir={"column"} my={8} w="100%" p={"20px"}>
 						<Center width={"70%"} maxWidth={"700px"} alignSelf={"center"} height={"30px"} justifyContent={"space-around"} textAlign={"center"}>
 							<Heading 
 								as={NavLink} 

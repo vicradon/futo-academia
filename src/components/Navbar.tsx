@@ -1,8 +1,10 @@
-import { Container, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, Text } from "@chakra-ui/react";
 import Logo from "./Logo";
 import Bell from "../assets/icons/bell.png";
 import { useUser } from "../hooks/useUser";
 import { useEffect, useState } from "react";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import { NavLink } from "react-router-dom";
 
 interface NavbarProps {
 	bgColor: string;
@@ -14,6 +16,13 @@ export default function Navbar({ bgColor }: NavbarProps) {
 	useEffect(() => {
 	  setUserData(user)
 	}, [user.isLoading])
+
+	const handleLogout = () => {
+		sessionStorage.clear();
+		localStorage.clear();
+
+		window.location.href = "/";
+	};
 	
 	
 	return (
@@ -26,11 +35,45 @@ export default function Navbar({ bgColor }: NavbarProps) {
 				boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
 			}}
 		>
-			<Flex paddingY={"1rem"} paddingX={"3rem"} justifyContent={"space-between"} alignItems={"center"}>
+			<Flex paddingY={"1rem"} paddingX={"1rem"} justifyContent={"space-between"} alignItems={"center"}>
 				<Logo />
+				<Spacer />
+				
 				<Flex display={{ base: "none", md: "flex" }} columnGap={2}>
 					<Image src={Bell} boxSize="35px" />
-					<Image src={userData.photo_url} objectFit="cover" boxSize="35px" borderRadius={"50px"}/>
+					<Image src={userData.photo_url} objectFit="cover" boxSize="35px" borderRadius={"50px"} />
+				</Flex>
+
+				<Flex alignItems={"center"} columnGap={2}>
+					<Flex display={{ base: "flex", md: "none" }} columnGap={2}>
+						<Text>Home</Text>
+						<Text>Courses</Text>
+					</Flex>
+
+					<Box gridArea={"faculty"} display={{ base: "flex", md: "none" }}>
+						<Menu>
+							<MenuButton 
+								size={{ base: "sm", sm: "sm" }} 
+								variant={"solid"} 
+								colorScheme={"brand"} 
+								color={"white"} 
+								as={Button}
+							>
+								<HamburgerIcon />
+							</MenuButton>
+							<MenuList>
+								<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/profile">
+									Profile
+								</MenuItem>
+								<MenuItem justifyContent={"center"} >
+									Notification
+								</MenuItem>
+								<MenuItem justifyContent={"center"} onClick={handleLogout} >
+									Logout
+								</MenuItem>
+							</MenuList>
+						</Menu>
+					</Box>
 				</Flex>
 			</Flex>
 		</Container>

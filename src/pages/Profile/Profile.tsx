@@ -142,20 +142,15 @@ export default function Profile() {
 			</Center>
 			<form onSubmit={handleProfileUpdate}>
 			<Flex justifyContent="center" alignItems="start" height="100vh">
-				<div style={{ width: "70%" }}>
-					<FormControl>
-						<Flex width="100%" mt="8">
-							<FormLabel width="50%" pl={"10px"}>
+				<div style={{ width: "100%" }}>
+					<Flex width={"100%"} mt={"8"} flexDir={{base: "column", md: "column", lg: "row"}}>
+						<FormControl>
+							<FormLabel width={"100%"} pl={"10px"}>
 								Title
 							</FormLabel>
-							<FormLabel width="50%" pl={"10px"}>
-								First Name
-							</FormLabel>
-						</Flex>
-						<Flex width="100%" mb="8">
 							{!edit ? 
 							<Text
-								width="50%"
+								width={"100%"}
 								mr="2"
 								fontSize={'1.2rem'}
 								p={2}
@@ -165,7 +160,7 @@ export default function Profile() {
 							</Text>
 							:
 							<Input
-								width="50%"
+								width={"100%"}
 								mr="2"
 								placeholder={formData.title}
 								name="title"
@@ -173,9 +168,14 @@ export default function Profile() {
 								onChange={handleChange}
 								sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 							/>}
+						</FormControl>
+						<FormControl>
+							<FormLabel width={"100%"} pl={"10px"} mt={{base: "8", lg: "0"}}>
+								Name
+							</FormLabel>
 							{!edit ? 
 							<Text
-								width="50%"
+								width={"100%"}
 								mr="2"
 								fontSize={'1.2rem'}
 								p={2}
@@ -185,7 +185,7 @@ export default function Profile() {
 							</Text>
 							:
 							<Input
-								width="50%"
+								width={"100%"}
 								ml="2"
 								placeholder={formData.name}
 								name="name"
@@ -194,20 +194,16 @@ export default function Profile() {
 								sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 							/>
 						}
-						</Flex>
-
-						<Flex width="100%" mt="8">
-							<FormLabel width="50%" pl={"10px"}>
+						</FormControl>
+					</Flex>
+					<Flex width={"100%"} mt={"8"} flexDir={{base: "column", md: "column", lg: "row"}}>
+						<FormControl>
+							<FormLabel width={"100%"} pl={"10px"}>
 								Faculty
 							</FormLabel>
-							<FormLabel width="50%" pl={"10px"}>
-								Department
-							</FormLabel>
-						</Flex>
-						<Flex width="100%" mb="8" justifyContent={"space-between"}>
-						{!edit ? 
+							{!edit ? 
 							<Text
-								width="50%"
+								width={"100%"}
 								mr="2"
 								fontSize={'1.2rem'}
 								p={2}
@@ -216,7 +212,7 @@ export default function Profile() {
 								{formData.faculty}
 							</Text>
 							:
-							<Select width="48%" name="faculty" required onChange={handleChange} defaultValue={formData.faculty} >
+							<Select width="100%" name="faculty" required onChange={handleChange} defaultValue={formData.faculty} >
 								<option value="SAAT">SAAT - School of Agriculture And Agricultural Technology</option>
 								<option value="SBMS">SBMS - School of Basic Medical Science</option>
 								<option value="SEET">SEET - School of Engineering and Engineering Technology</option>
@@ -230,9 +226,14 @@ export default function Profile() {
 								<option value="SPGS">SPGS - School of Postgraduate Studies</option>
 							</Select>
 							}
+						</FormControl>
+						<FormControl>
+							<FormLabel width={"100%"} pl={"10px"} mt={{base: "8", lg: "0"}}>
+								Department
+							</FormLabel>
 							{!edit ? 
 							<Text
-								width="50%"
+								width={"100%"}
 								mr="2"
 								fontSize={'1.2rem'}
 								p={2}
@@ -242,11 +243,11 @@ export default function Profile() {
 							</Text>
 							:
 							!formData.faculty ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 								</Select>
 							:
 							formData.faculty === "SAAT" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="AGE">AGE - Agricultural Extension</option>
 									<option value="AGR">AGR - Agricultural Economics</option>
 									<option value="AST">AST - Animal Science and Technology</option>
@@ -257,7 +258,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SBMS" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="ANA">ANA - Anatomy</option>
 									<option value="BCB">BCB - Biochemistry</option>
 									<option value="CMM">CMM - Community Health</option>
@@ -274,7 +275,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SEET" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="ABE">ABE - Agricultural and Bioresources Engineering</option>
 									<option value="BME">BME - Biomedical Engineering</option>
 									<option value="CHE">CHE - Chemical Engineering</option>
@@ -287,7 +288,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SESET" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="CME">CME - Department of Computer Engineering</option>
 									<option value="EPE">EPE - Department of Electrical (Power Systems) Engineering</option>
 									<option value="ELE">ELE - Department of Electronics Engineering</option>
@@ -297,7 +298,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SICT" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="CSC">CSC - Computer Science</option>
 									<option value="CYB">CYB - Cyber Security</option>
 									<option value="IFT">IFT - Information Technology</option>
@@ -305,7 +306,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SLIT" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="EIN">EIN - Entrepreneurship and Innovation</option>
 									<option value="LTT">LTT - Logistics and Transport Technology</option>
 									<option value="MTL">MTL - Maritime Technology and Logistics</option>
@@ -314,7 +315,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SOBS" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="BCB">BCB - Biochemistry</option>
 									<option value="BIO">BIO - Biology</option>
 									<option value="BTY">BTY - Biotechnology</option>
@@ -323,7 +324,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SOES" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="ARC">ARC - Architecture</option>
 									<option value="BLD">BLD - Building Technology</option>
 									<option value="EVM">EVM - Environmental Management</option>
@@ -333,7 +334,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SOHT" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="DNT">DNT - Dental Technology</option>
 									<option value="EHS">EHS - Environmental Health Science</option>
 									<option value="OPT">OPT - Optometry</option>
@@ -342,7 +343,7 @@ export default function Profile() {
 								</Select>
 							:
 							formData.faculty === "SOPS" ?
-								<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+								<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 									<option value="CHM">CHM - Chemistry</option>
 									<option value="GEO">GEO - Geology</option>
 									<option value="MTH">MTH - Mathematics</option>
@@ -354,23 +355,19 @@ export default function Profile() {
 							formData.faculty === "SPGS" ?
 								<Input type="text" name="department" value="PGS" disabled/>
 							:
-							<Select name="department" width={"48%"} defaultValue={formData.department} required onChange={handleChange}>
+							<Select name="department" width={"100%"} defaultValue={formData.department} required onChange={handleChange}>
 							</Select>
 							}
-						</Flex>
-						
-						<Flex width="100%" mt="8">
-							<FormLabel width="50%" pl={"10px"}>
+						</FormControl>
+					</Flex>
+					<Flex width={"100%"} mt={"8"} flexDir={{base: "column", md: "column", lg: "row"}}>
+						<FormControl>
+							<FormLabel width={"100%"} pl={"10px"}>
 								Major
 							</FormLabel>
-							{!formData.is_instructor && <FormLabel width="50%" pl={"10px"}>
-								Registration Number
-							</FormLabel>}
-						</Flex>
-						<Flex width="100%" mb="8">
-						{!edit ? 
+							{!edit ? 
 							<Text
-								width="50%"
+								width={"100%"}
 								mr="2"
 								fontSize={'1.2rem'}
 								p={2}
@@ -379,16 +376,21 @@ export default function Profile() {
 								{formData.major ? formData.major : "Not choosen"}
 							</Text>
 							:
-							<Select name="major" width={"50%"} placeholder="SELECT MAJOR" required onChange={handleChange} defaultValue={formData.major}>
+							<Select name="major" width={"100%"} placeholder="SELECT MAJOR" required onChange={handleChange} defaultValue={formData.major}>
 								<option value="AAA">AAA - First Option</option>
 								<option value="BBB">BBB - Second Option</option>
 								<option value="CCC">CCC - Third Option</option>
 								<option value="DDD">DDD - Fourth Option</option>
 							</Select>
 							}
+						</FormControl>
+						<FormControl>
+							{!formData.is_instructor && <FormLabel width={{base: "100%", md: "50%"}} pl={"10px"}>
+								Registration Number
+							</FormLabel>}
 							{!edit ? 
 							!formData.is_instructor && <Text
-								width="50%"
+								width={{base: "100%", md: "50%"}}
 								mr="2"
 								fontSize={'1.2rem'}
 								p={2}
@@ -398,7 +400,7 @@ export default function Profile() {
 							</Text>
 							: !formData.is_instructor &&
 							<Input
-								width="50%"
+								width={{base: "100%", md: "50%"}}
 								mr="2"
 								placeholder="Department option"
 								name="id"
@@ -407,10 +409,10 @@ export default function Profile() {
 								sx={{ boxShadow: "0px 5px 28.5px 1.5px #9598C833", borderRadius: 0, height: "3rem" }}
 							/>
 							}
-						</Flex>
-						<Flex width="100%" mt="8">
-							<FormLabel width="50%">Bio </FormLabel>
-						</Flex>
+						</FormControl>
+					</Flex>
+					<FormControl>
+						<FormLabel mt="8" width={"100%"}>Bio </FormLabel>
 						<Flex width="100%" mb="8">
 						{!edit ? 
 							<Text

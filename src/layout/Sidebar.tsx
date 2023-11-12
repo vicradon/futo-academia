@@ -44,7 +44,7 @@ const Sidebar = () => {
 	};
 
 	return (
-		<Box w="25vw" p="4" ml={"50px"}>
+		<Box  p="30px" display={{base: "none", md: "block"}} >
 			<Stack flexDir="row" justify="center" mb="20" textAlign={"center"}>
 				<Text fontWeight="bold" fontSize="30px" color={"#696CFF"} textAlign={"center"} textTransform={"capitalize"}>
 					{user?.name}
