@@ -63,3 +63,41 @@ export function useProfileUpdate() {
 		},
 	});
 }
+
+export function usePasswordUpdate() {
+	const toast = useToast()
+	return useMutation({
+		mutationFn: async ({ id, oldPassword, newPassword, confirmPassword, resetPasswordFields }: any) => {
+			try {
+				const res = await http.put(`users/${id}/password`, {
+					old_password: oldPassword,
+					new_password: newPassword,
+					confirm_password: confirmPassword
+				});
+				  toast({
+					status: "success",
+					description: "Password change successful!",
+					position: "top"
+				})
+				resetPasswordFields()
+				  return res.data
+			} catch (error: any) {
+				if (error.response) {
+					console.log(error.response.data.detail)
+					toast({
+						status: "error",
+						description: error.response.data.detail,
+						position: "top"
+					})
+				} else {
+					toast({
+						status: "info",
+						description: "Could not update password.",
+						position: "top"
+					})
+				}
+				return error;
+			}
+		},
+	});
+}

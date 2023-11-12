@@ -2,23 +2,38 @@ import { Flex, Box, Center, Heading } from "@chakra-ui/react";
 
 import Navbar from "../components/Navbar";
 import Sidebar from "../layout/Sidebar";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 export default function UserProfile() {
 
+	const { pathname } = useLocation()
 
 	return (
-		<Box bg={"#F3F6FF"}>
+		<Box bg={"#F3F6FF"} min-height="100vh">
 			<Navbar bgColor="#F3F6FF" />
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<Sidebar />
 				<Box display={"flex"} flexDir={"column"} my={8} w="100%" sx={{ marginRight: "50px" }} p={"10px"}>
-						<Center width={"70%"} maxWidth={"700px"} bg={"yellow"} alignSelf={"center"} height={"30px"} justifyContent={"space-around"}>
-							<Heading as="h1" size="24px" sx={{ color: "#585AD4", margin: "1rem 0" }}>
+						<Center width={"70%"} maxWidth={"700px"} alignSelf={"center"} height={"30px"} justifyContent={"space-around"} textAlign={"center"}>
+							<Heading 
+								as={NavLink} 
+								to={"/profile"}
+								width={"50%"}
+								size="24px"
+								bg={ pathname === '/profile' ? '#343680' : '#DAE4FF'}
+								textColor={pathname === '/profile' ? 'white' : '#585AD4'}
+			 					>
 								My Profile
 							</Heading>
-							<Heading as="h1" size="24px" sx={{ color: "#585AD4", margin: "1rem 0" }}>
-								My Profile
+							<Heading 
+								as={NavLink}
+								to={"/profile/password"}
+								width={"50%"}
+								size="24px" 
+								bg={ pathname === '/profile/password' ? '#343680' : '#DAE4FF'}
+								textColor={pathname === '/profile/password' ? 'white' : '#585AD4'}
+							>
+								Manage password
 							</Heading>
 						</Center>
 

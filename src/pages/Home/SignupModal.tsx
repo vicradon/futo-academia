@@ -20,6 +20,9 @@ import PasswordInput from "../../components/PasswordInput";
 import OtherBioModal from "./OtherBioModal";
 import useSignUp from "../../hooks/useSignUp";
 
+export const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
+const email_regex = /^.+@.+\..+$/
+
 export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: boolean, openLogin: () => void, onClose: () => void}) {
 	const { isOpen: otherBioModalIsOpen, onClose: closeOtherBioModal } = useDisclosure();
 	const [, setUserMode] = useState<"Student" | "Lecturer">("Student");
