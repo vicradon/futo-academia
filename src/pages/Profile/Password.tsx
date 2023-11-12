@@ -1,14 +1,15 @@
-import { Box, Button, FormControl, FormLabel, Heading, Input, Text } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { password_regex } from "../Home/SignupModal";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePasswordUpdate } from "../../hooks/useUserProfileUpdate";
 import { useUser } from "../../hooks/useUser";
+import PasswordInput from "../../components/PasswordInput";
 
 export default function Password() {
-  const [passwords, setPasswords] = useState<{oldPassword: string, newPassword: string, confirmPassword: string}>(
-    {oldPassword: "",
+  const [passwords, setPasswords] = useState<{currentPassword: string, newPassword: string, confirmPassword: string}>(
+    {currentPassword: "",
     newPassword: "",
     confirmPassword: ""}
   )
@@ -19,7 +20,7 @@ export default function Password() {
   const [validMatchPassword, setValidMatchPassword] = useState(false)
 
   const resetPasswordFields = () => {
-    setPasswords({oldPassword: "",
+    setPasswords({currentPassword: "",
     newPassword: "",
     confirmPassword: ""})
   }
@@ -29,7 +30,7 @@ export default function Password() {
     setValidMatchPassword(passwords.newPassword === passwords.confirmPassword)
   }, [passwords.newPassword, passwords.confirmPassword])
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: any) => {
     const { name, value} = event.target
     setPasswords((prev) => ({ ...prev, [name]: value }))
   }
@@ -41,7 +42,7 @@ export default function Password() {
     try {
 			updatePasswordMutation.mutate({
 				id: user.id,
-				oldPassword: passwords.oldPassword,
+				currentPassword: passwords.currentPassword,
         newPassword: passwords.newPassword,
         confirmPassword: passwords.confirmPassword,
         resetPasswordFields: resetPasswordFields
@@ -66,27 +67,23 @@ export default function Password() {
         </Heading>
           <FormControl>
             <FormLabel fontSize={"20px"} fontWeight={"600"} color={"#333"}>Old Password</FormLabel>
-            <Input 
-              backgroundColor={passwords.oldPassword ? "green.100" : "white"} 
-              boxShadow=" 0px 5px 28.5px 1.5px rgba(149, 152, 200, 0.20);" 
-              type="password"
-              name="oldPassword"
-              value={passwords.oldPassword}
-              onChange={handleChange}
-            />
-          </FormControl>
+            <PasswordInput 
+										name="currentPassword" 
+										value={passwords.currentPassword} 
+                    onChange={handleChange} 
+                    backgroundColor={passwords.currentPassword ? "green.100" : "white"}
+									/>
+             </FormControl>
           <FormControl mt={"3rem"}>
           <FormLabel fontSize={"20px"} fontWeight={"600"} color={"#333"}>
               New Password
           </FormLabel>
-            <Input 
-              boxShadow=" 0px 5px 28.5px 1.5px rgba(149, 152, 200, 0.20);" 
-              type="password" 
-              name="newPassword"
-              value={passwords.newPassword}
-              onChange={handleChange}
-              backgroundColor={validPassword ? "green.100" : !(validPassword || !passwords.newPassword) ? "red.100" : "white"}
-            />
+          <PasswordInput 
+										name="newPassword" 
+										value={passwords.newPassword} 
+                    onChange={handleChange} 
+                    backgroundColor={validPassword ? "green.100" : !(validPassword || !passwords.newPassword) ? "red.100" : "white"}
+									/>
             {passwords.newPassword && !validPassword && 
                       <Text fontSize={'12px'} color={'blue.900'} p={'5px'}>
                           <FontAwesomeIcon icon={faInfoCircle} /> 8 to 24 characters.<br/>
@@ -99,15 +96,13 @@ export default function Password() {
           <FormLabel fontSize={"20px"} fontWeight={"600"} color={"#333"}>
             Confirm Password
           </FormLabel>
-            <Input 
-              backgroundColor={validMatchPassword && passwords.confirmPassword ? "green.100" : !(validMatchPassword || !passwords.confirmPassword) ? "red.100" : "white"} 
-              boxShadow=" 0px 5px 28.5px 1.5px rgba(149, 152, 200, 0.20);" 
-              type="password" 
-              name="confirmPassword"
-              value={passwords.confirmPassword}
-              onChange={handleChange}
-            />
-             {!validMatchPassword && passwords.confirmPassword &&
+          <PasswordInput 
+										name="confirmPassword" 
+										value={passwords.confirmPassword} 
+                    onChange={handleChange} 
+                    backgroundColor={validMatchPassword && passwords.confirmPassword ? "green.100" : !(validMatchPassword || !passwords.confirmPassword) ? "red.100" : "white"} 
+									/>
+           {!validMatchPassword && passwords.confirmPassword &&
                   <Text id='pwdnote' fontSize={'12px'} color={'blue.900'} p={'5px'}>
                     <FontAwesomeIcon icon={faInfoCircle} /><br/>Must match previous password
                   </Text>
@@ -119,7 +114,7 @@ export default function Password() {
             mt={!validMatchPassword && passwords.confirmPassword ? "1rem" : "3rem"} 
             w={"10.75rem"} 
             height={"3.5rem"}
-            isDisabled = {!validPassword || !validMatchPassword || !passwords.oldPassword ? true : false}
+            isDisabled = {!validPassword || !validMatchPassword || !passwords.currentPassword ? true : false}
             isLoading = {updatePasswordMutation.isLoading}
           >
             Save

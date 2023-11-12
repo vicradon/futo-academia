@@ -19,25 +19,36 @@ import { useSearchParams } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
 import OtherBioModal from "./OtherBioModal";
 import useSignUp from "../../hooks/useSignUp";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
-const email_regex = /^.+@.+\..+$/
 
 export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: boolean, openLogin: () => void, onClose: () => void}) {
 	const { isOpen: otherBioModalIsOpen, onClose: closeOtherBioModal } = useDisclosure();
 	const [, setUserMode] = useState<"Student" | "Lecturer">("Student");
 	const params = useSearchParams();
 
-	const [formData, setFormData] = useState<any>({
-		name: "",
-		id: null,
-		title: "Student",
-		faculty: "",
-		department: "",
-		email: "",
-		role: "student",
-		password: "",
-	});
+	const [validPassword, setValidPassword] = useState(false)
+  	const [validMatchPassword, setValidMatchPassword] = useState(false)
+
+	  
+	  const [formData, setFormData] = useState<any>({
+		  name: "",
+		  id: null,
+		  title: "Student",
+		  faculty: "",
+		  department: "",
+		  email: "",
+		  role: "student",
+		  password: "",
+		  confirmPassword: ""
+		});
+		
+	useEffect(() => {
+	setValidPassword(password_regex.test(formData.password));
+	setValidMatchPassword(formData.password === formData.confirmPassword)
+	}, [formData.password, formData.confirmPassword])
 
 	useEffect(() => {
 		if (params[0].get("userMode") === "Student") {
@@ -250,10 +261,40 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 
 								<FormControl>
 									<FormLabel>Password</FormLabel>
-									<PasswordInput name="password" value={formData.password} onChange={handleInputChange} />
+									<PasswordInput 			
+										name="password"
+										value={formData.password} 
+										onChange={handleInputChange}
+										backgroundColor={validPassword ? "green.100" : !(validPassword || !formData.password) ? "red.100" : "white"}
+									/>
+									{formData.password && !validPassword && 
+									<Text fontSize={'12px'} color={'blue.900'} p={'5px'}>
+										<FontAwesomeIcon icon={faInfoCircle} /> 8 to 24 characters.<br/>
+										Must include uppercase and lowercase letters.<br/>
+										Must include a number. <br/>
+										Must includ special characters: !, @, #, $, %
+									</Text>}
+								</FormControl>
+								<FormControl>
+									<FormLabel>Confirm password</FormLabel>
+									<PasswordInput 
+										name="confirmPassword" 
+										value={formData.confirmPassword} onChange={handleInputChange} backgroundColor={validMatchPassword && formData.confirmPassword ? "green.100" : !(validMatchPassword || !formData.confirmPassword) ? "red.100" : "white"} 
+									/>
+									{!validMatchPassword && formData.confirmPassword &&
+										<Text id='pwdnote' fontSize={'12px'} color={'blue.900'} p={'5px'}>
+											<FontAwesomeIcon icon={faInfoCircle} /><br/>Must match previous password
+										</Text>
+									}
 								</FormControl>
 
-								<Button type="submit" colorScheme="brand" isLoading={signUpMutation.isLoading} size={"lg"}>
+								<Button 
+									type="submit" 
+									colorScheme="brand" 
+									isLoading={signUpMutation.isLoading} 
+									size={"lg"}
+									isDisabled = {!validPassword || !validMatchPassword ? true : false}
+								>
 									Continue
 								</Button>
 

@@ -67,10 +67,10 @@ export function useProfileUpdate() {
 export function usePasswordUpdate() {
 	const toast = useToast()
 	return useMutation({
-		mutationFn: async ({ id, oldPassword, newPassword, confirmPassword, resetPasswordFields }: any) => {
+		mutationFn: async ({ id, currentPassword, newPassword, confirmPassword, resetPasswordFields }: any) => {
 			try {
 				const res = await http.put(`users/${id}/password`, {
-					old_password: oldPassword,
+					old_password: currentPassword,
 					new_password: newPassword,
 					confirm_password: confirmPassword
 				});
