@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Container, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, Text } from "@chakra-ui/react";
 import Logo from "./Logo";
 import Bell from "../assets/icons/bell.png";
 import { useUser } from "../hooks/useUser";
@@ -39,15 +39,15 @@ export default function Navbar({ bgColor }: NavbarProps) {
 				<Logo />
 				<Spacer />
 				
-				<Flex display={{ base: "none", md: "flex" }} columnGap={2}>
+				<Flex display={{ base: "none", md: "flex" }} columnGap={2} alignItems={"center"}>
 					<Image src={Bell} boxSize="35px" />
-					<Image src={userData.photo_url} objectFit="cover" boxSize="35px" borderRadius={"50px"} />
+					<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/profile"}/>
 				</Flex>
 
 				<Flex alignItems={"center"} columnGap={2}>
 					<Flex display={{ base: "flex", md: "none" }} columnGap={2}>
-						<Text>Home</Text>
-						<Text>Courses</Text>
+						<Text as={NavLink}>Home</Text>
+						<Text as={NavLink} to="/lecturer/courses">Courses</Text>
 					</Flex>
 
 					<Box gridArea={"faculty"} display={{ base: "flex", md: "none" }}>

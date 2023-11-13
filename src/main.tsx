@@ -22,6 +22,8 @@ import ExamResult from "./pages/ExamResult";
 import UserProfile from "./layout/UserProfile";
 import Profile from "./pages/Profile/Profile";
 import Password from "./pages/Profile/Password";
+import FirstSemesterCourses from "./pages/lecturer/FirstSemesterCourses";
+import SecondSemesterCourses from "./pages/lecturer/SecondSemesterCourses";
 
 const colors = {
 	brand: {
@@ -101,7 +103,10 @@ const router = createBrowserRouter(
 		<Route path="/">
 			<Route index element={<Home />} />
 			<Route path="student/home" element={<StudentHome />} />
-			<Route path="lecturer/courses" element={<Courses />} />
+			<Route path="lecturer/courses" element={<Courses />}>
+				<Route index element={<FirstSemesterCourses />} />
+				<Route path="second-semester" element={<SecondSemesterCourses />} />
+			</Route>
 			<Route path="lecturer/courses-upload" element={<UploadCourse />} />
 			<Route path="lecturer/courses/:id" element={<ViewCourse />} />
 			<Route path="course/header" element={<CourseHeader />} />

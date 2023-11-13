@@ -35,6 +35,7 @@ export function useUploadCourseCover(courseCreated = false) {
 	return useMutation({
 		mutationKey: ["useUploadCourseCover", courseCreated],
 		mutationFn: async ({ course_code, file }: any) => {
+			console.log(file, course_code)
 			try {
 				const formData = new FormData();
 				formData.append("file", file);

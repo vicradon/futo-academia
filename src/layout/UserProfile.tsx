@@ -14,7 +14,7 @@ export default function UserProfile() {
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<Sidebar />
 				<Box display={"flex"} flexDir={"column"} my={8} w="100%" p={"20px"}>
-						<Center width={"70%"} maxWidth={"700px"} alignSelf={"center"} height={"30px"} justifyContent={"space-around"} textAlign={"center"}>
+						<Center width={"70%"} maxWidth={"700px"}  minWidth={"300px"} alignSelf={"center"} height={"30px"} justifyContent={"space-around"} textAlign={"center"}>
 							<Heading 
 								as={NavLink} 
 								to={"/profile"}

@@ -9,7 +9,15 @@ const JoinCourse = () => {
 		navigate("#");
 	};
 	return (
-		<Box sx={{ border: "4px solid green", margin: "auto", padding: "70px 40px", cursor: "pointer" }} textAlign={"center"} textColor={"green"} onClick={handleJoinCourseClick}>
+		<Box 
+			sx={{ border: "4px solid green", margin: "auto", cursor: "pointer" }} 
+			textAlign={"center"} 
+			width={"100px"} 
+			height={"100px"} 
+			textColor={"green"} 
+			onClick={handleJoinCourseClick} 
+			padding="10px"
+			>
 			<AddIcon sx={{ fontSize: "25px" }} />
 			<Text>Join course</Text>
 		</Box>

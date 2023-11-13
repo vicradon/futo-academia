@@ -9,7 +9,15 @@ const AddCourse = () => {
 		navigate("/lecturer/courses-upload");
 	};
 	return (
-		<Box sx={{ border: "4px solid #585AD4", margin: "auto", padding: "70px 40px", cursor: "pointer" }} textAlign={"center"} textColor={"#585ad4"} onClick={handleAddCourseClick}>
+		<Box 
+			sx={{ border: "4px solid #585AD4", margin: "auto", cursor: "pointer" }} 
+			textAlign={"center"} 
+			width={"100px"} 
+			height={"100px"} 
+			textColor={"#585ad4"} 
+			onClick={handleAddCourseClick} 
+			padding="10px"
+			>
 			<AddIcon sx={{ fontSize: "25px" }} />
 			<Text>Add course</Text>
 		</Box>
