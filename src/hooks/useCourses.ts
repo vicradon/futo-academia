@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import http from "../utils/http";
+import { useToast } from "@chakra-ui/react";
 
 export function useFetchCourses(semester: number) {
 	return useQuery({
@@ -12,10 +13,11 @@ export function useFetchCourses(semester: number) {
 }
 
 export function useCreateCourse() {
+	const toast = useToast()
 	return useMutation({
 		mutationFn: async ({ course_code, title, description, units, faculty, semester, level }: any) => {
 			try {
-				await http.post("/courses", {
+				const response = await http.post("/courses", {
 					course_code,
 					title,
 					description,
@@ -24,8 +26,17 @@ export function useCreateCourse() {
 					semester,
 					level,
 				});
-			} catch (error) {
-				return error;
+				return response
+			} catch (error: any) {
+				console.log(error.response.data.detail)
+				if (error?.response) {
+					toast({
+						status: "error",
+						description: error.response.data.detail,
+						position: "top"
+					})
+				}
+				throw error;
 			}
 		},
 	});
@@ -35,7 +46,6 @@ export function useUploadCourseCover(courseCreated = false) {
 	return useMutation({
 		mutationKey: ["useUploadCourseCover", courseCreated],
 		mutationFn: async ({ course_code, file }: any) => {
-			console.log(file, course_code)
 			try {
 				const formData = new FormData();
 				formData.append("file", file);

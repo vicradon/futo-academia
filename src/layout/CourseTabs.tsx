@@ -46,6 +46,8 @@ export default function CourseTabs({ children }: IProps) {
 
 	const [active, setActive] = useState(0);
 
+	console.log(data)
+
 	useEffect(() => {
 		if (location.pathname.includes("examination")) {
 			setActive(3);

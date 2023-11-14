@@ -1,7 +1,6 @@
 import { Flex, Text, Square, Box, Button, Image } from "@chakra-ui/react";
-import img from "../assets/images/courseheader.jpg";
 
-function CourseHeader({ course_code, title, description, units }: any) {
+function CourseHeader({ course_code, title, description, units, img }: any) {
 	return (
 		<div style={{ marginTop: 2, marginBottom: "40px" }}>
 			<Flex color="white">

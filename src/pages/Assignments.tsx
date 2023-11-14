@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CourseCard from "../components/CourseCard";
 import CourseTabs from "../layout/CourseTabs";
 
-import { Box, Text, Input, Select, Button, useToast } from "@chakra-ui/react";
+import { Box, Text, Input, Select, Button, useToast, FormLabel, FormControl } from "@chakra-ui/react";
 
 import http from "../utils/http";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -69,14 +69,17 @@ export default function Assignments() {
 			{user?.is_instructor && (
 				<Box bgColor={"white"} p={3} mt={5}>
 					<Text fontWeight="bold">Create Assessment</Text>
-					<Input
-						placeholder="Title"
-						name="title"
-						value={examSetUp["title"]}
-						my={3}
-						disabled={isDisabled}
-						onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })}
-					/>
+					<FormControl isRequired flexDir={"column"}>
+						<FormLabel>Title</FormLabel>
+						<Input
+							placeholder="Title"
+							name="title"
+							value={examSetUp["title"]}
+							// my={3}
+							disabled={isDisabled}
+							onChange={(e) => setExamSetUp({ ...examSetUp, [e.target.name]: e?.target?.value })}
+						/>
+					</FormControl>
 					<Input
 						placeholder="Start Date"
 						name="start_date"

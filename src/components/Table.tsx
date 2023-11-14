@@ -7,6 +7,7 @@ const AppTable = ({ title, header: headers, data: body = [], filterData, onSelec
 	console.log({ body });
 	return (
 		<Box>
+			This is the table
 			<Flex alignItems="center" my={8} justifyContent={"space-between"}>
 				<Text fontSize="32px" fontWeight="bold">
 					{title}
@@ -85,6 +86,7 @@ const AppTable = ({ title, header: headers, data: body = [], filterData, onSelec
 					</Box>
 				)}
 			</TableContainer>
+			This is the table end
 		</Box>
 	);
 };
