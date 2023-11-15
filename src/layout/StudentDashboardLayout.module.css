@@ -1,5 +1,5 @@
 .clip_path {
-    clip-path: url(#clip-path);
+    clipPath: url(#clipPath);
     width: 100%;
 }
 

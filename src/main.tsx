@@ -102,7 +102,7 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/">
 			<Route index element={<Home />} />
-			<Route path="student/home" element={<StudentHome />} />
+			<Route path="student/home/*" element={<StudentHome />} />
 			<Route path="lecturer/courses" element={<Courses />}>
 				<Route index element={<FirstSemesterCourses />} />
 				<Route path="second-semester" element={<SecondSemesterCourses />} />

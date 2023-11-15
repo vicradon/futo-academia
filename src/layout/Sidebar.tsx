@@ -25,8 +25,8 @@ const Sidebar = () => {
 	useEffect(() => {
 		if (location.pathname === "/profile") {
 			setActiveItem("profile");
-		} else if (location.pathname === "/announcement") {
-			// setActiveItem("announcement");
+		} else if (location.pathname === "/student/home") {
+			setActiveItem("home");
 		} else if (location.pathname === "/lecturer/courses" || location.pathname.includes("courses") || location.pathname.startsWith("/lecturer/courses")) {
 			setActiveItem("courses");
 		}
@@ -52,6 +52,14 @@ const Sidebar = () => {
 			</Stack>
 
 			<List spacing="2">
+			<ListItem padding={"10px"} mb={4} style={activeItem === "home" ? activeLinkStyle : {}}>
+					<Link href="/student/home" sx={{ textDecoration: "none" }}>
+						<Flex alignItems={"center"}>
+							<AutoStoriesOutlinedIcon sx={{ marginRight: "20px" }} />
+							Home
+						</Flex>
+					</Link>
+				</ListItem>
 				<ListItem padding={"10px"} mb={4} style={activeItem === "courses" ? activeLinkStyle : {}}>
 					<Link href="/lecturer/courses" sx={{ textDecoration: "none" }}>
 						<Flex alignItems={"center"}>

@@ -46,7 +46,7 @@ export default function Navbar({ bgColor }: NavbarProps) {
 
 				<Flex alignItems={"center"} columnGap={2}>
 					<Flex display={{ base: "flex", md: "none" }} columnGap={2}>
-						<Text as={NavLink}>Home</Text>
+						<Text as={NavLink} to="student/home">Home</Text>
 						<Text as={NavLink} to="/lecturer/courses">Courses</Text>
 					</Flex>
 

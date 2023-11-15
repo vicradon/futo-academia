@@ -18,7 +18,7 @@ function useLogin() {
 
 				localStorage.setItem("token", res.data.access_token);
 
-				window.location.href = "/lecturer/courses";
+				window.location.href = "/student/home";
 			} catch (error: any) {
 				if (error?.response){
 					toast({

@@ -38,7 +38,7 @@ export default function Courses() {
 
 						<Outlet />
  
-						<Flex bg={'green.100'} maxWidth={"400px"} alignSelf={"center"} gap={'3'}>
+						<Flex maxWidth={"400px"} alignSelf={"center"} gap={'3'}>
 							<AddCourse />
 							<JoinCourse />
 						</Flex>

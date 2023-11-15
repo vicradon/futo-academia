@@ -1,103 +1,81 @@
-import { Heading, Image, Text, Menu, MenuButton, MenuList, MenuItem, Flex, Button, Input, InputGroup, InputLeftAddon, Box, Grid, Container } from "@chakra-ui/react";
+import { Heading, Text, Menu, MenuButton, MenuList, MenuItem, Flex, Button, Input, InputGroup, InputLeftAddon, Box, Grid, Container } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { FilterIcon, SearchIcon } from "../../components/Icons";
 import BackgroundImage from "../../assets/bg-images/students.png";
 import StudentDashboardLayout from "../../layout/StudentDashboardLayout";
-import BiologyImage from "../../assets/images/biology.png";
-import ChemistryImage from "../../assets/images/chemistry.png";
-import PhysicsImage from "../../assets/images/physics.png";
-import EnglishImage from "../../assets/images/english.png";
-import HumanitiesImage from "../../assets/images/humanities.png";
-import MathematicsImage from "../../assets/images/mathematics.png";
-import SocialSciencesImage from "../../assets/images/socialsciences.png";
-import WorkshopImage from "../../assets/images/workshop.png";
+import { useEffect, useState } from "react";
+import { NavLink, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { FirstSemesterHome } from "./FirstSemesterHome";
+import { SecondSemesterHome } from "./SecondSemesterHome";
 
+export interface SearchParams {
+	search: string;
+	faculty: string | null;
+	semester: number
+	level: number | string | null;
+	skip: number | null;
+	limit: number | null;
+
+}
 export default function StudentHome() {
-	const harmattanSemesterCourses = [
-		{
-			title: "Use of English",
-			course_code: "GST 101",
-			image_url: EnglishImage,
-		},
-		{
-			title: "Biology",
-			course_code: "BIO 101",
-			image_url: BiologyImage,
-		},
-		{
-			title: "General Physics",
-			course_code: "PHY 101",
-			image_url: PhysicsImage,
-		},
-		{
-			title: "Humanities",
-			course_code: "GST 103",
-			image_url: HumanitiesImage,
-		},
-		{
-			title: "Mathematics",
-			course_code: "MTH 101",
-			image_url: MathematicsImage,
-		},
-		{
-			title: "General Chemistry",
-			course_code: "CHM 101",
-			image_url: ChemistryImage,
-		},
-	];
 
-	const rainSemesterCourses = [
-		{
-			title: "Use of English II",
-			course_code: "GST 102",
-			image_url: EnglishImage,
-		},
-		{
-			title: "Social Sciences I",
-			course_code: "GST 108",
-			image_url: SocialSciencesImage,
-		},
-		{
-			title: "General Physics",
-			course_code: "PHY 102",
-			image_url: PhysicsImage,
-		},
-		{
-			title: "Workshop Practice II",
-			course_code: "ENG 102",
-			image_url: WorkshopImage,
-		},
-		{
-			title: "Mathematics II",
-			course_code: "MTH 102",
-			image_url: MathematicsImage,
-		},
-		{
-			title: "General Chemistry",
-			course_code: "CHM 102",
-			image_url: ChemistryImage,
-		},
-	];
+	const { pathname } = useLocation()
+
+	const [searchParams, setSearchParams] = useState<SearchParams>({
+		search: "",
+		faculty: "",
+		semester: 1,
+		level: null,
+		skip: 0,
+		limit:  10,
+	})
+
+	const handleFacultyChange = (value: string) => {
+		setSearchParams({
+		  ...searchParams,
+		  faculty: value,
+		});
+	  };
+	
+	  const handleLevelChange = (value: number | null) => {
+		setSearchParams({
+		  ...searchParams,
+		  level: value,
+		});
+	  };
+
+	const handleChange = (event: any) => {
+		const { name, value } = event.target;
+		setSearchParams({
+		  ...searchParams,
+		  [name]: value,
+		});
+	  };
+
+	useEffect(() => {
+	  console.log(searchParams)
+	}, [searchParams])
+	
 
 	return (
 		<StudentDashboardLayout>
-			<Box backgroundImage={`url(${BackgroundImage})`} backgroundSize={"cover"}>
-				<Container maxW={"container.xl"}>
-					<Grid height={"85vh"} rowGap={12}>
+			<Box backgroundImage={`url(${BackgroundImage})`} >
+				<Container maxW={"container.xl"} maxH={"20%"}>
+					<Grid height={"25vh"} rowGap={6}>
 						<Box alignSelf={"end"}>
-							<Heading textAlign={"center"} color={"brand.500"}>
-								Learn with Ease
+							<Heading textAlign={"center"} color={"brand.500"} fontSize={{base: "1.5rem", md: "3rem"}}>
+								Create Assessments with Ease
 							</Heading>
-							<Text textAlign={"center"} color="white" fontWeight={"bold"}>
-								Search for any course of your choice and learn at your own convenience.
+							<Text textAlign={"center"} color="white" fontSize={{base: "0.9rem", md: "1.2rem"}}>
+								Search for any course and create assessments.
 							</Text>
 						</Box>
 
 						<Grid
 							gridTemplateAreas={{
 								base: `
-						"search search search search"
-						"faculty level level ."
+						". search search search ."
+						". faculty  . level ."
 						
 					`,
 								sm: `
@@ -115,28 +93,60 @@ export default function StudentHome() {
 						>
 							<Box gridArea={"faculty"}>
 								<Menu>
-									<MenuButton size={{ base: "sm", sm: "md" }} variant={"outline"} colorScheme={"brand"} color={"white"} as={Button} rightIcon={<ChevronDownIcon />}>
+									<MenuButton style={{ width: "100px" }} size={{ base: "sm", sm: "md" }} variant={"outline"} colorScheme={"brand"} color={"white"} as={Button} rightIcon={<ChevronDownIcon />}>
 										Faculty
 									</MenuButton>
 									<MenuList>
-										<MenuItem>SEET</MenuItem>
-										<MenuItem>SESET</MenuItem>
-										<MenuItem>SOPS</MenuItem>
-										<MenuItem>SOBS</MenuItem>
-										<MenuItem>SCIT</MenuItem>
+										<MenuItem value="" justifyContent={"center"} onClick={() => handleFacultyChange("")}>
+											All
+										</MenuItem>
+										<MenuItem value="SAAT" justifyContent={"center"} onClick={() => handleFacultyChange("SAAT")}>
+											SAAT
+										</MenuItem>
+										<MenuItem value="SBMS" justifyContent={"center"} onClick={() => handleFacultyChange("SBMS")}>
+											SBMS
+										</MenuItem>
+										<MenuItem value="SEET" justifyContent={"center"} onClick={() => handleFacultyChange("SEET")}>
+											SEET
+										</MenuItem>
+										<MenuItem value="SESET" justifyContent={"center"} onClick={() => handleFacultyChange("SESET")}>
+											SESET
+										</MenuItem>
+										<MenuItem value="SICT" justifyContent={"center"} onClick={() => handleFacultyChange("SICT")}>
+											SICT
+										</MenuItem>
+										<MenuItem value="SLIT" justifyContent={"center"} onClick={() => handleFacultyChange("SLIT")}>
+											SLIT
+										</MenuItem>
+										<MenuItem value="SOBS" justifyContent={"center"} onClick={() => handleFacultyChange("SOBS")}>
+											SOBS
+										</MenuItem>
+										<MenuItem value="SOES" justifyContent={"center"} onClick={() => handleFacultyChange("SOES")}>
+											SOES
+										</MenuItem>
+										<MenuItem value="SOHT" justifyContent={"center"} onClick={() => handleFacultyChange("SOHT")}>
+											SOHT
+										</MenuItem>
+										<MenuItem value="SOPS" justifyContent={"center"} onClick={() => handleFacultyChange("SOPS")}>
+											SOPS
+										</MenuItem>
+										<MenuItem value="SPGS" justifyContent={"center"} onClick={() => handleFacultyChange("SPGS")}>
+											SPGS
+										</MenuItem>
 									</MenuList>
 								</Menu>
+								<Text textAlign={"center"} textColor={"white"} fontSize={{base: "0.9rem", md: "1.2rem"}}>{searchParams.faculty ? searchParams.faculty : "All"}</Text>
 							</Box>
 
 							<InputGroup gridArea={"search"} backgroundColor={"white"} rounded={"md"} width={{ base: "100%", lg: "300px" }}>
 								<InputLeftAddon backgroundColor={"white"} children={<SearchIcon />} />
-								<Input placeholder="Search Courses..." />
+								<Input type="text" placeholder="Search Courses..."  name="search" value={searchParams.search} onChange={handleChange}/>
 							</InputGroup>
 
 							<Box gridArea={"level"}>
 								<Menu>
 									<MenuButton
-										style={{ width: "150px" }}
+										style={{ width: "100px", height: "50px"}}
 										size={{ base: "sm", sm: "md" }}
 										variant={"outline"}
 										color={"white"}
@@ -144,16 +154,30 @@ export default function StudentHome() {
 										as={Button}
 										leftIcon={<FilterIcon />}
 									>
-										Select Level
+										Level
 									</MenuButton>
 									<MenuList>
-										<MenuItem>100 Level</MenuItem>
-										<MenuItem>200 Level</MenuItem>
-										<MenuItem>300 Level</MenuItem>
-										<MenuItem>400 Level</MenuItem>
-										<MenuItem>500 Level</MenuItem>
+										<MenuItem justifyContent={"center"} onClick={() => handleLevelChange(null)}>
+											All
+										</MenuItem>
+										<MenuItem value="100" justifyContent={"center"} onClick={() => handleLevelChange(100)}>
+											100 Level
+										</MenuItem>
+										<MenuItem value="200" justifyContent={"center"} onClick={() => handleLevelChange(200)}>
+											200 Level
+										</MenuItem>
+										<MenuItem value="300" justifyContent={"center"} onClick={() => handleLevelChange(300)}>
+											300 Level
+										</MenuItem>
+										<MenuItem value="400" justifyContent={"center"} onClick={() => handleLevelChange(400)}>
+											400 Level
+										</MenuItem>
+										<MenuItem value="500" justifyContent={"center"} onClick={() => handleLevelChange(500)}>
+											500 Level
+										</MenuItem>
 									</MenuList>
 								</Menu>
+								<Text textAlign={"center"} textColor={"white"} fontSize={{base: "0.9rem", md: "1.2rem"}}>{searchParams.level ? searchParams.level : "All"}</Text>
 							</Box>
 						</Grid>
 					</Grid>
@@ -162,51 +186,22 @@ export default function StudentHome() {
 
 			<Box my={8}>
 				<Container maxW={"container.xl"}>
-					<Flex my={8} justifyContent={"center"}>
-						<Button width={"200px"} variant={"ghost"}>
-							Harmattan Semester
-						</Button>
-						<Button width={"150px"} variant={"ghost"}>
-							Rain Semester
-						</Button>
+					<Flex my={8} justifyContent={"center"} textAlign={"center"}>
+						<Text width={"200px"} textColor="#232455" opacity={pathname === "/student/home" ? 1 : 0.3} as={NavLink} to="/student/home"  borderBottom={"50px"}>
+							Harmattan
+						</Text>
+						<Text width={"200px"} textColor="#232455" opacity={pathname === "/student/home/rain" ? 1 : 0.3} as={NavLink} to="/student/home/rain">
+							Rain
+						</Text>
 					</Flex>
 
-					<Grid justifyItems={"center"} rowGap={"3rem"} columnGap={"2rem"} templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}>
-						{harmattanSemesterCourses.map((course) => (
-							<Box width={{ base: "280px", sm: "313px" }}>
-								<Image height={"300px"} backgroundSize="cover" src={course.image_url} alt={course.title} />
-								<Box borderRadius={"0 0 0.5rem 0.5rem"} shadow={"lg"} padding={"1rem"}>
-									<Box mb={6}>
-										<Text fontSize={"2xl"} mb={0} color={"brand.500"}>
-											{course.title}
-										</Text>
-										<Text color={"brand.500"}>{course.course_code}</Text>
-									</Box>
+					<Routes>
+						<Route path="/" element={<FirstSemesterHome semester={1} search={searchParams.search} faculty={searchParams.faculty} level={searchParams.level} skip={searchParams.skip} limit={searchParams.limit} />} />
 
-									<Button width={"100%"} colorScheme={"brand"}>
-										Add Course
-									</Button>
-								</Box>
-							</Box>
-						))}
-						{rainSemesterCourses.map((course) => (
-							<Box width={{ base: "280px", sm: "313px" }}>
-								<Image height={"300px"} backgroundSize="cover" src={course.image_url} alt={course.title} />
-								<Box borderRadius={"0 0 0.5rem 0.5rem"} shadow={"lg"} padding={"1rem"}>
-									<Box mb={6}>
-										<Text fontSize={"2xl"} mb={0} color={"brand.500"}>
-											{course.title}
-										</Text>
-										<Text color={"brand.500"}>{course.course_code}</Text>
-									</Box>
+						<Route path="/rain" element={<SecondSemesterHome semester={2} search={searchParams.search} faculty={searchParams.faculty} level={searchParams.level} skip={searchParams.skip} limit={searchParams.limit} />} />
+					</Routes>
 
-									<Button width={"100%"} colorScheme={"brand"}>
-										Add Course
-									</Button>
-								</Box>
-							</Box>
-						))}
-					</Grid>
+					<Outlet />
 
 					<Flex my={12} justifyContent={"center"}>
 						<Button width={{ base: "150px", md: "200px", lg: "400px" }} colorScheme={"brand"} variant={"outline"}>

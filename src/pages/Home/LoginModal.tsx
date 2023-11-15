@@ -48,7 +48,7 @@ export default function LoginModal({ isOpen, openSignUp, onClose }:{isOpen: bool
 											...user,
 											password: e.target.value,
 										});
-									}}
+									} } backgroundColor={"white"}
 								/>
 
 								<Button my={6} w={"60%"} colorScheme="brand" isLoading={loginMutation.isLoading} onClick={() => loginMutation.mutate(user)} size={"lg"}>

@@ -86,7 +86,6 @@ const AppTable = ({ title, header: headers, data: body = [], filterData, onSelec
 					</Box>
 				)}
 			</TableContainer>
-			This is the table end
 		</Box>
 	);
 };
