@@ -10,6 +10,13 @@ interface NavbarProps {
 	bgColor: string;
 }
 
+export const handleLogout = () => {
+	sessionStorage.clear();
+	localStorage.clear();
+
+	window.location.href = "/";
+};
+
 export default function Navbar({ bgColor }: NavbarProps) {
 	const user = useUser()
 	const [userData, setUserData] = useState(user)
@@ -17,12 +24,6 @@ export default function Navbar({ bgColor }: NavbarProps) {
 	  setUserData(user)
 	}, [user.isLoading])
 
-	const handleLogout = () => {
-		sessionStorage.clear();
-		localStorage.clear();
-
-		window.location.href = "/";
-	};
 	
 	
 	return (

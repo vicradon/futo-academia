@@ -35,7 +35,7 @@ export function useUploadPhoto() {
 export function useProfileUpdate() {
 	const toast = useToast()
 	return useMutation({
-		mutationFn: async ({ id, title, name, email, department, faculty, major, bio }: any) => {
+		mutationFn: async ({ id, title, name, email, department, faculty, major, bio, level }: any) => {
 			try {
 				const res = await http.put(`users/${id}`, {
 					title: title,
@@ -44,6 +44,7 @@ export function useProfileUpdate() {
 					department: department,
 					faculty: faculty,
 					major: major,
+					level: level,
 					bio: bio,
 				});
 				  toast({

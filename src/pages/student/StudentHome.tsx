@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { FirstSemesterHome } from "./FirstSemesterHome";
 import { SecondSemesterHome } from "./SecondSemesterHome";
+import { useUser } from "../../hooks/useUser";
 
 export interface SearchParams {
 	search: string;
@@ -19,8 +20,10 @@ export interface SearchParams {
 }
 export default function StudentHome() {
 
+	const user = useUser()
+	
 	const { pathname } = useLocation()
-
+	
 	const [searchParams, setSearchParams] = useState<SearchParams>({
 		search: "",
 		faculty: "",
@@ -29,6 +32,10 @@ export default function StudentHome() {
 		skip: 0,
 		limit:  10,
 	})
+	
+	useEffect(() => {
+	  setSearchParams({...searchParams, faculty: user.faculty, level: user.level})
+	}, [user.isLoading])
 
 	const handleFacultyChange = (value: string) => {
 		setSearchParams({
@@ -52,16 +59,11 @@ export default function StudentHome() {
 		});
 	  };
 
-	useEffect(() => {
-	  console.log(searchParams)
-	}, [searchParams])
-	
-
 	return (
 		<StudentDashboardLayout>
 			<Box backgroundImage={`url(${BackgroundImage})`} >
 				<Container maxW={"container.xl"} maxH={"20%"}>
-					<Grid height={"25vh"} rowGap={6}>
+					<Grid height={{base: "25vh", md: "30vh"}} rowGap={6}>
 						<Box alignSelf={"end"}>
 							<Heading textAlign={"center"} color={"brand.500"} fontSize={{base: "1.5rem", md: "3rem"}}>
 								Create Assessments with Ease
@@ -98,7 +100,7 @@ export default function StudentHome() {
 									</MenuButton>
 									<MenuList>
 										<MenuItem value="" justifyContent={"center"} onClick={() => handleFacultyChange("")}>
-											All
+											All Faculties
 										</MenuItem>
 										<MenuItem value="SAAT" justifyContent={"center"} onClick={() => handleFacultyChange("SAAT")}>
 											SAAT
@@ -135,7 +137,7 @@ export default function StudentHome() {
 										</MenuItem>
 									</MenuList>
 								</Menu>
-								<Text textAlign={"center"} textColor={"white"} fontSize={{base: "0.9rem", md: "1.2rem"}}>{searchParams.faculty ? searchParams.faculty : "All"}</Text>
+								<Text textAlign={"center"} textColor={"white"} fontSize={{base: "0.9rem", md: "1.2rem"}}>{searchParams.faculty ? searchParams.faculty : "All Faculties"}</Text>
 							</Box>
 
 							<InputGroup gridArea={"search"} backgroundColor={"white"} rounded={"md"} width={{ base: "100%", lg: "300px" }}>
@@ -158,7 +160,7 @@ export default function StudentHome() {
 									</MenuButton>
 									<MenuList>
 										<MenuItem justifyContent={"center"} onClick={() => handleLevelChange(null)}>
-											All
+											All Levels
 										</MenuItem>
 										<MenuItem value="100" justifyContent={"center"} onClick={() => handleLevelChange(100)}>
 											100 Level
@@ -177,7 +179,7 @@ export default function StudentHome() {
 										</MenuItem>
 									</MenuList>
 								</Menu>
-								<Text textAlign={"center"} textColor={"white"} fontSize={{base: "0.9rem", md: "1.2rem"}}>{searchParams.level ? searchParams.level : "All"}</Text>
+								<Text textAlign={"center"} textColor={"white"} fontSize={{base: "0.9rem", md: "1.2rem"}}>{searchParams.level ? searchParams.level + " Level" : "All Levels"}</Text>
 							</Box>
 						</Grid>
 					</Grid>

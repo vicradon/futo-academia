@@ -1,11 +1,12 @@
-import { Avatar, Box, Button, Container, Flex, FormControl, FormLabel, Grid, Image, Input, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { NavLink, Link as RouterLink } from "react-router-dom";
-import { FacebookIcon, LinkedInIcon, TwitterIcon, WhatsAppIcon } from "../components/Icons";
-import Logo, { LogoWhite } from "../components/Logo";
+import { Avatar, Box, Button, Container, Flex, Image, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
+import Logo from "../components/Logo";
 import styles from "./StudentDashboardLayout.module.css";
 import Bell from "../assets/icons/bell.png";
 import { useUser } from "../hooks/useUser";
 import { useEffect, useState } from "react";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import { handleLogout } from "../components/Navbar";
 
 interface Props {
 	children: React.ReactNode;
@@ -13,21 +14,45 @@ interface Props {
 
 export default function StudentDashboardLayout({ children }: Props) {
 	const user = useUser()
+
 	const [userData, setUserData] = useState<any>({})
 
 	useEffect(() => {
 	  setUserData(user)
-	  console.log(user)
 	}, [user.isLoading])
 	
 	return (
 		<Box>
-			<Container maxW={"100vw"} bg={"yellow.100"}>
+			<Container maxW={"100vw"}>
 				<Flex paddingY={"1rem"} justifyContent={"space-between"}>
 					<Logo />
 						<Flex display={{ base: "flex", md: "flex" }} columnGap={2} alignItems={"center"}>
 							<Image src={Bell} boxSize="35px" />
 							<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/profile"}/>
+							<Box gridArea={"faculty"} display={{ base: "flex", md: "none" }}>
+								<Menu>
+									<MenuButton 
+										size={{ base: "sm", sm: "sm" }} 
+										variant={"unstyled"} 
+										colorScheme={"brand"} 
+										color={"blue"} 
+										as={Button}
+									>
+										<HamburgerIcon/>
+									</MenuButton>
+									<MenuList>
+										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/profile">
+											Profile
+										</MenuItem>
+										<MenuItem justifyContent={"center"} >
+											Notification
+										</MenuItem>
+										<MenuItem justifyContent={"center"} onClick={handleLogout} >
+											Logout
+										</MenuItem>
+									</MenuList>
+								</Menu>
+							</Box>
 						</Flex>
 				</Flex>
 			</Container>
@@ -45,56 +70,6 @@ export default function StudentDashboardLayout({ children }: Props) {
 					</clipPath>
 				</defs>
 			</svg>
-
-			<Flex className={styles.clip_path} minHeight={"400px"} paddingTop={{ base: "150px", md: "50px", lg: 0 }} bgColor={"brand.700"} alignItems={"center"}>
-				<Container maxW={"container.xl"}>
-					<Grid templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }} rowGap={12}>
-						<Box>
-							<LogoWhite />
-
-							<Text mt={8} color={"white"}>
-								Join our social media pages
-							</Text>
-
-							<Grid width={"200px"} templateColumns={"1fr 1fr 1fr 1fr"} columnGap={0}>
-								<WhatsAppIcon />
-								<TwitterIcon />
-								<LinkedInIcon />
-								<FacebookIcon />
-							</Grid>
-						</Box>
-
-						<Box as={"form"}>
-							<FormControl mb={4}>
-								<FormLabel color={"white"}>Subscribe to our newsletters</FormLabel>
-								<Input bgColor={"white"} placeholder=" Input your e-mail" />
-							</FormControl>
-
-							<Button type="submit" colorScheme="brand" variant="secondary">
-								Subscribe
-							</Button>
-						</Box>
-
-						<UnorderedList color={"white"} justifySelf={{ base: "left", lg: "center" }}>
-							<ListItem>
-								<Link as={RouterLink} to="/profile">
-									Profile
-								</Link>
-							</ListItem>
-							<ListItem>
-								<Link as={RouterLink} to="/notifications">
-									Notifications
-								</Link>
-							</ListItem>
-							<ListItem>
-								<Link as={RouterLink} to="/contact">
-									Contact Us
-								</Link>
-							</ListItem>
-						</UnorderedList>
-					</Grid>
-				</Container>
-			</Flex>
 		</Box>
 	);
 }

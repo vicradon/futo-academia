@@ -31,12 +31,12 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 
 	const [validPassword, setValidPassword] = useState(false)
   	const [validMatchPassword, setValidMatchPassword] = useState(false)
-
 	  
 	  const [formData, setFormData] = useState<any>({
 		  name: "",
 		  id: null,
 		  title: "Student",
+		  level: null,
 		  faculty: "",
 		  department: "",
 		  email: "",
@@ -44,6 +44,8 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 		  password: "",
 		  confirmPassword: ""
 		});
+
+		console.log(formData)
 		
 	useEffect(() => {
 	setValidPassword(password_regex.test(formData.password));
@@ -60,7 +62,8 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 
 	useEffect(() => {
 		if (formData?.role === "lecturer") {
-			setFormData({ ...formData, id: null });
+			setFormData({ ...formData, id: null, title: "" });
+
 		}
 		if (formData?.role === "student") {
 			setFormData({ ...formData, title: "Student" });
@@ -94,33 +97,46 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 							<Heading color={"brand.500"}>Sign Up </Heading>
 							<Text>Please fill in your details</Text>
 							<Flex onSubmit={handleSignup} my={4} alignItems={"center"} rowGap={6} flexDirection={"column"} as="form">
-								<FormControl>
+								<FormControl isRequired>
 									<FormLabel textTransform={"uppercase"}>Role</FormLabel>
-									<Select name="role" required onChange={handleInputChange} defaultValue="student">
+									<Select name="role" onChange={handleInputChange} defaultValue="student">
 										<option value={"student"}>Student</option>
 										<option value={"lecturer"}>Lecturer</option>
 									</Select>
 								</FormControl>
-								{formData?.role === "lecturer" && <FormControl>
+								{formData?.role === "lecturer" && <FormControl isRequired>
 									<FormLabel textTransform={"uppercase"}>Title</FormLabel>
-									<Input type="text" id="title" name="title" autoComplete='off' required onChange={handleInputChange} />
+									<Input type="text" id="title" name="title" autoComplete='off' onChange={handleInputChange} />
 								</FormControl>}
-								<FormControl>
+								<FormControl isRequired>
 									<FormLabel textTransform={"uppercase"}>Full name</FormLabel>
-									<Input type="text" id="name" name="name" autoComplete='off' required onChange={handleInputChange} />
+									<Input type="text" id="name" name="name" autoComplete='off' onChange={handleInputChange} />
 								</FormControl>
 
 
 								{formData?.role === "student" && (
-									<FormControl>
+									<FormControl isRequired>
 										<FormLabel textTransform={"uppercase"}>Registration Number</FormLabel>
-										<Input type="text" id="id" name="id" autoComplete='off' required onChange={handleInputChange} />
+										<Input type="text" id="id" name="id" autoComplete='off' onChange={handleInputChange} />
 									</FormControl>
 								)}
 
-								<FormControl>
+								{formData?.role === "student" && (
+									<FormControl isRequired>
+										<FormLabel textTransform={"uppercase"}>Level</FormLabel>
+										<Select name="level" placeholder="SELECT CURRENT LEVEL" onChange={handleInputChange}>
+											<option value={100}>100</option>
+											<option value={200}>200</option>
+											<option value={300}>300</option>
+											<option value={400}>400</option>
+											<option value={500}>500</option>
+										</Select>
+									</FormControl>
+								)}
+
+								<FormControl isRequired>
 									<FormLabel textTransform={"uppercase"}>Faculty</FormLabel>
-									<Select name="faculty" placeholder="SELECT SCHOOL/FACULTY" required onChange={handleInputChange}>
+									<Select name="faculty" placeholder="SELECT SCHOOL/FACULTY" onChange={handleInputChange}>
 										<option value="SAAT">SAAT - School of Agriculture And Agricultural Technology</option>
 										<option value="SBMS">SBMS - School of Basic Medical Science</option>
 										<option value="SEET">SEET - School of Engineering and Engineering Technology</option>
@@ -135,15 +151,15 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 								</FormControl>
 
-								<FormControl>
+								<FormControl isRequired>
 									<FormLabel textTransform={"uppercase"}>Department</FormLabel>
 									{!formData.faculty && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 									</Select>
 									)}
 
 									{formData.faculty === "SAAT" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="AGE">AGE - Agricultural Extension</option>
 										<option value="AGR">AGR - Agricultural Economics</option>
 										<option value="AST">AST - Animal Science and Technology</option>
@@ -155,7 +171,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									)}
 
 									{formData.faculty === "SBMS" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="ANA">ANA - Anatomy</option>
 										<option value="BCB">BCB - Biochemistry</option>
 										<option value="CMM">CMM - Community Health</option>
@@ -172,7 +188,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SEET" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="ABE">ABE - Agricultural and Bioresources Engineering</option>
 										<option value="BME">BME - Biomedical Engineering</option>
 										<option value="CHE">CHE - Chemical Engineering</option>
@@ -185,7 +201,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SESET" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="CME">CME - Department of Computer Engineering</option>
 										<option value="EPE">EPE - Department of Electrical (Power Systems) Engineering</option>
 										<option value="ELE">ELE - Department of Electronics Engineering</option>
@@ -195,7 +211,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SICT" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="CSC">CSC - Computer Science</option>
 										<option value="CYB">CYB - Cyber Security</option>
 										<option value="IFT">IFT - Information Technology</option>
@@ -203,7 +219,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SLIT" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="EIN">EIN - Entrepreneurship and Innovation</option>
 										<option value="LTT">LTT - Logistics and Transport Technology</option>
 										<option value="MTL">MTL - Maritime Technology and Logistics</option>
@@ -212,7 +228,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SOBS" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="BCB">BCB - Biochemistry</option>
 										<option value="BIO">BIO - Biology</option>
 										<option value="BTY">BTY - Biotechnology</option>
@@ -221,7 +237,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SOES" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="ARC">ARC - Architecture</option>
 										<option value="BLD">BLD - Building Technology</option>
 										<option value="EVM">EVM - Environmental Management</option>
@@ -231,7 +247,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SOHT" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="DNT">DNT - Dental Technology</option>
 										<option value="EHS">EHS - Environmental Health Science</option>
 										<option value="OPT">OPT - Optometry</option>
@@ -240,7 +256,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									</Select>
 									)}
 									{formData.faculty === "SOPS" && (
-									<Select name="department" placeholder="SELECT DEPARTMENT" required onChange={handleInputChange}>
+									<Select name="department" placeholder="SELECT DEPARTMENT" onChange={handleInputChange}>
 										<option value="CHM">CHM - Chemistry</option>
 										<option value="GEO">GEO - Geology</option>
 										<option value="MTH">MTH - Mathematics</option>
@@ -254,12 +270,12 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 									)}
 								</FormControl>
 
-								<FormControl>
+								<FormControl isRequired>
 									<FormLabel textTransform={"uppercase"}>Email</FormLabel>
-									<Input type="email" id="email" name="email" autoComplete="off" required onChange={handleInputChange} />
+									<Input type="email" id="email" name="email" autoComplete="off" onChange={handleInputChange} />
 								</FormControl>
 
-								<FormControl>
+								<FormControl isRequired>
 									<FormLabel>Password</FormLabel>
 									<PasswordInput 			
 										name="password"
@@ -275,7 +291,7 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 										Must includ special characters: !, @, #, $, %
 									</Text>}
 								</FormControl>
-								<FormControl>
+								<FormControl isRequired>
 									<FormLabel>Confirm password</FormLabel>
 									<PasswordInput 
 										name="confirmPassword" 

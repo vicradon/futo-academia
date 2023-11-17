@@ -3,10 +3,11 @@ import { SearchParams } from "./StudentHome";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../utils/http";
 import { useEffect } from "react";
+import Loader from "../../components/Loaders";
 
 export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit}: SearchParams) => {
 
-    const { data, isLoading } = useQuery(["getCourses"], async () => {
+    const { data, isLoading, refetch } = useQuery(["getCourses"], async () => {
       const response = await http.get('/courses', {
         params: {
         semester: semester,
@@ -25,6 +26,18 @@ export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit
         refetchOnMount: true,
       }
       );
+
+      useEffect(() => {
+        refetch()
+      }, [search, faculty, level])
+      
+      if (isLoading) {
+        return (
+            <Box display={"flex"} height="30vh" mt={10} alignItems={"center"} mx="auto" justifyContent={"center"} w="100%" textAlign={"center"}>
+              <Loader height="50%" />
+            </Box>
+        )
+      }
 
   return (
     <Grid justifyItems={"center"} rowGap={"3rem"} columnGap={"2rem"} templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}>

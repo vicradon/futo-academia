@@ -27,8 +27,8 @@ export default function Home() {
 				backgroundRepeat: "no-repeat, no-repeat, no-repeat, no-repeat",
 			}}
 		>
-			<Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} columnGap={"1rem"} justifyItems={"right"}>
-				<Box marginTop={12} marginLeft={{ base: 4, md: 20 }}>
+			<Grid alignSelf={"center"} templateColumns={{ base: "1fr", md: "1fr 1fr" }} columnGap={"1rem"} justifyItems={{base: "center", md: "right"}} p={"20px 20px"} maxW={"1500px"}>
+				<Box marginTop={12} marginLeft={{ base: 4, md: 10 }}>
 					<Box mb={12}>
 						<Heading color={"brand.500"} mb={"-30px"} fontSize={{ base: "80px", md: "120px" }}>
 							Futo
@@ -41,21 +41,21 @@ export default function Home() {
 					<Text mb={12}>An Open Source Website For FUTO students with Over 10,000 Courses, Professional degrees and Certificates</Text>
 
 					<Flex columnGap={4}>
-					<Button variant={"secondary"} onClick={onOpenLogin}>
-						Login
-					</Button>
-					<Button colorScheme="brand" onClick={onOpenSignUP}>
-						Signup
-					</Button>
+						<Button variant={"secondary"} onClick={onOpenLogin}>
+							Login
+						</Button>
+						<Button colorScheme="brand" onClick={onOpenSignUP}>
+							Signup
+						</Button>
 						<LoginModal isOpen={isOpenLogin} openSignUp={onOpenSignUP} onClose={onClose} />
 						<SignupModal isOpen={isOpenSignUp} openLogin={onOpenLogin} onClose={onClose}/>
 					</Flex>
 				</Box>
 
 				<Box
-					display={{ base: "none", md: "block" }}
+					gridRow={{base: 1, md: "auto"}}
 					backgroundColor={"brand.500"}
-					width={{ base: "370px", md: "430px", xl: "570px" }}
+					width={{ base: "90%", md: "350px", xl: "570px" }}
 					borderRadius={{ base: "30px", md: "50px", xl: "98.1002px 98.1002px 49.0501px 49.0501px" }}
 				>
 					<Image src={students} alt="students standing" width={{ base: "400px", md: "450px", xl: "600px" }} />

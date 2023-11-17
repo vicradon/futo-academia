@@ -16,6 +16,7 @@ function useSignUp(openLogin: () => void) {
 			department,
 			email,
 			password,
+			level
 		}: {
 			name: string;
 			id: number | null;
@@ -24,9 +25,10 @@ function useSignUp(openLogin: () => void) {
 			department: string;
 			email: string;
 			password: string;
+			level: number | null
 		}) => {
 			try {
-				const formData = { name, id, title, faculty, department, email, password };
+				const formData = { name, id, title, faculty, department, email, password, level };
 				const res = await http.post("/users", formData);
 				toast({ title: "Signed Up!!" });
 				openLogin()
