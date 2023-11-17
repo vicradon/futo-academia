@@ -1,7 +1,7 @@
 import { Flex, Button, Box, Container } from "@chakra-ui/react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Sidebar from "../../layout/Sidebar";
+import Sidebar from "../../layout/SidebarLecturer";
 
 import JoinCourse from "../../components/JoinCourse";
 

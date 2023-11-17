@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Flex, Box, Button, chakra, FormControl, FormLabel, Input, Select, Textarea, VStack, Heading } from "@chakra-ui/react";
 import Navbar from "../../components/Navbar";
-import Sidebar from "../../layout/Sidebar";
+import Sidebar from "../../layout/SidebarLecturer";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useCreateCourse, useUploadCourseCover } from "../../hooks/useCourses";

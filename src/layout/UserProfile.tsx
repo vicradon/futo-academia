@@ -1,7 +1,7 @@
 import { Flex, Box, Center, Heading } from "@chakra-ui/react";
 
 import Navbar from "../components/Navbar";
-import Sidebar from "../layout/Sidebar";
+import Sidebar from "./SidebarLecturer";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 export default function UserProfile() {

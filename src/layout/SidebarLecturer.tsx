@@ -1,12 +1,15 @@
-import { Box, Flex, Link, List, ListItem, Stack, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Link, List, ListItem, Stack, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useUser } from "../hooks/useUser";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Sidebar = () => {
+
+const SidebarLecturer = () => {
 	const user = useUser();
 
 	const [activeItem, setActiveItem] = useState("");
@@ -25,7 +28,7 @@ const Sidebar = () => {
 	useEffect(() => {
 		if (location.pathname === "/profile") {
 			setActiveItem("profile");
-		} else if (location.pathname === "/student/home") {
+		} else if (location.pathname === "/lecturer/home") {
 			setActiveItem("home");
 		} else if (location.pathname === "/lecturer/courses" || location.pathname.includes("courses") || location.pathname.startsWith("/lecturer/courses")) {
 			setActiveItem("courses");
@@ -53,9 +56,9 @@ const Sidebar = () => {
 
 			<List spacing="2">
 			<ListItem padding={"10px"} mb={4} style={activeItem === "home" ? activeLinkStyle : {}}>
-					<Link href="/student/home" sx={{ textDecoration: "none" }}>
+					<Link href="/lecturer/home" sx={{ textDecoration: "none" }}>
 						<Flex alignItems={"center"}>
-							<AutoStoriesOutlinedIcon sx={{ marginRight: "20px" }} />
+							<Flex sx={{ marginRight: "25px" }}><FontAwesomeIcon icon={faHome} /></Flex>
 							Home
 						</Flex>
 					</Link>
@@ -78,12 +81,12 @@ const Sidebar = () => {
 				</ListItem>
 			</List>
 
-			<Flex mt="20" padding={"10px"}>
+			<Flex mt="20" padding={"10px"} cursor={"pointer"}>
 				<LogoutRoundedIcon sx={{ marginRight: "20px" }} />
-				<Button onClick={handleLogout}>Logout</Button>
+				<Text onClick={handleLogout}>Logout</Text>
 			</Flex>
 		</Box>
 	);
 };
 
-export default Sidebar;
+export default SidebarLecturer;

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 import { Flex, Box } from "@chakra-ui/react";
-import Sidebar from "./Sidebar";
+import Sidebar from "./SidebarLecturer";
 import Navbar from "../components/Navbar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
