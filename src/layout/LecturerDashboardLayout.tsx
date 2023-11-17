@@ -12,7 +12,7 @@ interface Props {
 	children: React.ReactNode;
 }
 
-export default function StudentDashboardLayout({ children }: Props) {
+export default function LecturerDashboardLayout({ children }: Props) {
 	const user = useUser()
 
 	const [userData, setUserData] = useState<any>({})
@@ -42,7 +42,7 @@ export default function StudentDashboardLayout({ children }: Props) {
 										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/profile">
 											Profile
 										</MenuItem>
-										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/student/my-courses">
+										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/lecturer/my-courses">
 											My Courses
 										</MenuItem>
 										<MenuItem justifyContent={"center"} >

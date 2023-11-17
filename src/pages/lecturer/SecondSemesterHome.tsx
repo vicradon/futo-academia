@@ -42,7 +42,7 @@ export const SecondSemesterHome = ({semester, search, faculty, level, skip, limi
 
     if (data?.length <= 0) {
       return (
-          <Box display={"flex"} mt={10} alignItems={"center"} mx="auto" justifyContent={"center"} w="100%" textAlign={"center"}>
+          <Box display={"flex"} mt={40} alignItems={"center"} mx="auto" justifyContent={"center"} w="100%" textAlign={"center"}>
             <Box>
               <img
                 src={EmptyIcon}

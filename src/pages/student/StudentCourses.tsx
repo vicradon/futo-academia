@@ -17,19 +17,19 @@ export default function StudentCourses() {
 						<Flex my={8} justifyContent={"center"}>
 							<Button
 								width={"200px"}
-								variant={pathname === "/student/courses/" ? "solid" : "ghost"}
+								variant={pathname === "/student/my-courses/" ? "solid" : "ghost"}
 								colorScheme="blue"
 								as={NavLink}
-								to={"/student/courses/"}
+								to={"/student/my-courses/"}
 							>
 								Harmattan
 							</Button>
 							<Button
 								width={"200px"}
-								variant={pathname === "/student/courses/second-semester" ? "solid" : "ghost"}
+								variant={pathname === "/student/my-courses/second-semester" ? "solid" : "ghost"}
 								colorScheme="blue"
 								as={NavLink}
-								to={"/student/courses/second-semester"}
+								to={"/student/my-courses/second-semester"}
 							>
 								Rain
 							</Button>

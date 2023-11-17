@@ -18,7 +18,6 @@ import Assignments from "./pages/Assignments";
 import ObjectiveAnswer from "./components/ObjectiveAnswer";
 import TakeExam from "./pages/TakeExam";
 import ExamResult from "./pages/ExamResult";
-import UserProfile from "./layout/StudentProfile";
 import Profile from "./pages/Profile/Instructor";
 import Password from "./pages/Profile/Password";
 import FirstSemesterCourses from "./pages/lecturer/FirstSemesterCourses";
@@ -28,6 +27,7 @@ import StudentCourses from "./pages/student/StudentCourses";
 import LecturerHome from "./pages/lecturer/LecturerHome";
 import StudentProfile from "./layout/StudentProfile";
 import ProfileStudent from "./pages/Profile/ProfileStudent";
+import LecturerProfile from "./layout/LecturerProfile";
 
 const colors = {
 	brand: {
@@ -108,11 +108,11 @@ const router = createBrowserRouter(
 			<Route index element={<Home />} />
 			<Route path="student/home/*" element={<StudentHome />} />
 			<Route path="lecturer/home/*" element={<LecturerHome />} />
-			<Route path="lecturer/courses" element={<LecturerCourses />}>
+			<Route path="lecturer/my-courses" element={<LecturerCourses />}>
 				<Route index element={<FirstSemesterCourses />} />
 				<Route path="second-semester" element={<SecondSemesterCourses />} />
 			</Route>
-			<Route path="student/courses" element={<StudentCourses />}>
+			<Route path="student/my-courses" element={<StudentCourses />}>
 				<Route index element={<FirstSemesterCourses />} />
 				<Route path="second-semester" element={<SecondSemesterCourses />} />
 			</Route>
@@ -129,7 +129,7 @@ const router = createBrowserRouter(
 				<Route index element={<ProfileStudent />} />
 			  	<Route path="password" element={<Password />} />
 			</Route>
-			<Route path="instructor-profile" element={<UserProfile />}>
+			<Route path="lecturer-profile" element={<LecturerProfile />}>
 				<Route index element={<Profile />} />
 			  	<Route path="password" element={<Password />} />
 			</Route>

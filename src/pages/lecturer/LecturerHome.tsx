@@ -2,12 +2,12 @@ import { Heading, Text, Menu, MenuButton, MenuList, MenuItem, Flex, Button, Inpu
 import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { FilterIcon, SearchIcon } from "../../components/Icons";
 import BackgroundImage from "../../assets/bg-images/students.png";
-import StudentDashboardLayout from "../../layout/StudentDashboardLayout";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { FirstSemesterHome } from "./FirstSemesterHome";
 import { SecondSemesterHome } from "./SecondSemesterHome";
 import { useUser } from "../../hooks/useUser";
+import LecturerDashboardLayout from "../../layout/LecturerDashboardLayout";
 
 export interface SearchParams {
 	search: string;
@@ -60,7 +60,7 @@ export default function LecturerHome() {
 	  };
 
 	return (
-		<StudentDashboardLayout>
+		<LecturerDashboardLayout>
 			<Box backgroundImage={`url(${BackgroundImage})`} >
 				<Container maxW={"container.xl"} maxH={"20%"}>
 					<Grid height={{base: "25vh", md: "30vh"}} rowGap={6}>
@@ -219,6 +219,6 @@ export default function LecturerHome() {
 				<Text>Create</Text>
 				<AddIcon borderRadius="full" boxSize={"8"} color={"blue.400"} />
 			</Flex>
-		</StudentDashboardLayout>
+		</LecturerDashboardLayout>
 	);
 }

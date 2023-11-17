@@ -17,7 +17,7 @@ export default function DashboardLayout() {
 			</Box>
 			<Box>
 				<Flex>
-					<Navlink href="/student/courses">Courses</Navlink>
+					<Navlink href="/student/my-courses">Courses</Navlink>
 				</Flex>
 			</Box>
 		</Grid>

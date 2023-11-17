@@ -30,7 +30,7 @@ const SidebarLecturer = () => {
 			setActiveItem("profile");
 		} else if (location.pathname === "/lecturer/home") {
 			setActiveItem("home");
-		} else if (location.pathname === "/lecturer/courses" || location.pathname.includes("courses") || location.pathname.startsWith("/lecturer/courses")) {
+		} else if (location.pathname === "/lecturer/my-courses" || location.pathname.includes("courses") || location.pathname.startsWith("/lecturer/my-courses")) {
 			setActiveItem("courses");
 		}
 	}, [location]);
@@ -64,7 +64,7 @@ const SidebarLecturer = () => {
 					</Link>
 				</ListItem>
 				<ListItem padding={"10px"} mb={4} style={activeItem === "courses" ? activeLinkStyle : {}}>
-					<Link href="/lecturer/courses" sx={{ textDecoration: "none" }}>
+					<Link href="/lecturer/my-courses" sx={{ textDecoration: "none" }}>
 						<Flex alignItems={"center"}>
 							<AutoStoriesOutlinedIcon sx={{ marginRight: "20px" }} />
 							Courses
@@ -72,7 +72,7 @@ const SidebarLecturer = () => {
 					</Link>
 				</ListItem>
 				<ListItem padding={"10px"} mb={4} style={activeItem === "profile" ? activeLinkStyle : {}}>
-					<Link href="/profile">
+					<Link href="/lecturer-profile">
 						<Flex alignItems={"center"}>
 							<PersonOutlineOutlinedIcon sx={{ marginRight: "20px" }} />
 							Profile

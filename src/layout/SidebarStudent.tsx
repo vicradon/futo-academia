@@ -30,7 +30,7 @@ const SidebarStudent = () => {
 			setActiveItem("profile");
 		} else if (location.pathname === "/student/home") {
 			setActiveItem("home");
-		} else if (location.pathname === "/student/courses" || location.pathname.includes("courses") || location.pathname.startsWith("/student/courses")) {
+		} else if (location.pathname === "/student/my-courses" || location.pathname.includes("courses") || location.pathname.startsWith("/student/my-courses")) {
 			setActiveItem("courses");
 		}
 	}, [location]);
@@ -64,7 +64,7 @@ const SidebarStudent = () => {
 					</Link>
 				</ListItem>
 				<ListItem padding={"10px"} mb={4} style={activeItem === "courses" ? activeLinkStyle : {}}>
-					<Link href="/student/courses" sx={{ textDecoration: "none" }}>
+					<Link href="/student/my-courses" sx={{ textDecoration: "none" }}>
 						<Flex alignItems={"center"}>
 							<AutoStoriesOutlinedIcon sx={{ marginRight: "20px" }} />
 							Courses
