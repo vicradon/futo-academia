@@ -2,8 +2,7 @@ import { Box, Button, Container, Flex, FormControl, FormLabel, Grid, Input, Text
 import Logo, { LogoWhite } from "../components/Logo";
 import LoginModal from "../pages/Home/LoginModal";
 import SignupModal from "../pages/Home/SignupModal";
-import styles from "../layout/StudentDashboardLayout.module.css";
-import { NavLink, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { useState } from "react";
 import { WhatsAppIcon, TwitterIcon, LinkedInIcon, FacebookIcon } from "../components/Icons";

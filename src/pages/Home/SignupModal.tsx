@@ -44,8 +44,6 @@ export default function SignupModal({ isOpen, openLogin, onClose }:{isOpen: bool
 		  password: "",
 		  confirmPassword: ""
 		});
-
-		console.log(formData)
 		
 	useEffect(() => {
 	setValidPassword(password_regex.test(formData.password));

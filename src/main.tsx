@@ -5,7 +5,6 @@ import { extendTheme } from "@chakra-ui/react";
 import Home from "./pages/Home";
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import StudentHome from "./pages/student/StudentHome";
-import Courses from "./pages/lecturer/Courses";
 import UploadCourse from "./pages/lecturer/UploadCourse";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ViewCourse from "./pages/ViewCourse";
@@ -24,6 +23,9 @@ import Profile from "./pages/Profile/Profile";
 import Password from "./pages/Profile/Password";
 import FirstSemesterCourses from "./pages/lecturer/FirstSemesterCourses";
 import SecondSemesterCourses from "./pages/lecturer/SecondSemesterCourses";
+import LecturerCourses from "./pages/lecturer/LecturerCourses";
+import StudentCourses from "./pages/student/StudentCourses";
+import LecturerHome from "./pages/lecturer/LecturerHome";
 
 const colors = {
 	brand: {
@@ -103,7 +105,12 @@ const router = createBrowserRouter(
 		<Route path="/">
 			<Route index element={<Home />} />
 			<Route path="student/home/*" element={<StudentHome />} />
-			<Route path="lecturer/courses" element={<Courses />}>
+			<Route path="lecturer/home/*" element={<LecturerHome />} />
+			<Route path="lecturer/courses" element={<LecturerCourses />}>
+				<Route index element={<FirstSemesterCourses />} />
+				<Route path="second-semester" element={<SecondSemesterCourses />} />
+			</Route>
+			<Route path="student/courses" element={<StudentCourses />}>
 				<Route index element={<FirstSemesterCourses />} />
 				<Route path="second-semester" element={<SecondSemesterCourses />} />
 			</Route>
@@ -124,66 +131,6 @@ const router = createBrowserRouter(
 
 	)
 )
-
-// const router = createBrowserRouter([
-// 	{
-// 		path: "/",
-// 		element: <Home />,
-// 	},
-// 	{
-// 		path: "/student/home",
-// 		element: <StudentHome />,
-// 	},
-// 	{
-// 		path: "/lecturer/courses",
-// 		element: <Courses />,
-// 	},
-// 	{
-// 		path: "/lecturer/courses-upload",
-// 		element: <UploadCourse />,
-// 	},
-// 	{
-// 		path: "/lecturer/courses/:id",
-// 		element: <ViewCourse />,
-// 	},
-// 	{ path: "/course/header", element: <CourseHeader /> },
-// 	{
-// 		path: "/lecturer/courses/:id/examination",
-// 		element: <Examination />,
-// 	},
-// 	{
-// 		path: "/lecturer/courses/:id/examination/add/:idx",
-// 		element: <AddExam />,
-// 	},
-// 	{
-// 		path: "/lecturer/courses/:id/assignments",
-// 		element: <Assignments />,
-// 	},
-// 	{
-// 		path: "exams/:id/:courseId",
-// 		element: <TakeExam />,
-// 	},
-// 	{
-// 		path: "exam/:id/:idx/results",
-// 		element: <ExamResult />,
-// 	},
-// 	{ path: "/course/header/obj", element: <ObjectiveAnswer /> },
-
-// 	{ path: "/course/header", element: <CourseHeader /> },
-// 	{
-// 		path: "/profile",
-// 		element: (
-// 			<Routes>
-// 				createRoutesFromElements(
-// 			  <Route path="" element={<UserProfile />}>
-// 			  	<Route index element={<Profile />} />
-// 			  	<Route path="/password" element={<Password />} />
-// 			  </Route>
-// 			  )
-// 			</Routes>
-// 		  ),
-// 	}
-// ]);
 
 const queryClient = new QueryClient();
 

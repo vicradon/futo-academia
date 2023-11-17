@@ -18,7 +18,12 @@ function useLogin() {
 
 				localStorage.setItem("token", res.data.access_token);
 
-				window.location.href = "/student/home";
+				if (res.data.is_instructor) {
+					window.location.href = "/lecturer/home";
+				} else {
+					window.location.href = "/student/home";
+				}
+
 			} catch (error: any) {
 				if (error?.response){
 					toast({

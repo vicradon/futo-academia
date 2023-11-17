@@ -1,5 +1,5 @@
 import { Heading, Text, Menu, MenuButton, MenuList, MenuItem, Flex, Button, Input, InputGroup, InputLeftAddon, Box, Grid, Container } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { FilterIcon, SearchIcon } from "../../components/Icons";
 import BackgroundImage from "../../assets/bg-images/students.png";
 import StudentDashboardLayout from "../../layout/StudentDashboardLayout";
@@ -18,7 +18,7 @@ export interface SearchParams {
 	limit: number | null;
 
 }
-export default function StudentHome() {
+export default function LecturerHome() {
 
 	const user = useUser()
 	
@@ -66,7 +66,7 @@ export default function StudentHome() {
 					<Grid height={{base: "25vh", md: "30vh"}} rowGap={6}>
 						<Box alignSelf={"end"}>
 							<Heading textAlign={"center"} color={"brand.500"} fontSize={{base: "1.5rem", md: "3rem"}}>
-								Create Assessments with Ease
+								Create and Grade Assessments with Ease
 							</Heading>
 							<Text textAlign={"center"} color="white" fontSize={{base: "0.9rem", md: "1.2rem"}}>
 								Search for any course and create assessments.
@@ -189,10 +189,10 @@ export default function StudentHome() {
 			<Box my={8}>
 				<Container maxW={"container.xl"}>
 					<Flex my={8} justifyContent={"center"} textAlign={"center"}>
-						<Text width={"200px"} textColor="#232455" opacity={pathname === "/student/home" ? 1 : 0.3} as={NavLink} to="/student/home"  borderBottom={"50px"}>
+						<Text width={"200px"} textColor="#232455" opacity={pathname === "/lecturer/home" ? 1 : 0.3} as={NavLink} to="/lecturer/home"  borderBottom={"50px"}>
 							Harmattan
 						</Text>
-						<Text width={"200px"} textColor="#232455" opacity={pathname === "/student/home/rain" ? 1 : 0.3} as={NavLink} to="/student/home/rain">
+						<Text width={"200px"} textColor="#232455" opacity={pathname === "/lecturer/home/rain" ? 1 : 0.3} as={NavLink} to="/lecturer/home/rain">
 							Rain
 						</Text>
 					</Flex>
@@ -212,6 +212,19 @@ export default function StudentHome() {
 					</Flex>
 				</Container>
 			</Box>
+			<Flex
+				position="fixed"
+				bottom="10"
+				right="10"
+				zIndex="9999"
+				alignItems={"center"}
+				columnGap={"2"}
+				as={NavLink}
+				to="/lecturer/courses-upload"
+			>
+				<Text>Create</Text>
+				<AddIcon borderRadius="full" boxSize={"8"} color={"blue.400"} />
+			</Flex>
 		</StudentDashboardLayout>
 	);
 }

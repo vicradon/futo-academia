@@ -3,10 +3,9 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/Sidebar";
 
-import AddCourse from "../../components/AddCourse";
 import JoinCourse from "../../components/JoinCourse";
 
-export default function Courses() {
+export default function StudentCourses() {
 	const { pathname } = useLocation()
 	return (
 		<Box bg={"#F3F6FF"}>
@@ -18,19 +17,19 @@ export default function Courses() {
 						<Flex my={8} justifyContent={"center"}>
 							<Button
 								width={"200px"}
-								variant={pathname === "/lecturer/courses/" ? "solid" : "ghost"}
+								variant={pathname === "/student/courses/" ? "solid" : "ghost"}
 								colorScheme="blue"
 								as={NavLink}
-								to={"/lecturer/courses/"}
+								to={"/student/courses/"}
 							>
 								Harmattan
 							</Button>
 							<Button
 								width={"200px"}
-								variant={pathname === "/lecturer/courses/second-semester" ? "solid" : "ghost"}
+								variant={pathname === "/student/courses/second-semester" ? "solid" : "ghost"}
 								colorScheme="blue"
 								as={NavLink}
-								to={"/lecturer/courses/second-semester"}
+								to={"/student/courses/second-semester"}
 							>
 								Rain
 							</Button>
@@ -39,7 +38,6 @@ export default function Courses() {
 						<Outlet />
  
 						<Flex maxWidth={"400px"} alignSelf={"center"} gap={'3'}>
-							<AddCourse />
 							<JoinCourse />
 						</Flex>
 

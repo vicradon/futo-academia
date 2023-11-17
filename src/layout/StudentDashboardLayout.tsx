@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, Flex, Image, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Avatar, Box, Button, Container, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import Logo from "../components/Logo";
 import styles from "./StudentDashboardLayout.module.css";
@@ -26,19 +26,17 @@ export default function StudentDashboardLayout({ children }: Props) {
 			<Container maxW={"100vw"}>
 				<Flex paddingY={"1rem"} justifyContent={"space-between"}>
 					<Logo />
-						<Flex display={{ base: "flex", md: "flex" }} columnGap={2} alignItems={"center"}>
-							<Image src={Bell} boxSize="35px" />
-							<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/profile"}/>
+						<Flex alignItems={"center"} columnGap={2}>
 							<Box gridArea={"faculty"} display={{ base: "flex", md: "none" }}>
 								<Menu>
 									<MenuButton 
 										size={{ base: "sm", sm: "sm" }} 
-										variant={"unstyled"} 
+										variant={"solid"} 
 										colorScheme={"brand"} 
-										color={"blue"} 
+										color={"white"} 
 										as={Button}
 									>
-										<HamburgerIcon/>
+										<HamburgerIcon />
 									</MenuButton>
 									<MenuList>
 										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/profile">
@@ -53,6 +51,14 @@ export default function StudentDashboardLayout({ children }: Props) {
 									</MenuList>
 								</Menu>
 							</Box>
+							<Flex display={{ base: "none", md: "flex" }} columnGap={2}>
+								<Text as={NavLink} to="/lecturer/courses">Courses</Text>
+								<Text onClick={handleLogout} cursor={"pointer"}>Logout</Text>
+							</Flex>
+							<Flex display={{base: "none", md: "flex"}} alignItems={"center"}>
+								<Image src={Bell} boxSize="35px" />
+								<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/profile"}/>
+							</Flex>
 						</Flex>
 				</Flex>
 			</Container>
