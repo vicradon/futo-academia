@@ -204,12 +204,6 @@ export default function StudentHome() {
 					</Routes>
 
 					<Outlet />
-
-					<Flex my={12} justifyContent={"center"}>
-						<Button width={{ base: "150px", md: "200px", lg: "400px" }} colorScheme={"brand"} variant={"outline"}>
-							View More
-						</Button>
-					</Flex>
 				</Container>
 			</Box>
 		</StudentDashboardLayout>

@@ -1,9 +1,11 @@
-import { Box, Grid, Button, Text, Image } from "@chakra-ui/react"
+import { Box, Grid, Button, Text, Image, Flex } from "@chakra-ui/react"
 import { SearchParams } from "./LecturerHome";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../utils/http";
 import { useEffect } from "react";
 import Loader from "../../components/Loaders";
+import EmptyIcon from "../../assets/images/emptyfile.svg";
+
 
 export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit}: SearchParams) => {
 
@@ -39,6 +41,27 @@ export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit
         )
       }
 
+      if (data?.length <= 0) {
+        return (
+            <Box display={"flex"} mt={10} alignItems={"center"} mx="auto" justifyContent={"center"} w="100%" textAlign={"center"}>
+              <Box>
+                <img
+                  src={EmptyIcon}
+                  style={{
+                    margin: "0 auto",
+                  }}
+                  alt="empty icon"
+                  height={100}
+                  width={100}
+                />
+                <Text fontWeight={"bold"} textAlign={"center"}>
+                  No Courses
+                </Text>
+              </Box>
+            </Box>
+          )
+      }
+
   return (
     <Grid justifyItems={"center"} rowGap={"3rem"} columnGap={"2rem"} templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}>
         {data?.map((course: any) => (
@@ -58,6 +81,11 @@ export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit
                 </Box>
             </Box>
         ))}
+        {data?.length === 10 && <Flex my={12} justifyContent={"center"} gridColumn={{base: "span 1", md: "span 2", lg: "span 3"}}>
+						<Button width={{ base: "150px", md: "200px", lg: "400px" }} colorScheme={"brand"} variant={"outline"}>
+							View More
+						</Button>
+				</Flex>}
     </Grid>
   )
 }

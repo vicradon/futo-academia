@@ -52,7 +52,7 @@ export default function StudentDashboardLayout({ children }: Props) {
 								</Menu>
 							</Box>
 							<Flex display={{ base: "none", md: "flex" }} columnGap={2}>
-								<Text as={NavLink} to="/lecturer/courses">Courses</Text>
+								<Text as={NavLink} to="/student/courses">Courses</Text>
 								<Text onClick={handleLogout} cursor={"pointer"}>Logout</Text>
 							</Flex>
 							<Flex display={{base: "none", md: "flex"}} alignItems={"center"}>
