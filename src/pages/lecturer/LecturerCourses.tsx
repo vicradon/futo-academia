@@ -1,15 +1,15 @@
-import { Flex, Button, Box, Container } from "@chakra-ui/react";
+import { Flex, Button, Box, Container, Spacer } from "@chakra-ui/react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 
-import AddCourse from "../../components/AddCourse";
 import JoinCourse from "../../components/JoinCourse";
 import SidebarLecturer from "../../layout/SidebarLecturer";
+import AddCourse from "../../components/AddCourse";
 
 export default function LecturerCourses() {
 	const { pathname } = useLocation()
 	return (
-		<Box bg={"#F3F6FF"}>
+		<Box bg={"#F3F6FF"} minH={"100vh"}>
 			<Navbar bgColor="#F3F6FF" />
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<SidebarLecturer />
@@ -37,16 +37,10 @@ export default function LecturerCourses() {
 						</Flex>
 
 						<Outlet />
- 
-						<Flex maxWidth={"400px"} alignSelf={"center"} gap={'3'}>
+						<Spacer />
+						<Flex maxWidth={"400px"} alignSelf={"center"} gap={'3'} mt={20}>
 							<AddCourse />
 							<JoinCourse />
-						</Flex>
-
-						<Flex my={12} justifyContent={"center"}>
-							<Button width={{ base: "150px", md: "200px", lg: "400px" }} colorScheme={"brand"} variant={"outline"}>
-								View More
-							</Button>
 						</Flex>
 					</Container>
 				</Box>

@@ -6,9 +6,11 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useCreateCourse, useUploadCourseCover } from "../../hooks/useCourses";
 import { useEnrollStudents } from "../../hooks/useEnrollments";
+import { useUser } from "../../hooks/useUser";
 
 const UploadCourse = () => {
 	const navigate = useNavigate();
+	const user = useUser();
 	const [courseInfo, setCourseInfo] = useState({
 		title: '',
 		unit: '1',
@@ -20,6 +22,12 @@ const UploadCourse = () => {
 		semester: '1',
 		classList: null as File | null,
 	});
+
+	useEffect(() => {
+	  setCourseInfo({...courseInfo, faculty: user.faculty})
+	}, [user.isLoading])
+	
+	console.log(courseInfo)
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 		const { name, value } = event.target;
@@ -100,15 +108,30 @@ const UploadCourse = () => {
 		if (createCourseMutation.isSuccess) {
 			coursePhotoMutation.mutate({ course_code: courseInfo.code, file: courseInfo.coverImage });
 			navigate(`/lecturer/courses/${courseInfo.code}`)
-			// enrollStudentMutation.mutate({
-			// file: courseInfo.classList,
-			// course_code: courseInfo.code,
-			// });
+			enrollStudentMutation.mutate({
+			file: courseInfo.classList,
+			course_code: courseInfo.code,
+			});
 		}
 	}, [createCourseMutation.isSuccess])
 
+	const generateAcademicYears = () => {
+		const startYear = 2010;
+		const endYear = 2099;
+		const years = [];
+	
+		for (let year = startYear; year <= endYear; year++) {
+		  const academicYear = `${year}/${year + 1}`;
+		  years.push(academicYear);
+		}
+	
+		return years;
+	  };
+	
+	  const academicYears = generateAcademicYears();
+
 	return (
-		<Box bg={"#F3F6FF"} >
+		<Box bg={"#F3F6FF"} minH={"100vh"}>
 			<Navbar bgColor="#F3F6FF" />
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<Sidebar />
@@ -192,6 +215,7 @@ const UploadCourse = () => {
 											<Select 
 												width="100%" 
 												name="faculty" 
+												value={courseInfo.faculty}
 												required 
 												onChange={handleChange} 
 												sx={{ marginBottom: "20px" }}

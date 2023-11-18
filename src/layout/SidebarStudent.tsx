@@ -26,7 +26,7 @@ const SidebarStudent = () => {
 
 	// update activeItem based on current location
 	useEffect(() => {
-		if (location.pathname === "/profile") {
+		if (location.pathname === "/student-profile/*") {
 			setActiveItem("profile");
 		} else if (location.pathname === "/student/home") {
 			setActiveItem("home");
