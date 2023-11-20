@@ -10,7 +10,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 			<Navbar bgColor="#F3F6FF" />
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<Sidebar />
-				<Box my={8} sx={{ marginRight: "50px", width: "100%" }}>
+				<Box my={8} sx={{width: "100%", padding: "1rem" }}>
 					{children}
 				</Box>
 			</Flex>

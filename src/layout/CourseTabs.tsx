@@ -17,7 +17,7 @@ export default function CourseTabs({ children }: IProps) {
 	const { id } = useParams();
 	const tabData = [
 		{
-			name: "Course Summary",
+			name: "Summary",
 			path: `/lecturer/courses/${id}`,
 		},
 		{
@@ -63,7 +63,7 @@ export default function CourseTabs({ children }: IProps) {
 				<CourseHeader {...data} />
 				<Box>
 					<Box>
-						<Box display="flex" bgColor="#dae4ff" p={3} alignItems="center">
+						<Box display="flex" bgColor="#dae4ff" alignItems="center" flexWrap={"wrap"} justifyContent={"space-around"} h={"30px"}>
 							{tabData?.map((x, i) => (
 								<Box
 									onClick={() => {
@@ -71,14 +71,17 @@ export default function CourseTabs({ children }: IProps) {
 
 										navigate(x?.path ?? x?.name.toLowerCase());
 									}}
-									mr={4}
+									w={"25%"}
+									h={"30px"}
 									cursor="pointer"
 									as={"button"}
+									textAlign={"center"}
 									sx={{
-										...(i === active && { color: "white", bg: "#343680", p: 2 }),
+										...(i === active && { color: "white", bg: "#343680"}),
 									}}
 									disabled={i === active}
 									_selected={{ color: "white", bg: "#343680" }}
+									fontSize={{base: "12px", sm: "18px"}}
 								>
 									{x?.name}
 								</Box>

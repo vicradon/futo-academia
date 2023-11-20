@@ -28,6 +28,7 @@ import LecturerHome from "./pages/lecturer/LecturerHome";
 import StudentProfile from "./layout/StudentProfile";
 import ProfileStudent from "./pages/Profile/ProfileStudent";
 import LecturerProfile from "./layout/LecturerProfile";
+import EditCourse from "./pages/lecturer/EditCourse";
 
 const colors = {
 	brand: {
@@ -117,6 +118,7 @@ const router = createBrowserRouter(
 				<Route path="second-semester" element={<SecondSemesterCourses />} />
 			</Route>
 			<Route path="lecturer/courses-upload" element={<UploadCourse />} />
+			<Route path="lecturer/edit-course/:id" element={<EditCourse />} />
 			<Route path="lecturer/courses/:id" element={<ViewCourse />} />
 			<Route path="course/header" element={<CourseHeader />} />
 			<Route path="lecturer/courses/:id/examination" element={<Examination />} />
