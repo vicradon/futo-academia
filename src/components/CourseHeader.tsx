@@ -8,7 +8,7 @@ function CourseHeader({ course_code, title, description, units, course_photo_url
 		<div style={{ marginTop: 2, marginBottom: "40px" }}>
 			<Flex color="white" w={"100%"}>
 				<Square display={{base: "none", sm: "block"}} maxW={"30%"}>
-					<Image objectFit="cover" height="100%" src={course_photo_url} alt="Course header photo" />
+					<Image maxW={"200px"} objectFit="cover" height="100%" src={course_photo_url} alt="Course header photo" />
 				</Square>
 				<Box flex="1" bg="#C5C8FF" p={4}>
 					<Flex justifyContent={"space-between"} alignContent={"center"}>
@@ -26,7 +26,7 @@ function CourseHeader({ course_code, title, description, units, course_photo_url
 						</Button>
 						<Button size={"xs"} borderRadius={"40px"} bg={"#696CFF"} textColor={"#F8FAFF"}>122 students</Button>
 					</Flex>
-					<Text fontSize="xs" color={"#000000"} mt={"1.25rem"}>{description || "--"}</Text>
+					<Text fontSize="md" color={"#000000"} mt={"1.25rem"}>{description || "--"}</Text>
 				</Box>
 			</Flex>
 		</div>

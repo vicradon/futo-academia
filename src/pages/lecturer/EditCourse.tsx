@@ -1,50 +1,51 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Flex, Box, Button, chakra, FormControl, FormLabel, Input, Select, Textarea, VStack, Heading } from "@chakra-ui/react";
+import { Flex, Box, Button, Center, chakra, FormControl, FormLabel, Input, Select, Textarea, VStack, Heading, Image, useToast, Square } from "@chakra-ui/react";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../layout/SidebarLecturer";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCreateCourse, useUploadCourseCover } from "../../hooks/useCourses";
-import { useEnrollStudents } from "../../hooks/useEnrollments";
-import { useUser } from "../../hooks/useUser";
+import { useUpdateCourse, useUploadCourseCover } from "../../hooks/useCourses";
+// import { useEnrollStudents } from "../../hooks/useEnrollments";
+// import { useUser } from "../../hooks/useUser";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../utils/http";
+import { CourseInfo } from "./UploadCourse";
 
 const EditCourse = () => {
 	const navigate = useNavigate();
-	const user = useUser();
+	// const user = useUser();
+	const toast = useToast();
 	const { id } = useParams()
-	const { data, isLoading } = useQuery({
+	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["getCourseID", id],
 		queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
 	});
 
-	const [courseInfo, setCourseInfo] = useState({
+	const [courseInfo, setCourseInfo] = useState<CourseInfo>({
 		title: '',
-		unit: '1',
+		unit: 1,
 		code: '',
 		faculty: '',
-		level: '100',
+		level: 100,
 		description: '',
-		coverImage: null as File | null,
-		semester: '1',
-		classList: null as File | null,
+		coverImage: "",
+		semester: 1,
+		classList: ""
 	});
 
 	useEffect(() => {
 	  setCourseInfo({
 		...courseInfo, 
-		title: data?.title,
-		unit: data?.unit,
-		code: data?.code,
-		faculty: data?.faculty,
-		level: data?.level,
-		description: data?.description,
-		semester: data?.semester,
+		title: data?.title || '',
+		unit: data?.units || 1,
+		code: data?.course_code || '',
+		faculty: data?.faculty || '',
+		level: data?.level || 100,
+		description: data?.description || '',
+		semester: data?.semester || 1,
 	})
 	}, [isLoading])
 	
-	console.log(courseInfo)
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 		const { name, value } = event.target;
@@ -80,15 +81,35 @@ const EditCourse = () => {
 		navigate(-1);
 	};
 
-	const createCourseMutation = useCreateCourse();
-	const coursePhotoMutation = useUploadCourseCover(createCourseMutation.isSuccess);
-	const enrollStudentMutation = useEnrollStudents(createCourseMutation.isSuccess);
+	const editCourseMutation = useUpdateCourse();
+	const coursePhotoMutation = useUploadCourseCover(true);
+	// const enrollStudentMutation = useEnrollStudents(true);
+
+	const handlePhotoUpload = async () => {
+		try {
+			coursePhotoMutation.mutate(
+				{ course_code: courseInfo.code, file: courseInfo.coverImage }
+				, {onSuccess: () => {
+					toast({
+						status: "success",
+						description: "Upload successful"
+					})
+					refetch()
+					setCourseInfo({...courseInfo, coverImage: ""})
+				}}
+			);
+		} catch {
+
+		}
+	}
 
 	const handleSubmit = async (event: FormEvent) => {
 		try {
 			event.preventDefault();
 
-				createCourseMutation.mutate({
+			console.log(id, courseInfo)
+			editCourseMutation.mutate({
+				old_course_code: id,
 				course_code: courseInfo.code,
 				title: courseInfo.title,
 				description: courseInfo.description,
@@ -96,40 +117,11 @@ const EditCourse = () => {
 				faculty: courseInfo.faculty,
 				semester: courseInfo.semester,
 				level: courseInfo.level,
-			}, 
-			// {onSuccess: () => {
-			// 	if (createCourseMutation?.data?.response.status === 201){
-			// 		console.log(createCourseMutation?.data?.response.status)
-			// 		enrollStudentMutation.mutate({
-			// 		file: courseInfo.classList,
-			// 		course_code: courseInfo.code,
-			// 		});
-			// 		coursePhotoMutation.mutate({ course_code: courseInfo.code, file: courseInfo.coverImage });
-			// 	} else {
-			// 		console.log("hurray", createCourseMutation?.data?.response.status)
-			// 	}
-			// }}
-			);
-
-			
-
-			if (createCourseMutation.isSuccess) {
-				console.log(createCourseMutation.data)
-			}
+			})
 		} catch (error) {
 			console.log(error);
 		}
 	};
-	useEffect(() => {
-		if (createCourseMutation.isSuccess) {
-			coursePhotoMutation.mutate({ course_code: courseInfo.code, file: courseInfo.coverImage });
-			navigate(`/lecturer/courses/${courseInfo.code}`)
-			enrollStudentMutation.mutate({
-			file: courseInfo.classList,
-			course_code: courseInfo.code,
-			});
-		}
-	}, [createCourseMutation.isSuccess])
 
 	return (
 		<Box bg={"#F3F6FF"} minH={"100vh"}>
@@ -140,12 +132,36 @@ const EditCourse = () => {
 					<HoverableArrowBackIcon onClick={handleGoBack} marginLeft={"30px"} />
 					<Box padding={"20px 20px"} width={{base: "100vw", md: "73vw"}} maxWidth={"1200px"}>
 							<Box fontWeight="bold" mb={10} color={"#585AD4"} textAlign={"center"}>
-								<Heading size="lg">Upload New Course</Heading>
+								<Heading size="lg">Edit {id}</Heading>
 							</Box>
 							<VStack spacing={4} as="form" onSubmit={handleSubmit}>
+								<Center width={"100%"} flexDir={"column"}>
+									<Square maxW={"500px"}><Image src={data?.course_photo_url}/></Square>
+									
+										<Flex maxW={'400px'} mt={2}>
+											<Input 
+												type="file" 
+												name="coverImage"
+												accept="image/*" 
+												fontSize={"16px"}
+												onChange={handleFileChange} 
+												bg="#fff"
+											/>
+											<Button 
+												h={"40px"} 
+												colorScheme="blue" 
+												borderRadius={20} 
+												onClick={handlePhotoUpload}
+												isDisabled={courseInfo.coverImage === "" ? true : false}
+												isLoading={coursePhotoMutation.isLoading}
+											>
+													Upload
+											</Button>
+										</Flex>
+								</Center>
 								<Flex justifyContent={"space-between"} columnGap={4} width={"100%"} p={"0rem"} flexDir={{base: "column", md: "row"}}>
 									<Box width={{base: "100%", md: "50%"}}>
-										<FormControl isRequired>
+										<FormControl>
 											<FormLabel size="sm" color={"#151633"}>
 													Title
 											</FormLabel>
@@ -159,26 +175,26 @@ const EditCourse = () => {
 												mb={"20px"} 
 											/>
 										</FormControl>
-										<FormControl isRequired>
+										<FormControl>
 											<FormLabel size="sm" color={"#151633"} >
 													Course Units
 											</FormLabel>
 
 											<Select name="unit" value={courseInfo.unit} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option>
-												<option value="5">5</option>
-												<option value="6">6</option>
+												<option value={1}>1</option>
+												<option value={2}>2</option>
+												<option value={3}>3</option>
+												<option value={4}>4</option>
+												<option value={5}>5</option>
+												<option value={6}>6</option>
 											</Select>
 										</FormControl>
-										<FormControl isRequired>
+										<FormControl>
 											<FormLabel size="sm" color={"#151633"}>
 												Course Code
 											</FormLabel>
 											<Input 
-												isRequired 
+											 
 												value={courseInfo.code} 
 												name="code"
 												onChange={handleChange} 
@@ -186,30 +202,9 @@ const EditCourse = () => {
 												bg="#fff" 
 											/>
 										</FormControl>
-										<FormControl isRequired>
-											<FormLabel size="sm" color={"#151633"}>
-													Description
-											</FormLabel>
-											<Textarea 
-												value={courseInfo.description} 
-												name="description"
-												onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff" />
-										</FormControl>
 									</Box>
 									<Box width={{base: "100%", md: "50%"}} >
-										<FormControl isRequired>
-											<FormLabel size="sm" color={"#151633"}>
-													Cover Image
-											</FormLabel>
-											<Input 
-												isRequired 
-												type="file" 
-												name="coverImage"
-												accept="image/*" 
-												onChange={handleFileChange} 
-												sx={{ marginBottom: "20px" }} bg="#fff" />
-										</FormControl>
-										<FormControl isRequired>
+										<FormControl>
 											<FormLabel size="sm" color={"#151633"}>
 													Course Faculty
 											</FormLabel>
@@ -236,41 +231,52 @@ const EditCourse = () => {
 												<option value="SPGS">SPGS - School of Postgraduate Studies</option>
 											</Select>
 										</FormControl>
-										<FormControl isRequired>
+										<FormControl>
 											<FormLabel size="sm" color={"#151633"}>
 													Course Level
 											</FormLabel>
-											<Select isRequired name="level" value={courseInfo.level} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
-												<option value={"100"}>100</option>
-												<option value={"200"}>200</option>
-												<option value={"300"}>300</option>
-												<option value={"400"}>400</option>
-												<option value={"500"}>500</option>
-											</Select>
-										</FormControl>
-										<FormControl isRequired>
-											<FormLabel size="sm" color={"#151633"}>
-													Semester
-											</FormLabel>
-											<Select isRequired name="semester" value={courseInfo.semester} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
-												<option value={"1"}>Harmattan Semester</option>
-												<option value={"2"}>Rain Semester</option>
+											<Select name="level" value={courseInfo.level} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
+												<option value={100}>100</option>
+												<option value={200}>200</option>
+												<option value={300}>300</option>
+												<option value={400}>400</option>
+												<option value={500}>500</option>
 											</Select>
 										</FormControl>
 										<FormControl>
 											<FormLabel size="sm" color={"#151633"}>
-													Upload Class List
+													Semester
 											</FormLabel>
-											<Input 
-												type="file" 
-												multiple
-												name="classList"
-												onChange={handleFileChange} sx={{ marginBottom: "20px" }} bg="#fff" 
-												accept="application/csv"
-											/>
+											<Select name="semester" value={courseInfo.semester} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
+												<option value={1}>Harmattan Semester</option>
+												<option value={2}>Rain Semester</option>
+											</Select>
 										</FormControl>
 									</Box>
 								</Flex>
+								<FormControl>
+									<FormLabel size="sm" color={"#151633"}>
+											Description
+									</FormLabel>
+									<Textarea 
+										value={courseInfo.description} 
+										name="description"
+										onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff" 
+										maxLength={300}
+									/>
+								</FormControl>
+								<FormControl>
+									<FormLabel size="sm" color={"#151633"}>
+											Upload Class List
+									</FormLabel>
+									<Input 
+										type="file" 
+										multiple
+										name="classList"
+										onChange={handleFileChange} sx={{ marginBottom: "20px" }} bg="#fff" 
+										accept="application/csv"
+									/>
+								</FormControl>
 								<Flex alignItems={"center"} justifyContent={"center"} gap={"20px"}>
 									<Button 
 										onClick={handleCancel} 
@@ -284,9 +290,9 @@ const EditCourse = () => {
 										type="submit" 
 										colorScheme="brand" 
 										mr={2} maxWidth={"200px"} 
-										isLoading={createCourseMutation.isLoading || coursePhotoMutation.isLoading || enrollStudentMutation.isLoading}
+										isLoading={editCourseMutation.isLoading}
 									>
-										Create
+										Save
 									</Button>
 								</Flex>
 							</VStack>

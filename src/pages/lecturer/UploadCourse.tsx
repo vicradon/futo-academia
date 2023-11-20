@@ -8,19 +8,33 @@ import { useCreateCourse, useUploadCourseCover } from "../../hooks/useCourses";
 import { useEnrollStudents } from "../../hooks/useEnrollments";
 import { useUser } from "../../hooks/useUser";
 
+
+export interface CourseInfo {
+	title: string;
+	unit: number;
+	code: string;
+	faculty: string;
+	level: number;
+	description: string;
+	semester: number;
+	coverImage: string | number | readonly string[] | undefined;
+	classList: string | number | readonly string[] | undefined;
+  }
+
+
 const UploadCourse = () => {
 	const navigate = useNavigate();
 	const user = useUser();
-	const [courseInfo, setCourseInfo] = useState({
+	const [courseInfo, setCourseInfo] = useState<CourseInfo>({
 		title: '',
-		unit: '1',
+		unit: 1,
 		code: '',
 		faculty: '',
-		level: '100',
+		level: 100,
+		coverImage: "",
 		description: '',
-		coverImage: null as File | null,
-		semester: '1',
-		classList: null as File | null,
+		semester: 1,
+		classList: '',
 	});
 
 	useEffect(() => {
@@ -148,12 +162,12 @@ const UploadCourse = () => {
 											</FormLabel>
 
 											<Select name="unit" value={courseInfo.unit} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option>
-												<option value="5">5</option>
-												<option value="6">6</option>
+												<option value={1}>1</option>
+												<option value={2}>2</option>
+												<option value={3}>3</option>
+												<option value={4}>4</option>
+												<option value={5}>5</option>
+												<option value={6}>6</option>
 											</Select>
 										</FormControl>
 										<FormControl isRequired>
@@ -176,7 +190,9 @@ const UploadCourse = () => {
 											<Textarea 
 												value={courseInfo.description} 
 												name="description"
-												onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff" />
+												onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff"
+												maxLength={300}
+											/>
 										</FormControl>
 									</Box>
 									<Box width={{base: "100%", md: "50%"}} >
@@ -224,11 +240,11 @@ const UploadCourse = () => {
 													Course Level
 											</FormLabel>
 											<Select isRequired name="level" value={courseInfo.level} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
-												<option value={"100"}>100</option>
-												<option value={"200"}>200</option>
-												<option value={"300"}>300</option>
-												<option value={"400"}>400</option>
-												<option value={"500"}>500</option>
+												<option value={100}>100</option>
+												<option value={200}>200</option>
+												<option value={300}>300</option>
+												<option value={400}>400</option>
+												<option value={500}>500</option>
 											</Select>
 										</FormControl>
 										<FormControl isRequired>
@@ -236,8 +252,8 @@ const UploadCourse = () => {
 													Semester
 											</FormLabel>
 											<Select isRequired name="semester" value={courseInfo.semester} onChange={handleChange} sx={{ marginBottom: "20px" }} bg="#fff">
-												<option value={"1"}>Harmattan Semester</option>
-												<option value={"2"}>Rain Semester</option>
+												<option value={1}>Harmattan Semester</option>
+												<option value={2}>Rain Semester</option>
 											</Select>
 										</FormControl>
 										<FormControl>

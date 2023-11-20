@@ -38,15 +38,11 @@ export default function CourseTabs({ children }: IProps) {
 	const { data } = useQuery({
 		queryKey: ["getCourseID", id],
 		queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
-		// onSuccess: (data: any) => console.log("Query per course Successful", data),
-		// onError: (err) => console.log("error", err),
 	});
 
 	const navigate = useNavigate();
 
 	const [active, setActive] = useState(0);
-
-	console.log(data)
 
 	useEffect(() => {
 		if (location.pathname.includes("examination")) {
@@ -71,6 +67,7 @@ export default function CourseTabs({ children }: IProps) {
 
 										navigate(x?.path ?? x?.name.toLowerCase());
 									}}
+									key={i}
 									w={"25%"}
 									h={"30px"}
 									cursor="pointer"
