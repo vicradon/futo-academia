@@ -17,10 +17,10 @@ export default function StudentCourses() {
 						<Flex my={8} justifyContent={"center"}>
 							<Button
 								width={"200px"}
-								variant={pathname === "/student/my-courses/" ? "solid" : "ghost"}
+								variant={pathname === "/student/my-courses" ? "solid" : "ghost"}
 								colorScheme="blue"
 								as={NavLink}
-								to={"/student/my-courses/"}
+								to={"/student/my-courses"}
 							>
 								Harmattan
 							</Button>

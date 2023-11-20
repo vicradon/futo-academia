@@ -66,7 +66,7 @@ export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit
     <Grid justifyItems={"center"} rowGap={"3rem"} columnGap={"2rem"} templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}>
         {data?.map((course: any) => (
             <Box width={{ base: "200px", sm: "313px" }} key={course.course_code}>
-                <Image height={"120px"} backgroundSize="cover" src={course.course_photo_url} alt={course.title} />
+                <Image width={"100%"} backgroundSize="cover" src={course.course_photo_url} alt={course.title} />
                 <Box borderRadius={"0 0 0.5rem 0.5rem"} shadow={"lg"} padding={"1rem"}>
                     <Box mb={6}>
                         <Text fontSize={"2xl"} mb={0} color={"brand.500"}>

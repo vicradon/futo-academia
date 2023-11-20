@@ -97,7 +97,6 @@ const UploadCourse = () => {
 			
 
 			if (createCourseMutation.isSuccess) {
-				// console.log(createCourseMutation.data)
 				console.log(createCourseMutation.data)
 			}
 		} catch (error) {
@@ -114,21 +113,6 @@ const UploadCourse = () => {
 			});
 		}
 	}, [createCourseMutation.isSuccess])
-
-	const generateAcademicYears = () => {
-		const startYear = 2010;
-		const endYear = 2099;
-		const years = [];
-	
-		for (let year = startYear; year <= endYear; year++) {
-		  const academicYear = `${year}/${year + 1}`;
-		  years.push(academicYear);
-		}
-	
-		return years;
-	  };
-	
-	  const academicYears = generateAcademicYears();
 
 	return (
 		<Box bg={"#F3F6FF"} minH={"100vh"}>

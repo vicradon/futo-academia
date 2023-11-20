@@ -8,7 +8,6 @@ export default function SecondSemesterCourses() {
     const courseQuery = useFetchCourses(2);
     const navigate = useNavigate();
 
-	console.log(courseQuery.data)
 
 	if (courseQuery.data?.length <= 0) {
         return (

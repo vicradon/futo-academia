@@ -39,7 +39,7 @@ export default function LecturerDashboardLayout({ children }: Props) {
 										<HamburgerIcon />
 									</MenuButton>
 									<MenuList>
-										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/profile">
+										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/lecturer-profile">
 											Profile
 										</MenuItem>
 										<MenuItem justifyContent={"center"} borderBottomWidth={"1"} as={NavLink} to="/lecturer/my-courses">
@@ -55,12 +55,12 @@ export default function LecturerDashboardLayout({ children }: Props) {
 								</Menu>
 							</Box>
 							<Flex display={{ base: "none", md: "flex" }} columnGap={2}>
-								<Text as={NavLink} to="/student/my-courses">Courses</Text>
+								<Text as={NavLink} to="/lecturer/my-courses">Courses</Text>
 								<Text onClick={handleLogout} cursor={"pointer"}>Logout</Text>
 							</Flex>
 							<Flex display={{base: "none", md: "flex"}} alignItems={"center"}>
 								<Image src={Bell} boxSize="35px" />
-								<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/profile"}/>
+								<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/lecturer-profile"}/>
 							</Flex>
 						</Flex>
 				</Flex>
