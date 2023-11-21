@@ -14,7 +14,7 @@ export default function Examination() {
 			<CourseTabs>
 				<Box my={5}>
 					<Input bgColor="#fff" placeholder="Search by Year" width="40%" />
-
+					
 					<Flex alignItems="center" mt={3}>
 						<Text fontSize="24px" color="#585AD4" fontWeight="bold">
 							Draft
