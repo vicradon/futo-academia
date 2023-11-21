@@ -1,6 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
 
-import AppTable from "../components/Table";
 import http from "../utils/http";
 import { Box, Text, Flex } from "@chakra-ui/react";
 import AdminLayout from "../layout/AdminLayout";
@@ -24,11 +23,19 @@ export default function CourseTabs({ children }: IProps) {
 			name: "Assessments",
 			path: `/lecturer/courses/${id}/assignments`,
 		},
+		// {
+		// 	name: "Tests",
+		// },
+		// {
+		// 	name: "Examination",
+		// 	path: `/lecturer/courses/${id}/examination`,
+		// },
 		{
-			name: "Tests",
+			name: "Instructors",
+			path: `/lecturer/courses/${id}/examination`,
 		},
 		{
-			name: "Examination",
+			name: "Students",
 			path: `/lecturer/courses/${id}/examination`,
 		},
 	];
@@ -38,6 +45,16 @@ export default function CourseTabs({ children }: IProps) {
 	const { data } = useQuery({
 		queryKey: ["getCourseID", id],
 		queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
+	});
+
+	const { data: student_count } = useQuery({
+		queryKey: ["getStudentCount", id],
+		queryFn: () => http.get(`/students/enrolled/${id}`).then((r) => r.data),
+	});
+
+	const { data: instructor_count} = useQuery({
+		queryKey: ["getInstructorCount", id],
+		queryFn: () => http.get(`/instructors/count/${id}`).then((r) => r.data),
 	});
 
 	const navigate = useNavigate();
@@ -56,7 +73,7 @@ export default function CourseTabs({ children }: IProps) {
 	return (
 		<>
 			<AdminLayout>
-				<CourseHeader {...data} />
+				<CourseHeader {...{ ...data, student_count, instructor_count }} />
 				<Box>
 					<Box>
 						<Box display="flex" bgColor="#dae4ff" alignItems="center" flexWrap={"wrap"} justifyContent={"space-around"} h={"30px"}>
@@ -109,7 +126,6 @@ export default function CourseTabs({ children }: IProps) {
 								<TimerBox />
 							</Flex>
 						</Box>
-						<AppTable></AppTable>
 					</>
 				)}
 			</AdminLayout>

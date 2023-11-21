@@ -2,9 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import http from "../utils/http";
 
 export function useAssessment(assessment: any, name: string) {
+	if (!assessment) {
+		return {data: null, isLoading: false, isFetching: false}
+	}
 	return useQuery({
 		queryKey: ["getTableData", assessment, name],
 		queryFn: async () => {
+			
 			const { data } = await http.get(`/assessments/${assessment}/results?name=${name}`);
 
 			const uniqueEntries = [];

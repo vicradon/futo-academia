@@ -13,28 +13,10 @@ import { useToast } from "@chakra-ui/react";
 import { useAssessment } from "../hooks/useAssessment";
 
 export default function ViewCourse() {
-	// const tabData = [
-	// 	{
-	// 		name: "Course Summary",
-	// 	},
-	// 	{
-	// 		name: "Assignments",
-	// 	},
-	// 	{
-	// 		name: "Tests",
-	// 	},
-	// 	{
-	// 		name: "Examination",
-	// 	},
-	// ];
+	
 	const { id } = useParams();
 
 	const toast = useToast();
-
-	// const { data } = useQuery({
-	// 	queryKey: ["getCourseID", id],
-	// 	queryFn: () => http.get(`/courses/${id}`).then((r) => r.data),
-	// });
 
 	const { data: currUp, isLoading } = useQuery({
 		queryKey: ["getCurrUp", id],
@@ -54,6 +36,7 @@ export default function ViewCourse() {
 	};
 
 	const { data: tableData, isLoading: isTableLoading, isFetching } = useAssessment(assessment, name);
+
 
 	useEffect(() => {
 		console.log(
@@ -117,14 +100,14 @@ export default function ViewCourse() {
 					</Text>
 
 					<Flex alignItems="flex-start" mt={3} flexDir={"column"} justifyContent={"space-between"}>
-						{isLoading && (
+						{isLoading ? (
 							<Stack>
 								<Skeleton height="20px" />
 								<Skeleton height="20px" />
 								<Skeleton height="20px" />
 							</Stack>
-						)}
-						{currUp
+						):
+						currUp !== undefined ? currUp
 							?.filter((x: any) => {
 								return x?.is_active && !(Math.floor(Date?.now() / 1000) > convertToEpoch(x?.end_date));
 							})
@@ -165,7 +148,10 @@ export default function ViewCourse() {
 
 									<Countdown date={x?.end_date} renderer={renderer} />
 								</Flex>
-							))}
+							))
+							: <Text>No active assessemnt</Text>
+						}
+
 					</Flex>
 				</Box>
 				{user?.is_instructor && (

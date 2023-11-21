@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import NoImage from "../assets/images/no-picture.jpg";
 
 
-function CourseHeader({ course_code, title, description, units, course_photo_url }: any) {
+function CourseHeader({ course_code, title, description, units, course_photo_url, student_count, instructor_count }: any) {
 	return (
 		<div style={{ marginTop: 2, marginBottom: "40px" }}>
 			<Flex color="white" w={"100%"}>
@@ -14,7 +14,7 @@ function CourseHeader({ course_code, title, description, units, course_photo_url
 				</Square>
 				<Box flex="1" bg="#C5C8FF" p={4}>
 					<Flex justifyContent={"space-between"} alignContent={"center"}>
-					<Text fontSize={{base: "20px", sm: "2xl", xl: "4xl"}} as="b" color="#696CFF">
+					<Text fontSize={"xl"} as="b" color="#696CFF">
 						{title || "--"}
 					</Text>
 					<Text as={NavLink} to={`/lecturer/edit-course/${course_code}`} display={"flex"} alignItems={"center"}>
@@ -22,12 +22,13 @@ function CourseHeader({ course_code, title, description, units, course_photo_url
 						<FontAwesomeIcon icon={faPencil} color={"#696CFF"} size={"sm"} />
 					</Text>
 					</Flex>
-					<Flex alignItems={"center"}>
-						<Text fontSize={{base: "sm", sm: "xs", md: "xs"}} color={"#232455"} mr={"10px"}>({course_code || "--"})</Text>
-						<Button size="xs" borderRadius={"40px"} textColor={"#4625EF"} mr={"5px"}>
+						<Text fontSize={"md"} color={"#232455"}>({course_code || "--"})</Text>
+					<Flex alignItems={"center"} gap={"5px"} mt={"10px"}>
+						<Button size="xs" borderRadius={"40px"} textColor={"#4625EF"}>
 							{units || "--"} units
 						</Button>
-						<Button size={"xs"} borderRadius={"40px"} bg={"#696CFF"} textColor={"#F8FAFF"}>122 students</Button>
+						<Button size={"xs"} borderRadius={"40px"} bg={"#696CFF"} textColor={"#F8FAFF"}>{student_count} student{student_count == 1 ? "" : "s"}</Button>
+						<Button size={"xs"} borderRadius={"40px"} bg={"#696CFF"} textColor={"#F8FAFF"}>{instructor_count} instructor{instructor_count == 1 ? "" : "s"}</Button>
 					</Flex>
 					<Text fontSize="md" color={"#000000"} mt={"1.25rem"}>{description || "--"}</Text>
 				</Box>

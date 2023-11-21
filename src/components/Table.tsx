@@ -34,6 +34,7 @@ const AppTable = ({ title, header: headers, data: body = [], filterData, onSelec
 						<Tr>
 							{headers.map((header: any) => (
 								<Th
+									key={header?.title}
 									sx={{
 										color: "#fff",
 										textAlign: header?.align,
