@@ -1,14 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import ObjectiveQuestion from "../components/ObjectiveQuestion";
 import CourseTabs from "../layout/CourseTabs";
 import { Box, Text, Flex, Textarea, useToast, FormControl, FormLabel, Button, Heading, UnorderedList, ListItem, Spacer, Center } from "@chakra-ui/react";
 import http from "../utils/http";
-import { handleToast } from "../utils/handleToast";
 import { useParams } from "react-router-dom";
 import { useAddInstructions, useDeleteInstruction, useUpdateInstruction } from "../hooks/useAssessment";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDeleteLeft, faDumpster, faPencil, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 // import { toast } from "react-toastify";
 interface InstructionObject {
@@ -19,11 +18,16 @@ interface InstructionObject {
 
 export default function AddAssessment() {
 	const { idx } = useParams();
-	const toast = useToast();
-	const queryClient = useQueryClient();
+
 
 	const [instructionsObject, setInstructionsObject] = useState<InstructionObject[]>([]);
-	const [instruction, setInsruction] = useState<string>("")
+	const [instruction, setInstruction] = useState<InstructionObject>({
+		assessment_id: null,
+		id: null,
+		instruction: ""
+	})
+	const [instructionEdit, setInstructionEdit] = useState(false)
+	const [editIndex, setEditIndex] = useState<number>(-1)
 
 	const { data: instructionsData, isLoading: instructionIsLoading, refetch: refetchInstructions } = useQuery({
 		queryKey: ["getInstructions", idx],
@@ -35,9 +39,6 @@ export default function AddAssessment() {
 	  console.log(instructionsData)
 	}, [instructionIsLoading])
 
-	useEffect(() => {
-		console.log(instructionsObject)
-	  }, [instructionsObject])
 
 	const addInstructionsMutation = useAddInstructions()
 	const updateInstruction = useUpdateInstruction()
@@ -67,7 +68,34 @@ export default function AddAssessment() {
 		}
 	}
 
+	const handleInstructionEdit: any = (index: number) => {
+		setInstructionEdit(true)
+		setEditIndex(index)
+		setInstruction(instructionsObject[index])
+	}
 
+	const handleInstructionInput = (e: any) => {
+		e.preventDefault();
+		if (instructionEdit) {
+
+			const newInstructionObject = [...instructionsObject]
+
+			newInstructionObject[editIndex] = {
+				...newInstructionObject[editIndex],
+				instruction: instruction.instruction,
+			};
+
+			setInstructionsObject(newInstructionObject);
+			setInstructionEdit(false);
+			} else {
+				setInstructionsObject((prevList: InstructionObject[]) => [...prevList, {assessment_id: null, id: null, instruction: instruction.instruction}]); 
+			}
+			setInstruction({
+				assessment_id: null,
+				id: null,
+				instruction: ""
+			})
+	}
 
 	
 	return (
@@ -94,18 +122,17 @@ export default function AddAssessment() {
 							: 
 							<UnorderedList>
 								{instructionsObject?.map((object, index) => <ListItem key={index} my={2} boxShadow={"sm"}>
-									<Flex gap={5} alignItems={"center"}>
+									<Flex gap={2} alignItems={"start"}>
 										<Text>{object.instruction}</Text>
 										<Spacer />
-										<FontAwesomeIcon color="#B3A3FF" icon={faPencil} />
-										<FontAwesomeIcon color="red" icon={faTrash} onClick={() => handleInstructionDelete(object.id, index)} />
-										
+										<FontAwesomeIcon color="#B3A3FF" icon={faPencil} onClick={() => handleInstructionEdit(index)} />
+										<FontAwesomeIcon color="#EEAEA0" icon={faTrash} onClick={() => handleInstructionDelete(object.id, index)} />
 									</Flex>
 								</ListItem>)}
-								<Center><Button size="sm" colorScheme="blue" minWidth={"min-content"} onClick={handleInstructionUpload}>Save</Button></Center>
+								<Button size="sm" colorScheme="blue" minWidth={"min-content"} onClick={handleInstructionUpload}>Save</Button>
 							</UnorderedList>
 						}
-					<Box width="100%" as="form" onSubmit={(e: any) => {e.preventDefault(); setInstructionsObject((prevList: InstructionObject[]) => [...prevList, {assessment_id: null, id: null, instruction}]); setInsruction("")}}>
+					<Box width="100%" as="form" onSubmit={handleInstructionInput}>
 						<FormControl display={"flex"} alignItems={"center"} gap={4}>
 							<FormLabel fontWeight="bold" mt={8}>
 							</FormLabel>
@@ -113,16 +140,18 @@ export default function AddAssessment() {
 								mt={4}
 								height={"1rem"}
 								placeholder="Type instruction"
-								value={instruction}
+								value={instruction.instruction}
 								maxLength={300}
 								name="instruction"
-								onChange={(e: any) => {setInsruction(e.target.value)}}
+								onChange={(e: any) => {
+									setInstruction((prev: any) => ({...prev, instruction: e.target.value}))
+								}}
 								sx={{
 									width: "100%",
 								}}
 								bgColor="#fff"
 							/>
-							<Button mt={4} ml={"auto"} type="submit" colorScheme="blue" isDisabled={instruction === "" ? true : false} minWidth={"min-content"} alignSelf={"end"} variant={"outline"}>Add Instruction</Button>
+							<Button size="sm" mt={4} ml={"auto"} type="submit" colorScheme="blue" isDisabled={instruction.instruction === "" ? true : false} minWidth={"min-content"} alignSelf={"end"} variant={"outline"}>{instructionEdit ? "Save Edit" : "Add Instruction"}</Button>
 						</FormControl>
 					</Box>
 					</Box>
