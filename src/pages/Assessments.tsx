@@ -7,7 +7,7 @@ import CourseTabs from "../layout/CourseTabs";
 import CourseCard from "../components/CourseCard";
 import { useNavigate } from "react-router-dom";
 
-export default function Examination() {
+export default function Assessments() {
 	const navigate = useNavigate();
 	return (
 		<>

@@ -9,8 +9,6 @@ import UploadCourse from "./pages/lecturer/UploadCourse";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ViewCourse from "./pages/ViewCourse";
 import CourseHeader from "./components/CourseHeader";
-import Examination from "./pages/Examination";
-import AddExam from "./pages/AddExam";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +27,9 @@ import StudentProfile from "./layout/StudentProfile";
 import ProfileStudent from "./pages/Profile/ProfileStudent";
 import LecturerProfile from "./layout/LecturerProfile";
 import EditCourse from "./pages/lecturer/EditCourse";
+import ViewAssessment from "./pages/ViewAssessment";
+import Assessments from "./pages/Assessments";
+import AddAssessment from "./pages/AddAssessment";
 
 const colors = {
 	brand: {
@@ -121,8 +122,9 @@ const router = createBrowserRouter(
 			<Route path="lecturer/edit-course/:id" element={<EditCourse />} />
 			<Route path="lecturer/courses/:id" element={<ViewCourse />} />
 			<Route path="course/header" element={<CourseHeader />} />
-			<Route path="lecturer/courses/:id/examination" element={<Examination />} />
-			<Route path="lecturer/courses/:id/examination/add/:idx" element={<AddExam />} />
+			<Route path="lecturer/courses/:id/assessment" element={<Assessments />} />
+			<Route path="lecturer/courses/:id/assessment/add/:idx" element={<AddAssessment />} />
+			<Route path="lecturer/courses/:id/examination/:idx" element={<ViewAssessment />} />
 			<Route path="lecturer/courses/:id/assignments" element={<Assignments />} />
 			<Route path="exams/:id/:courseId" element={<TakeExam />} />
 			<Route path="exam/:id/:idx/results" element={<ExamResult />} />

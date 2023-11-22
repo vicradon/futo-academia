@@ -1,5 +1,5 @@
 import { Box, Text, Button } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 
 import http from "../utils/http";
@@ -56,27 +56,34 @@ export default function CourseCard({ is_active, title, start_date, id, idx, is_m
 				</Box>
 
 				<Box display="flex" alignItems="center" justifyContent="space-between">
-					<Text mx={3}>|</Text>
 					{user?.is_instructor && !is_active && !is_marked && (
 						<>
-							<Button
-								onClick={() => {
-									is_active ? navigate(`/exams/${idx}/${id}`) : "";
-								}}
+							<Text
+								as={NavLink}
+								to={is_active ? `/exams/${idx}/${id}`: `/lecturer/courses/${idx}/assessment/${id}` }
 								mr={2}
+								cursor={"pointer"}
 							>
 								View Exam
-							</Button>
+							</Text>
+							<Text mx={3}>|</Text>
 							<Text
 								cursor="pointer"
 								onClick={() => {
-									navigate(`/lecturer/courses/${idx}/examination/add/${id}`);
+									navigate(`/lecturer/courses/${idx}/assessment/add/${id}`);
 								}}
 							>
 								Edit
 							</Text>
 							<Text mx={3}>|</Text>
-							<Button cursor="pointer" isLoading={uploadMutation.isLoading} as="button" onClick={() => uploadMutation.mutate(id)}>
+							<Button 
+								cursor="pointer" 
+								colorScheme="blue" 
+								isLoading={uploadMutation.isLoading} 
+								as="button" 
+								onClick={() => uploadMutation.mutate(id)}
+								borderRadius={10}
+							>
 								Upload
 							</Button>
 						</>

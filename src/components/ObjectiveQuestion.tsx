@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Select, Text, Textarea, Button, useToast } from "@chakra-ui/react";
+import { Box, Flex, Input, Select, Text, Textarea, Button, useToast, Heading } from "@chakra-ui/react";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "../utils/http";
@@ -98,14 +98,14 @@ export default function ObjectiveQuestion() {
 		setQuestionArr({ ...questionArr, [e?.target?.name]: e?.target?.value });
 	};
 
-	console.log({ questionChoice });
+	// console.log({ questionChoice });
 	return (
 		<>
 			<Box>
 				<Flex alignItems="center" justifyContent={"space-between"}>
-					<Text fontWeight="bold" fontSize="2xl" my={8}>
+					<Heading as={"h4"} size={"lg"} my={8}>
 						Questions
-					</Text>
+					</Heading>
 				</Flex>
 				<Flex w="100%" justifyContent="space-around">
 					<Box width="100%">

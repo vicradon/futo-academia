@@ -227,11 +227,16 @@ export default function Assignments() {
 					</Modal>
 				</Box>
 			)}
-			<Accordion allowToggle={true}>
+			<Accordion defaultIndex={[0]} allowToggle>
 			{user?.is_instructor && (
-				<AccordionItem>
-					<AccordionButton display={"flex"} justifyContent={"space-between"}>
-						<Text fontWeight={"bold"} fontSize={"2xl"} color={"#343780"}>
+				<AccordionItem my={4} borderWidth={3}>
+					<AccordionButton 
+						display={"flex"} 
+						justifyContent={"space-between"} 
+						color={"#343780"}
+						_expanded={{ bg: '#343680', color: 'white' }}
+					>
+						<Text fontWeight={"bold"} fontSize={"2xl"}>
 							Drafts
 						</Text>
 						<AccordionIcon />
@@ -247,9 +252,14 @@ export default function Assignments() {
 				</AccordionItem>
 			)}
 
-			<AccordionItem>
-				<AccordionButton display={"flex"} justifyContent={"space-between"}>
-					<Text fontWeight={"bold"} fontSize={"2xl"} color={"#343780"}>
+			<AccordionItem my={4} borderWidth={3}>
+				<AccordionButton 
+					display={"flex"} 
+					justifyContent={"space-between"}
+					color={"#343780"}
+					_expanded={{ bg: '#343680', color: 'white' }}
+				>
+					<Text fontWeight={"bold"} fontSize={"2xl"}>
 						Active
 					</Text>
 					<AccordionIcon />
@@ -263,9 +273,14 @@ export default function Assignments() {
 					{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
 				</AccordionPanel>
 			</AccordionItem>
-			<AccordionItem>
-				<AccordionButton display={"flex"} justifyContent={"space-between"}>
-				<Text fontWeight={"bold"} fontSize={"2xl"} color={"#343780"}>
+			<AccordionItem my={4} borderWidth={5}>
+				<AccordionButton
+					display={"flex"} 
+					justifyContent={"space-between"}
+					color={"#343780"}
+					_expanded={{ bg: '#343680', color: 'white' }}
+				>
+				<Text fontWeight={"bold"} fontSize={"2xl"}>
 					Marked
 				</Text>
 				<AccordionIcon />

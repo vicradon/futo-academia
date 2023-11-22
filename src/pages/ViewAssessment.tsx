@@ -1,10 +1,26 @@
-import ObjectiveQuestion from "../components/ObjectiveQuestion";
+import { useQuery } from "@tanstack/react-query";
 import CourseTabs from "../layout/CourseTabs";
 import { Box, Text, Flex, Textarea } from "@chakra-ui/react";
+import http from "../utils/http";
+import { handleToast } from "../utils/handleToast";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 // import { toast } from "react-toastify";
 
-export default function AddExam() {
+export default function ViewAssessment() {
+	const { idx } = useParams();
+	const { data: answerData, isLoading } = useQuery({
+		queryKey: ["getAnswersss", idx],
+		queryFn: () => http.get(`/assessments/${idx}/review`).then((r) => r.data),
+		onError: (err) => handleToast(err),
+	});
+
+	useEffect(() => {
+	  console.log(answerData)
+	}, [isLoading])
+	
+
 	return (
 		<CourseTabs>
 			<Box>
@@ -33,7 +49,14 @@ export default function AddExam() {
 					</Box>
 				</Flex>
 
-				<ObjectiveQuestion />
+				<Box>
+				<Flex alignItems="center" justifyContent={"space-between"}>
+					<Text fontWeight="bold" fontSize="2xl" my={8}>
+						Questions
+					</Text>
+				</Flex>
+				
+			</Box>
 			</Box>
 		</CourseTabs>
 	);
