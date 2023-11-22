@@ -53,7 +53,6 @@ export function useAddInstructions() {
 
 export function useUpdateInstruction() {
 	const toast = useToast();
-	const queryClient = useQueryClient();
 	return useMutation({
 		mutationKey: ["updateInstruction"],
 		mutationFn: async ({ id, instruction }: {id: number | null, instruction: string}) => {
@@ -76,7 +75,7 @@ export function useDeleteInstruction() {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationKey: ["deleteInstruction"],
-		mutationFn: async (id) => {
+		mutationFn: async (id: number | null) => {
 			try {
 				const response = await http.delete(`/instructions/${id}`);
 				return response
@@ -90,6 +89,18 @@ export function useDeleteInstruction() {
 		onError: (err: any) => {
 			console.log("toast err", err);
 			toast({ title: err?.response?.data?.detail || err?.message });
+		},
+	});
+}
+
+export function useAssessmentInfo(assessment: any) {
+	return useQuery({
+		queryKey: ["getAssessmentData", assessment],
+		queryFn: async () => {
+			
+			const { data } = await http.get(`/assessments/${assessment}`);
+
+			return data;
 		},
 	});
 }
