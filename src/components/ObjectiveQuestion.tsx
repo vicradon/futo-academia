@@ -103,7 +103,7 @@ export default function ObjectiveQuestion() {
 		<>
 			<Box>
 				<Flex alignItems="center" justifyContent={"space-between"}>
-					<Heading as={"h4"} size={"lg"} my={8}>
+					<Heading as={"h4"} size={"md"} mt={5}>
 						Questions
 					</Heading>
 				</Flex>

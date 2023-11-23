@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 
-interface ExamSetup {
+export interface ExamSetup {
 	assessment_type: string,
 	course_id: string | undefined,
 	duration: string,
@@ -52,12 +52,6 @@ export default function Assignments() {
 	const handleChange = (e: any) => {
 		setExamSetUp({ ...examSetUp, [e?.target?.name]: e?.target?.value });
 	};
-	
-	useEffect(() => {
-	  console.log(examSetUp)
-	  console.log(Object.values(examSetUp).some(value => value == null || value === ''))
-
-	}, [examSetUp])
 	
 	const queryClient = useQueryClient();
 
@@ -134,10 +128,7 @@ export default function Assignments() {
 							<ModalCloseButton />
 							<ModalBody>
 								<Flex pt={8} alignItems={"center"} rowGap={"0.5rem"} flexDirection={"column"}>
-									<Heading color={"brand.500"}>Login </Heading>
-									<Text>Please fill in your details</Text>
-
-									<Text fontWeight="bold">Create Assessment</Text>
+									<Heading color={"brand.500"}>Create Assessment</Heading>
 							<FormControl isRequired flexDir={"column"}>
 								<FormLabel>Title</FormLabel>
 								<Input

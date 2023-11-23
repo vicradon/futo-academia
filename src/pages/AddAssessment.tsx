@@ -1,31 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
 import ObjectiveQuestion from "../components/ObjectiveQuestion";
 import CourseTabs from "../layout/CourseTabs";
-import http from "../utils/http";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 import Instructions from "./Instructions";
+import AssessmentHeader from "./AssessmentHeader";
 
 
 export default function AddAssessment() {
 	const { idx } = useParams();
 
-	//The code below has to do with getting and editing assessment info.
-	const { data: assessmentData, isLoading: assessmentDataIsloading } = useQuery({
-		queryKey: ["getAssessment", idx],
-		queryFn: () => http.get(`/assessments/${idx}`).then((r) => r.data),
-	});
-
-	useEffect(() => {
-	  console.log(assessmentData)
-	}, [assessmentDataIsloading])
-	
-
-	
 	return (
 		<CourseTabs>
-				<Instructions idx={idx} />
-				<ObjectiveQuestion />
+			<AssessmentHeader />
+			<Instructions idx={idx} />
+			<ObjectiveQuestion />
 		</CourseTabs>
 	);
 }

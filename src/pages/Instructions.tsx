@@ -31,7 +31,6 @@ export default function Instructions({idx}: {idx: string | undefined}) {
 
 	useEffect(() => {
 	  setInstructionsObject(instructionsData)
-	  console.log(instructionsData)
 	}, [instructionIsLoading])
 
 
@@ -95,11 +94,8 @@ export default function Instructions({idx}: {idx: string | undefined}) {
 	
 	return (
 			<Box>
-				<Text fontSize="24px" color="#585AD4" fontWeight="bold" my={5}>
-					Assesment
-				</Text>
 				<Flex my={3} flexDir={"column"}>
-						<Heading as={"h4"} size={"lg"}>
+						<Heading as={"h4"} size={"md"} my={5}>
 							Instructions
 						</Heading>
 					<Box width={"100%"} bg={"whiteAlpha.900"} p={5}>
