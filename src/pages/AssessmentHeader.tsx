@@ -104,12 +104,15 @@ export default function AssessmentHeader() {
 	
 	return (
 		<Box boxShadow={"md"} p={2} mt={1} display={"flex"} flexDir={"column"} alignItems={"center"}>
-			<Flex alignItems={"center"} p={1} gap={4} mb={5}>
+			<Flex alignItems={"center"} p={1} gap={4}>
 				<Text fontSize="24px" color="#585AD4" textAlign={"center"} fontWeight="bold">
 					{examSetUp?.title}
 				</Text>
 				<Text bg={"#696CFF"} borderRadius={"full"} color="#FFF" px={2} minWidth={"min-content"} fontSize={"xs"}>{examSetUp?.assessment_type}</Text>
 			</Flex>
+			<Text fontSize="20px" color="#585AD4" textAlign={"center"} fontWeight="bold" mb={5}>
+				({examSetUp?.course_id})
+			</Text>
 			<Flex width={"100%"} justifyContent={"space-evenly"}>
 				<Flex flexDir={"column"} width={"40%"} alignItems={"center"}>
 					<Text>From: {new Date(examSetUp?.start_date).toUTCString()}</Text>

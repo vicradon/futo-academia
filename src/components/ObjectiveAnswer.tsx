@@ -25,9 +25,9 @@ function ObjectiveAnswer({ question, answers, question_type, stu_mark, mark, stu
 					<Text>({question_type === "maths" ? "Mathematics" : question_type === "nlp" ? "Theory" : question_type === "sub_obj" ? "Subjective" : question_type === "obj" ? "Multichoice" : "" ?? "--"})</Text>
 				<Box mt={5}>
 					{question_type === "obj" ? <Stack spacing={4} direction="column">
-						{answers?.map((x: any) => {
+						{answers?.map((x: any, i: number) => {
 							return (
-								<Radio isChecked={Boolean(x?.is_correct)} colorScheme="brand">
+								<Radio isChecked={Boolean(x?.is_correct)} colorScheme="brand" key={i}>
 									{x?.option}
 								</Radio>
 							);
@@ -35,9 +35,9 @@ function ObjectiveAnswer({ question, answers, question_type, stu_mark, mark, stu
 					</Stack>
 					:
 					<>
-						{answers?.map((x: any) => {
+						{answers?.map((x: any, i: number) => {
 							return (
-								<Flex gap={4}><Text fontWeight={"bold"}>Answer: </Text>{x?.option}</Flex>
+								<Flex gap={4}><Text fontWeight={"bold"} key={i}>Answer: </Text>{x?.option}</Flex>
 							);
 						})}
 					</>

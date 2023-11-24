@@ -122,7 +122,7 @@ export default function ObjectiveQuestion() {
 				<Flex w="100%" justifyContent="space-around">
 					<Box width="100%">
 						{answerData?.questions.map((x: any, i: number) => (
-							<ObjectiveAnswer {...x} index={i + 1} />
+							<ObjectiveAnswer {...x} index={i + 1} key={i} />
 						))}
 					</Box>
 				</Flex>

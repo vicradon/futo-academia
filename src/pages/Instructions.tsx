@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-interface InstructionObject {
+export interface InstructionObject {
 	assessment_id: number | null;
 	id: number | null;
 	instruction: string;
