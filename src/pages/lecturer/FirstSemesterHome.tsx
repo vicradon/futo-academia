@@ -1,12 +1,11 @@
-import { Box, Grid, Button, Text, Image, Flex } from "@chakra-ui/react"
+import { Box, Text } from "@chakra-ui/react"
 import { SearchParams } from "./LecturerHome";
 import { useQuery } from "@tanstack/react-query";
 import http from "../../utils/http";
 import { useEffect } from "react";
 import Loader from "../../components/Loaders";
 import EmptyIcon from "../../assets/images/emptyfile.svg";
-import { NavLink } from "react-router-dom";
-import NoImage from "../../assets/images/no-picture.jpg";
+import { CourseCardGrid } from "../../components/CourseCardGrid";
 
 
 
@@ -66,35 +65,6 @@ export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit
       }
 
   return (
-    <Grid justifyItems={"center"} rowGap={"3rem"} columnGap={"2rem"} templateColumns={{ base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr" }}>
-        {data?.map((course: any) => (
-            <Box 
-              width={{ base: "200px", sm: "313px" }} 
-              key={course.course_code} 
-              as={NavLink} 
-              to={`/lecturer/courses/${course.course_code}`} 
-              _hover={{
-                transform: "scale(1.05)",
-                boxShadow: "xl",
-              }}
-              transition="transform 0.3s, box-shadow 0.3s"
-            >
-                <Image width={"100%"} backgroundSize="cover" src={!course.course_photo_url ? NoImage : course.course_photo_url} alt={course.title} />
-                <Box borderRadius={"0 0 0.5rem 0.5rem"} shadow={"lg"} padding={"1rem"}>
-                    <Box mb={6}>
-                        <Text fontSize={"2xl"} mb={0} color={"brand.500"}>
-                            {course.title}
-                        </Text>
-                        <Text color={"brand.500"}>{course.course_code}</Text>
-                    </Box>
-                </Box>
-            </Box>
-        ))}
-        {data?.length === 10 && <Flex my={12} justifyContent={"center"} gridColumn={{base: "span 1", md: "span 2", lg: "span 3"}}>
-						<Button width={{ base: "150px", md: "200px", lg: "400px" }} colorScheme={"brand"} variant={"outline"}>
-							View More
-						</Button>
-				</Flex>}
-    </Grid>
+    <CourseCardGrid data={data} />
   )
 }

@@ -1,6 +1,6 @@
 import AppTable from "../components/Table";
 import http from "../utils/http";
-import { Box, Text, Flex, Skeleton, Stack, Divider, Spacer } from "@chakra-ui/react";
+import { Box, Text, Flex, Skeleton, Stack, Spacer } from "@chakra-ui/react";
 import TimerBox from "../components/TimerBox";
 import { useQuery } from "@tanstack/react-query";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
