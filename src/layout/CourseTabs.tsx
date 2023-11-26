@@ -1,9 +1,8 @@
 import { ReactNode, useEffect, useState } from "react";
 
 import http from "../utils/http";
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import AdminLayout from "../layout/AdminLayout";
-import TimerBox from "../components/TimerBox";
 import CourseHeader from "../components/CourseHeader";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
@@ -21,15 +20,8 @@ export default function CourseTabs({ children }: IProps) {
 		},
 		{
 			name: "Assessments",
-			path: `/lecturer/courses/${id}/assignments`,
+			path: `/lecturer/courses/${id}/assessments`,
 		},
-		// {
-		// 	name: "Tests",
-		// },
-		// {
-		// 	name: "Examination",
-		// 	path: `/lecturer/courses/${id}/examination`,
-		// },
 		{
 			name: "Instructors",
 			path: `/lecturer/courses/${id}/examination`,
@@ -59,14 +51,15 @@ export default function CourseTabs({ children }: IProps) {
 
 	const navigate = useNavigate();
 
-	const [active, setActive] = useState(0);
+	const [active, setActive] = useState<number | null>(null);
 
 	useEffect(() => {
 		if (location.pathname.includes("examination")) {
 			setActive(3);
-		}
-		if (location.pathname.includes("assignments")) {
+		} else if (location.pathname.includes("assessment")) {
 			setActive(1);
+		} else {
+			setActive(0)
 		}
 	}, []);
 
@@ -105,29 +98,6 @@ export default function CourseTabs({ children }: IProps) {
 						{children}
 					</Box>
 				</Box>
-				{false && (
-					<>
-						<Box>
-							<Text fontSize="24px" color="#585AD4" fontWeight="bold">
-								Currently up
-							</Text>
-
-							<Flex alignItems="center">
-								<Box width="100px" height="100px" bgColor="red"></Box>
-								<Flex direction="column" ml={2} justifyContent="space-around" mr={3}>
-									<Box>Assignment</Box>
-									<Box>
-										<Text color="#3578D3" fontWeight="bold">
-											Jan 1 2023
-										</Text>
-									</Box>
-								</Flex>
-
-								<TimerBox />
-							</Flex>
-						</Box>
-					</>
-				)}
 			</AdminLayout>
 		</>
 	);

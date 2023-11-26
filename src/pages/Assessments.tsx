@@ -4,7 +4,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BiPencil } from "react-icons/bi";
 
 import CourseTabs from "../layout/CourseTabs";
-import CourseCard from "../components/CourseCard";
+import AssessmentCard from "../components/AssessmentCard";
 import { useNavigate } from "react-router-dom";
 
 export default function Assessments() {
@@ -44,8 +44,8 @@ export default function Assessments() {
 				</Box>
 
 				<Box>
-					<CourseCard />
-					<CourseCard />
+					<AssessmentCard />
+					<AssessmentCard />
 					<Box display="flex" alignItems="center" justifyContent="flex-end">
 						<Text cursor="pointer">See all</Text>
 					</Box>
@@ -57,8 +57,8 @@ export default function Assessments() {
 						</Text>
 						<Text>A copy automatically gets saved in drafts after one month. </Text>
 					</Box>
-					<CourseCard />
-					<CourseCard />
+					<AssessmentCard />
+					<AssessmentCard />
 					<Box display="flex" alignItems="center" justifyContent="flex-end">
 						<Text cursor="pointer">See all</Text>
 					</Box>

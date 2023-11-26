@@ -42,7 +42,7 @@ export default function Navbar({ bgColor }: NavbarProps) {
 				
 				<Flex display={{ base: "none", md: "flex" }} columnGap={2} alignItems={"center"}>
 					<Image src={Bell} boxSize="35px" />
-					<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/profile"}/>
+					<Avatar src={userData.photo_url} name={userData.name} as={NavLink} to={"/lecturer-profile"}/>
 				</Flex>
 
 				<Flex alignItems={"center"} columnGap={2}>

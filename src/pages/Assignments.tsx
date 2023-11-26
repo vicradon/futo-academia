@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import CourseCard from "../components/CourseCard";
+import AssessmentCard from "../components/AssessmentCard";
 import CourseTabs from "../layout/CourseTabs";
 
 import { Box, Text, Input, Select, Button, useToast, FormLabel, FormControl, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, useDisclosure, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from "@chakra-ui/react";
@@ -236,7 +236,7 @@ export default function Assignments() {
 						{data
 							?.filter((x: any) => x?.is_marked === false && x?.is_active === false)
 							?.map((x: any, i: number) => {
-								return <CourseCard setExamSetUp={setExamSetUp} idx={id} key={i} {...x} />;
+								return <AssessmentCard setExamSetUp={setExamSetUp} idx={id} key={i} {...x} />;
 							})}
 						{data?.filter((x: any) => x?.is_marked === false && x?.is_active === false)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
 					</AccordionPanel>
@@ -259,7 +259,7 @@ export default function Assignments() {
 					{data
 					?.filter((x: any) => x?.is_active)
 					.map((x: any, i: number) => {
-						return <CourseCard is_active={true} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
+						return <AssessmentCard is_active={true} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
 					})}
 					{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
 				</AccordionPanel>
@@ -281,7 +281,7 @@ export default function Assignments() {
 					?.filter((x: any) => x?.is_marked)
 					.map((x: any, i: number) => {
 						return (
-							<CourseCard
+							<AssessmentCard
 								idx={id}
 								setExamSetUp={setExamSetUp}
 								overAllClick={() => (!user?.is_instructor ? navigate(`/exam/${x?.id}/${id}/results`) : "")}
