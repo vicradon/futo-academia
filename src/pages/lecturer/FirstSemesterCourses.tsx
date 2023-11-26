@@ -29,6 +29,6 @@ export default function SecondSemesterCourses() {
           )
       }
   return (
-    <CourseCardGrid data={courseQuery?.data} />
+    <CourseCardGrid data={courseQuery?.data} role={'lecturer'} />
   )
 }

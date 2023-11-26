@@ -94,18 +94,6 @@ const UploadCourse = () => {
 				semester: courseInfo.semester,
 				level: courseInfo.level,
 			}, 
-			// {onSuccess: () => {
-			// 	if (createCourseMutation?.data?.response.status === 201){
-			// 		console.log(createCourseMutation?.data?.response.status)
-			// 		enrollStudentMutation.mutate({
-			// 		file: courseInfo.classList,
-			// 		course_code: courseInfo.code,
-			// 		});
-			// 		coursePhotoMutation.mutate({ course_code: courseInfo.code, file: courseInfo.coverImage });
-			// 	} else {
-			// 		console.log("hurray", createCourseMutation?.data?.response.status)
-			// 	}
-			// }}
 			);
 
 			
@@ -149,6 +137,7 @@ const UploadCourse = () => {
 											<Input 
 												value={courseInfo.title} 
 												name="title"
+												maxLength={60}
 												required 
 												onChange={handleChange}
 												bg="#fff"

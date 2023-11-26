@@ -168,6 +168,7 @@ const EditCourse = () => {
 											<Input 
 												value={courseInfo.title} 
 												name="title"
+												maxLength={60}
 												required 
 												onChange={handleChange}
 												bg="#fff"

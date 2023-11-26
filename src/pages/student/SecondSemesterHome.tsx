@@ -63,6 +63,6 @@ export const SecondSemesterHome = ({semester, search, faculty, level, skip, limi
     }
 
   return (
-    <CourseCardGrid data={data} />
+    <CourseCardGrid data={data} role={'student'} />
   )
 }

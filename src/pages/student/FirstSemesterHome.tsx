@@ -64,6 +64,6 @@ export const FirstSemesterHome = ({semester, search, faculty, level, skip, limit
       }
 
   return (
-    <CourseCardGrid data={data} />
+    <CourseCardGrid data={data} role={'student'}/>
   )
 }
