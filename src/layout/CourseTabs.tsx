@@ -30,7 +30,7 @@ export default function CourseTabs({ children }: IProps) {
 		},
 		{
 			name: "Students",
-			path: `/lecturer/courses/${id}/examination`,
+			path: `/lecturer/courses/${id}/students`,
 		},
 	];
 
@@ -43,7 +43,7 @@ export default function CourseTabs({ children }: IProps) {
 
 	const { data: student_count } = useQuery({
 		queryKey: ["getStudentCount", id],
-		queryFn: () => http.get(`/students/enrolled/${id}`).then((r) => r.data),
+		queryFn: () => http.get(`/students/enrolled/${id}/count`).then((r) => r.data),
 	});
 
 	const { data: instructor_count} = useQuery({
@@ -61,10 +61,12 @@ export default function CourseTabs({ children }: IProps) {
 	const [active, setActive] = useState<number | null>(null);
 
 	useEffect(() => {
-		if (location.pathname.includes("examination")) {
+		if (location.pathname.includes("student")) {
 			setActive(3);
 		} else if (location.pathname.includes("assessment")) {
 			setActive(1);
+		} else if (location.pathname.includes("instructor")) {
+			setActive(2);
 		} else {
 			setActive(0)
 		}
