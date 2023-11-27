@@ -1,11 +1,12 @@
 import { ReactNode, useEffect, useState } from "react";
 
 import http from "../utils/http";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import AdminLayout from "../layout/AdminLayout";
 import CourseHeader from "../components/CourseHeader";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useUser } from "../hooks/useUser";
 
 interface IProps {
 	children: ReactNode;
@@ -13,6 +14,7 @@ interface IProps {
 
 export default function CourseTabs({ children }: IProps) {
 	const { id } = useParams();
+	const user = useUser()
 	const tabData = [
 		{
 			name: "Summary",
@@ -49,6 +51,11 @@ export default function CourseTabs({ children }: IProps) {
 		queryFn: () => http.get(`/instructors/count/${id}`).then((r) => r.data),
 	});
 
+	const { data: enrolled, refetch: refetchEnrollmentStatus } = useQuery({
+		queryKey: ["getEnrollmentStatus", id],
+		queryFn: () => http.get(`/courses/${id}/enrollment_status`).then((r) => r.data),
+	});
+
 	const navigate = useNavigate();
 
 	const [active, setActive] = useState<number | null>(null);
@@ -66,8 +73,8 @@ export default function CourseTabs({ children }: IProps) {
 	return (
 		<>
 			<AdminLayout>
-				<CourseHeader {...{ ...data, student_count, instructor_count }} />
-				<Box>
+				<CourseHeader {...{ ...data, student_count, instructor_count, user, ...enrolled, refetchEnrollmentStatus }} />
+				{enrolled && (enrolled?.is_course_instructor || enrolled?.is_course_coordinator || enrolled?.is_enrolled) ? <Box>
 					<Box>
 						<Box display="flex" bgColor="#dae4ff" alignItems="center" flexWrap={"wrap"} justifyContent={"space-around"} h={"30px"}>
 							{tabData?.map((x, i) => (
@@ -97,7 +104,10 @@ export default function CourseTabs({ children }: IProps) {
 
 						{children}
 					</Box>
-				</Box>
+				</Box> : user.is_instructor ?
+				<Text fontSize={"2xl"} textAlign={"center"} mt={"20%"} textColor={"#343680"}>YOU ARE NOT AN INSTRUCTOR FOR THIS COURSE</Text> :
+				<Text fontSize={"2xl"} textAlign={"center"} mt={"20%"} textColor={"#343680"}>YOU ARE NOT ENROLLED IN THIS COURSE</Text>
+				}
 			</AdminLayout>
 		</>
 	);

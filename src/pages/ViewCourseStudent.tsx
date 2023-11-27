@@ -15,21 +15,28 @@ import { useAssessment } from "../hooks/useAssessment";
 export default function ViewCourse() {
 	
 	const { id } = useParams();
-
 	const toast = useToast();
+	const navigate = useNavigate();
+	const user = useUser();
 
-	const { data: enrollmentStatus, isLoading: enrolledIsLoading } = useQuery({
+	const { data: enrolled, isLoading: enrolledIsLoading } = useQuery({
 		queryKey: ["getEnrollmentStatus", id],
 		queryFn: () => http.get(`/courses/${id}/enrollment_status`).then((r) => r.data),
 	});
 
 	useEffect(() => {
-	  console.log(enrollmentStatus)
+	  console.log(enrolled)
 	}, [enrolledIsLoading])
+	
 
 	const { data: currUp, isLoading } = useQuery({
 		queryKey: ["getCurrUp", id],
-		queryFn: () => http.get(`/courses/${id}/assessments`).then((r) => r.data),
+		queryFn: () => {
+			const anyFalse = Object.values(enrolled).some(value => value === false);
+			if (!anyFalse) {
+				return http.get(`/courses/${id}/assessments`).then((r) => r.data)
+			}
+			}
 	});
 
 	const [assessment, setAssessment] = useState("");
@@ -76,8 +83,6 @@ export default function ViewCourse() {
 		},
 	];
 
-	const navigate = useNavigate();
-	const user = useUser();
 
 	const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
 		if (completed) {

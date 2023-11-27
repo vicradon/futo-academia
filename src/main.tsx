@@ -30,6 +30,7 @@ import EditCourse from "./pages/lecturer/EditCourse";
 import ViewAssessment from "./pages/ViewAssessment";
 import Assessments from "./pages/Assessments";
 import AddAssessment from "./pages/AddAssessment";
+import ViewCourseStudent from "./pages/ViewCourseStudent";
 
 const colors = {
 	brand: {
@@ -108,33 +109,38 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/">
 			<Route index element={<Home />} />
-			<Route path="student/home/*" element={<StudentHome />} />
+
+			{/* lecturer routes */}
 			<Route path="lecturer/home/*" element={<LecturerHome />} />
 			<Route path="lecturer/my-courses" element={<LecturerCourses />}>
-				<Route index element={<FirstSemesterCourses />} />
-				<Route path="second-semester" element={<SecondSemesterCourses />} />
-			</Route>
-			<Route path="student/my-courses" element={<StudentCourses />}>
 				<Route index element={<FirstSemesterCourses />} />
 				<Route path="second-semester" element={<SecondSemesterCourses />} />
 			</Route>
 			<Route path="lecturer/courses-upload" element={<UploadCourse />} />
 			<Route path="lecturer/edit-course/:id" element={<EditCourse />} />
 			<Route path="lecturer/courses/:id" element={<ViewCourse />} />
-			<Route path="course/header" element={<CourseHeader />} />
 			<Route path="lecturer/courses/:id/assessment" element={<Assessments />} />
 			<Route path="lecturer/courses/:id/assessment/add/:idx" element={<AddAssessment />} />
 			<Route path="lecturer/courses/:id/assessment/:idx" element={<ViewAssessment />} />
 			<Route path="lecturer/courses/:id/assessments" element={<Assignments />} />
+			<Route path="lecturer-profile" element={<LecturerProfile />}>
+				<Route index element={<Profile />} />
+			  	<Route path="password" element={<Password />} />
+			</Route>
+
+			{/* Student routes */}
+			<Route path="student/home/*" element={<StudentHome />} />
+			<Route path="student/courses/:id" element={<ViewCourseStudent />} />
+			<Route path="student/my-courses" element={<StudentCourses />}>
+				<Route index element={<FirstSemesterCourses />} />
+				<Route path="second-semester" element={<SecondSemesterCourses />} />
+			</Route>
+			<Route path="course/header" element={<CourseHeader />} />
 			<Route path="exams/:id/:courseId" element={<TakeExam />} />
 			<Route path="exam/:id/:idx/results" element={<ExamResult />} />
 			<Route path="course/header/obj" element={<ObjectiveAnswer />} />
 			<Route path="student-profile" element={<StudentProfile />}>
 				<Route index element={<ProfileStudent />} />
-			  	<Route path="password" element={<Password />} />
-			</Route>
-			<Route path="lecturer-profile" element={<LecturerProfile />}>
-				<Route index element={<Profile />} />
 			  	<Route path="password" element={<Password />} />
 			</Route>
 		</Route>

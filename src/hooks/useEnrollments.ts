@@ -18,3 +18,16 @@ export function useEnrollStudents(courseCreated = false) {
 		},
 	});
 }
+
+export function useMakeEnrollRequest() {
+	return useMutation({
+		mutationKey: ["makeEnrollmentRequest"],
+		mutationFn: async ({ course_code, reg_num }: any) => {
+			try {
+				await http.post("/students/enroll_request", {"course_code": course_code, "reg_num": reg_num});
+			} catch (error) {
+				return error;
+			}
+		},
+	});
+}
