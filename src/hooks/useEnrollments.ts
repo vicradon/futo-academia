@@ -31,3 +31,16 @@ export function useMakeEnrollRequest() {
 		},
 	});
 }
+
+export function useApproveEnrollment() {
+	return useMutation({
+		mutationKey: ["approveEnrollment"],
+		mutationFn: async ({ course_code, reg_num }: any) => {
+			try {
+				await http.put(`/students/approve_enrollment/${course_code}/${reg_num}`, {"course_code": course_code, "reg_num": reg_num});
+			} catch (error) {
+				return error;
+			}
+		},
+	});
+}

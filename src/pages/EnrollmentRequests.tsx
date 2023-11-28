@@ -5,6 +5,7 @@ import Loader from "../components/Loaders";
 import { SearchIcon } from "@chakra-ui/icons";
 import CourseStudents from "./CourseStudents";
 import { useEffect, useState } from "react";
+import { useApproveEnrollment } from "../hooks/useEnrollments";
 
 interface CourseStudents {
   search: string,
@@ -14,8 +15,9 @@ interface CourseStudents {
 function EnrollmentRequests({id}: any) {
 
   const [filterParams, setFilterParams] = useState<CourseStudents>({search: "", level: ""})
+  const [data, setData] = useState<any>(null)
 
-  const { data, isLoading, refetch } = useQuery({
+  const { isLoading, refetch } = useQuery({
 		queryKey: ["getStudents", id],
 		queryFn: () => http.get(`/students/enrolled/${id}/requests`, {
       params : {
@@ -23,19 +25,30 @@ function EnrollmentRequests({id}: any) {
         level: filterParams.level
     }}).then((r) => r.data),
 		onError: (err) => console.log("error", err),
+    onSuccess: (data) => {
+      setData(data);
+    },
 	});
 
   const handleChange = (e: any) => {
-		setFilterParams({ ...filterParams, [e?.target?.name]: e?.target?.value });
+    setFilterParams({ ...filterParams, [e?.target?.name]: e?.target?.value });
 	};
-
+  
   useEffect(() => {
     refetch()
   }, [filterParams])
   
-
-  if (isLoading) return <Loader />;
-
+  const approveEnrollmentMutation = useApproveEnrollment()
+  const handleRequestAccept = (index: number) => {
+    console.log(index)
+    approveEnrollmentMutation.mutate({course_code: id, reg_num: data[index].reg_num})
+    data.splice(index, 1)
+    refetch()
+  }
+  
+  if (isLoading) {
+    return <Loader />;
+  }
   
   return (
     <Flex flexDir={"column"}>
@@ -68,7 +81,7 @@ function EnrollmentRequests({id}: any) {
           <Text p={3}>{student?.reg_num}</Text>
           <Text p={3}>{student?.department}</Text>
           <Text p={3}>{student?.level}</Text>
-          <Text p={3} textAlign={"center"} textColor={"green"} cursor={"pointer"}>Accept</Text>
+          <Text p={3} textAlign={"center"} textColor={"green"} cursor={"pointer"} onClick={() => {handleRequestAccept(index)}}>Accept</Text>
           <Text p={3} textAlign={"center"} textColor={"red"} cursor={"pointer"}>Deny</Text>
 
         </Grid>
