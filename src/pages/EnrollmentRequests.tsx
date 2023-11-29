@@ -6,6 +6,8 @@ import { SearchIcon } from "@chakra-ui/icons";
 import CourseStudents from "./CourseStudents";
 import { useEffect, useState } from "react";
 import { useApproveAllEnrollments, useApproveEnrollment, useDeleteAllEnrollmentRequests, useDeleteEnrollment } from "../hooks/useEnrollments";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface CourseStudents {
   search: string,
@@ -106,24 +108,30 @@ function EnrollmentRequests({id}: any) {
           Deny all
         </Button>
       </Flex>
-      <Grid templateColumns={"0.8fr 2.5fr 1.8fr 1fr 1fr 0.8fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}}>
-        <Text bgColor={"#343680"} textColor={"white"} border={"none"} p={3}>S/N</Text>
-        <Text bgColor={"#343680"} textColor={"white"}border={"none"} p={3}>Name</Text>
-        <Text bgColor={"#343680"} textColor={"white"}border={"none"} p={3}>Reg. No.</Text>
-        <Text bgColor={"#343680"} textColor={"white"}border={"none"} p={3}>Dept</Text>
-        <Text bgColor={"#343680"} textColor={"white"}border={"none"} p={3}>Level</Text>
-        <Text border={"none"} bgColor={"#343680"}></Text>
-        <Text border={"none"} bgColor={"#343680"}></Text>
+      <Grid templateColumns={"0.8fr 2.5fr 1.8fr 1fr 1fr 0.8fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}}  bgColor={"#343680"}>
+        <Text textColor={"white"} border={"none"} py={3} pl={1}>S/N</Text>
+        <Text textColor={"white"}border={"none"} py={3}>Name</Text>
+        <Text textColor={"white"}border={"none"} py={3}>Reg. No.</Text>
+        <Text textColor={"white"}border={"none"} py={3}>Dept</Text>
+        <Text textColor={"white"}border={"none"} py={3}>Level</Text>
+        <Text border={"none"}></Text>
+        <Text border={"none"}></Text>
       </Grid>
       {data?.map((student: any, index: number) => 
-        <Grid templateColumns={"0.8fr 2.5fr 1.8fr 1fr 1fr 0.8fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}} key={student?.reg_num} height={"40px"} bg={index%2 === 0 ? "#E0E0E066" : "unset"} alignContent={"center"}>
-          <Text p={3}>{index+1}</Text>
-          <Text p={3} fontSize={{base: "xx-small"}}>{student?.name}</Text>
-          <Text p={3} fontSize={{base: "xx-small"}}>{student?.reg_num}</Text>
-          <Text p={3}>{student?.department}</Text>
-          <Text p={3}>{student?.level}</Text>
-          <Text p={3} textAlign={"center"} textColor={"green"} cursor={"pointer"} onClick={() => {handleRequestAccept(index)}}>Accept</Text>
-          <Text p={3} textAlign={"center"} textColor={"red"} cursor={"pointer"}onClick={() => {handleRequestDeny(index)}}>Deny</Text>
+        <Grid templateColumns={"0.8fr 2.5fr 1.8fr 1fr 1fr 0.8fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}} key={student?.reg_num} minH={"40px"} bg={index%2 === 0 ? "#E0E0E066" : "unset"} alignContent={"center"}>
+          <Text py={3} pl={1}>{index+1}</Text>
+          <Text py={3}>{student?.name}</Text>
+          <Text py={3} overflowX={"scroll"}>{student?.reg_num}</Text>
+          <Text py={3} overflowX={"scroll"}>{student?.department}</Text>
+          <Text py={3}>{student?.level}</Text>
+          <Text py={3} textAlign={"center"} textColor={"green"} cursor={"pointer"} onClick={() => {handleRequestAccept(index)}}>
+            <Text display={{base: "flex", lg: "none"}} ><FontAwesomeIcon icon={faCheck}/></Text>
+            <Text display={{base: "none", lg: "flex"}} >Accept</Text>
+          </Text>
+          <Text py={3} textAlign={"center"} textColor={"red"} cursor={"pointer"}onClick={() => {handleRequestDeny(index)}}>
+          <Text display={{base: "flex", lg: "none"}} ><FontAwesomeIcon icon={faTrash}/></Text>
+            <Text display={{base: "none", lg: "flex"}} >Deny</Text>
+          </Text>
 
         </Grid>
         )}

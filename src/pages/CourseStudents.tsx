@@ -11,7 +11,7 @@ export default function CourseStudents() {
 
 	return (
 		<CourseTabs>
-			<Flex justifyContent={"space-around"} mt={5}>
+			<Flex justifyContent={"space-around"} mt={5} fontSize={{base: "sm", md: "md", lg: "lg"}}>
 				<Text 
 					width={"100%"} 
 					textAlign={"center"} 

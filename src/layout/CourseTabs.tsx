@@ -26,7 +26,7 @@ export default function CourseTabs({ children }: IProps) {
 		},
 		{
 			name: "Instructors",
-			path: `/lecturer/courses/${id}/examination`,
+			path: `/lecturer/courses/${id}/instructors`,
 		},
 		{
 			name: "Students",
