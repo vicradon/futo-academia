@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "../utils/http";
-import { Center, Flex, Grid, Input, InputGroup, InputLeftAddon, Select, Text } from "@chakra-ui/react";
+import { Button, Center, Flex, Grid, Input, InputGroup, InputLeftAddon, Select, Text } from "@chakra-ui/react";
 import Loader from "../components/Loaders";
 import { SearchIcon } from "@chakra-ui/icons";
 import CourseStudents from "./CourseStudents";
 import { useEffect, useState } from "react";
-import { useApproveEnrollment } from "../hooks/useEnrollments";
+import { useApproveAllEnrollments, useApproveEnrollment, useDeleteAllEnrollmentRequests, useDeleteEnrollment } from "../hooks/useEnrollments";
 
 interface CourseStudents {
   search: string,
@@ -15,7 +15,7 @@ interface CourseStudents {
 function EnrollmentRequests({id}: any) {
 
   const [filterParams, setFilterParams] = useState<CourseStudents>({search: "", level: ""})
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<any>([])
 
   const { isLoading, refetch } = useQuery({
 		queryKey: ["getStudents", id],
@@ -43,7 +43,26 @@ function EnrollmentRequests({id}: any) {
     console.log(index)
     approveEnrollmentMutation.mutate({course_code: id, reg_num: data[index].reg_num})
     data.splice(index, 1)
-    refetch()
+  }
+
+  const approveAllEnrollmentsMutation = useApproveAllEnrollments()
+  const handleAcceptAllRequests = () => {
+    approveAllEnrollmentsMutation.mutate({course_code: id})
+    setData([])
+    refetch
+  }
+
+  const deleteEnrollmentMutation = useDeleteEnrollment()
+  const handleRequestDeny = (index: number) => {
+    console.log(index)
+    deleteEnrollmentMutation.mutate({course_code: id, reg_num: data[index].reg_num})
+    data.splice(index, 1)
+  }
+
+  const deleteAllEnrollmentsMutation = useDeleteAllEnrollmentRequests()
+  const handleRequestDenyAll = () => {
+    deleteAllEnrollmentsMutation.mutate({course_code: id})
+    setData([])
   }
   
   if (isLoading) {
@@ -65,6 +84,28 @@ function EnrollmentRequests({id}: any) {
           <option value={500}>500</option>
         </Select>
       </Center>
+      <Flex alignSelf={"end"} columnGap={2} mb={2}>
+        <Button 
+          colorScheme="green" 
+          variant={"outline"} 
+          maxW={"min-content"}
+          fontSize={{base: "xs", md: "md"}} 
+          isDisabled={data?.length <= 0 ? true : false} 
+          onClick={handleAcceptAllRequests}
+        >
+          Accept all
+        </Button>
+        <Button 
+          colorScheme="red"
+          variant={"outline"}
+          maxW={"min-content"} 
+          fontSize={{base: "xs", md: "md"}}
+          isDisabled={data?.length <=0 ? true : false}
+          onClick={handleRequestDenyAll}
+        >
+          Deny all
+        </Button>
+      </Flex>
       <Grid templateColumns={"0.8fr 2.5fr 1.8fr 1fr 1fr 0.8fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}}>
         <Text bgColor={"#343680"} textColor={"white"} border={"none"} p={3}>S/N</Text>
         <Text bgColor={"#343680"} textColor={"white"}border={"none"} p={3}>Name</Text>
@@ -77,12 +118,12 @@ function EnrollmentRequests({id}: any) {
       {data?.map((student: any, index: number) => 
         <Grid templateColumns={"0.8fr 2.5fr 1.8fr 1fr 1fr 0.8fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}} key={student?.reg_num} height={"40px"} bg={index%2 === 0 ? "#E0E0E066" : "unset"} alignContent={"center"}>
           <Text p={3}>{index+1}</Text>
-          <Text p={3}>{student?.name}</Text>
-          <Text p={3}>{student?.reg_num}</Text>
+          <Text p={3} fontSize={{base: "xx-small"}}>{student?.name}</Text>
+          <Text p={3} fontSize={{base: "xx-small"}}>{student?.reg_num}</Text>
           <Text p={3}>{student?.department}</Text>
           <Text p={3}>{student?.level}</Text>
           <Text p={3} textAlign={"center"} textColor={"green"} cursor={"pointer"} onClick={() => {handleRequestAccept(index)}}>Accept</Text>
-          <Text p={3} textAlign={"center"} textColor={"red"} cursor={"pointer"}>Deny</Text>
+          <Text p={3} textAlign={"center"} textColor={"red"} cursor={"pointer"}onClick={() => {handleRequestDeny(index)}}>Deny</Text>
 
         </Grid>
         )}

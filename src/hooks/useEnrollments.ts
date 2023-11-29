@@ -37,7 +37,46 @@ export function useApproveEnrollment() {
 		mutationKey: ["approveEnrollment"],
 		mutationFn: async ({ course_code, reg_num }: any) => {
 			try {
-				await http.put(`/students/approve_enrollment/${course_code}/${reg_num}`, {"course_code": course_code, "reg_num": reg_num});
+				await http.put(`/students/approve_enrollment/${course_code}/${reg_num}`);
+			} catch (error) {
+				return error;
+			}
+		},
+	});
+}
+
+export function useApproveAllEnrollments() {
+	return useMutation({
+		mutationKey: ["approveEnrollment"],
+		mutationFn: async ({ course_code }: any) => {
+			try {
+				await http.put(`/students/approve_all_enrollments/${course_code}`);
+			} catch (error) {
+				return error;
+			}
+		},
+	});
+}
+
+export function useDeleteEnrollment() {
+	return useMutation({
+		mutationKey: ["deleteEnrollment"],
+		mutationFn: async ({ course_code, reg_num }: any) => {
+			try {
+				await http.delete(`/students/${course_code}/${reg_num}`);
+			} catch (error) {
+				return error;
+			}
+		},
+	});
+}
+
+export function useDeleteAllEnrollmentRequests() {
+	return useMutation({
+		mutationKey: ["deleteAllEnrolmentRequests"],
+		mutationFn: async ({ course_code}: any) => {
+			try {
+				await http.delete(`/students/all/${course_code}`);
 			} catch (error) {
 				return error;
 			}
