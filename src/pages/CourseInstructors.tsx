@@ -2,28 +2,44 @@ import { useParams } from "react-router-dom";
 import CourseTabs from "../layout/CourseTabs";
 import { useQuery } from "@tanstack/react-query";
 import http from "../utils/http";
-import { Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import Loader from "../components/Loaders";
+import { useState } from "react";
+import { useAcceptInstructorRequest, useDeleteInstructorRequest } from "../hooks/useEnrollments";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faPortrait, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function CourseInstructors() {
 	const { id } = useParams();
+	const [coordinatorsList, setCoordinatorsList] = useState<any>([])
+	const [instructorsList, setInstructorsList] = useState<any>([])
+	const [requestsList, setRequestsList] = useState<any>([])
 
-	const { data: coordinators, isLoading: coordinatorLoading } = useQuery({
+	const { isLoading: coordinatorLoading } = useQuery({
 		queryKey: ["getCoordinators", id],
 		queryFn: () => http.get(`/instructors/coordinators/${id}`).then((r) => r.data),
 		onError: (err) => console.log("error", err),
     onSuccess: (data) => {
-      console.log(data);
+		setCoordinatorsList(data)
     },
 	});
 
-	const { data: instructors, isLoading: instructorLoading } = useQuery({
+	const { isLoading: instructorLoading } = useQuery({
 		queryKey: ["getInstructors", id],
 		queryFn: () => http.get(`/instructors/${id}`).then((r) => r.data),
 		onError: (err) => console.log("error", err),
     onSuccess: (data) => {
-      console.log(data);
+		setInstructorsList(data)
+    },
+	});
+
+	const { isLoading: requestsLoading } = useQuery({
+		queryKey: ["getRequests", id],
+		queryFn: () => http.get(`/instructors/requests/${id}`).then((r) => r.data),
+		onError: (err) => console.log("error", err),
+    onSuccess: (data) => {
+		setRequestsList(data)
     },
 	});
 
@@ -33,65 +49,86 @@ export default function CourseInstructors() {
 	});
 
 
+	const deleteInstructorMutation = useDeleteInstructorRequest()
+	const handleReject = (index: number) => {
+		const newArray = [...requestsList.slice(0, index), ...requestsList.slice(index + 1)];
+		deleteInstructorMutation.mutate({course_code: id, id: requestsList[index].instructor_id})
+		setRequestsList(newArray)
+	}
+
+	const acceptInstructorRequestMutation = useAcceptInstructorRequest()
+	const handleAccept = (index: number) => {
+		const newArray = [...requestsList.slice(0, index), ...requestsList.slice(index + 1)];
+		acceptInstructorRequestMutation.mutate({course_code: id, id: requestsList[index]?.instructor_id})
+		setInstructorsList([...instructorsList, requestsList[index]])
+		setRequestsList(newArray)
+	}
+	const handleRemove = (index: number) => {
+		const newArray = [...instructorsList.slice(0, index), ...instructorsList.slice(index + 1)];
+		deleteInstructorMutation.mutate({course_code: id, id: instructorsList[index]?.instructor_id})
+		setInstructorsList(newArray)
+	}
+
+
 
 	return (
 		<CourseTabs>
 			<Heading mt={5} fontSize={{base: "16", md: "20"}} textColor={"white"}bg={"#343680"} p={2}>Coordinators</Heading>
 			{
 				coordinatorLoading ? <Loader /> :
-				coordinators?.length >= 0 ?
+				coordinatorsList?.length >= 1 ?
 				<Flex flexDir={"column"}>
-					{coordinators?.map((coordinator: any, index: number) => 
-					<Flex p={3} bg={index%2 === 0 ? "#E0E0E066" : "unset"} columnGap={1}>
-						<Text >{index+1}.</Text>
+					{coordinatorsList?.map((coordinator: any, index: number) => 
+					<Flex p={3} bg={index%2 === 0 ? "#E0E0E066" : "unset"} columnGap={1} key={index} alignItems={"center"}>
 						<Text>{coordinator?.title}</Text>
 						<Text>{coordinator?.name}</Text>
 						<Text>({coordinator?.department})</Text>
 						<Spacer />
-						{coordinator?.is_current_user && <Text>You</Text>}
+						{coordinator?.is_current_user && <Text textColor={"#575AD4"}><FontAwesomeIcon  size="lg" icon={faPortrait} /></Text>}
 					</Flex>
 					)}
 				</Flex> :
-				<Text>No Coordinator</Text>
+				<Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>
 			}
 			<Heading mt={5} fontSize={{base: "16", md: "20"}} textColor={"white"}bg={"#343680"} p={2}>Instructors</Heading>
 			{
 				instructorLoading ? <Loader /> :
-				instructors?.length >= 0 ?
+				instructorsList?.length >= 1 ?
 				<Flex flexDir={"column"}>
-					{instructors?.map((instructor: any, index: number) => 
-					<Flex p={3} bg={index%2 === 0 ? "#E0E0E066" : "unset"} columnGap={1}>
-						<Text >{index+1}.</Text>
+					{instructorsList?.map((instructor: any, index: number) => 
+					<Flex p={3} bg={index%2 === 0 ? "#E0E0E066" : "unset"} columnGap={1} key={index} alignItems={"center"}>
 						<Text>{instructor?.title}</Text>
 						<Text>{instructor?.name}</Text>
 						<Text>({instructor?.department})</Text>
 						<Spacer />
-						{instructor?.is_current_user && <Text>You</Text>}
+						{instructor?.is_current_user && <Text textColor={"#575AD4"}><FontAwesomeIcon  size="lg" icon={faPortrait} /></Text>}
+						{enrollment_status?.is_course_coordinator && <Text cursor={"pointer"} color="red" size={"sm"}
+						onClick={() => handleRemove(index)}><FontAwesomeIcon icon={faTrashAlt} /></Text>}
 					</Flex>
 					)}
 				</Flex> :
-				<Text>No Coordinator</Text>
+				<Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>
 			}
 			{enrollment_status?.is_course_coordinator && <><Heading mt={5} fontSize={{base: "16", md: "20"}} textColor={"white"}bg={"#343680"} p={2}>Requests</Heading>
 			{
-				instructorLoading ? <Loader /> :
-				instructors?.length >= 0 ?
+				requestsLoading ? <Loader /> :
+				requestsList?.length >= 1 ?
 				<Flex flexDir={"column"}>
-					{instructors?.map((instructor: any, index: number) => 
-					<Flex p={3} bg={index%2 === 0 ? "#E0E0E066" : "unset"} columnGap={1}>
-						<Text >{index+1}.</Text>
+					{requestsList?.map((instructor: any, index: number) => 
+					<Flex p={3} bg={index%2 === 0 ? "#E0E0E066" : "unset"} columnGap={1} key={index} alignItems={"center"}>
 						<Text>{instructor?.title}</Text>
 						<Text>{instructor?.name}</Text>
 						<Text>({instructor?.department})</Text>
 						<Spacer />
-						<Button variant={"ghost"} colorScheme="green" size={"sm"}>Accept</Button>
-						<Button variant={"ghost"} colorScheme="red" size={"sm"}>Reject</Button>
+						<Text cursor={"pointer"} color="green" size={"sm"}
+						onClick={() => handleAccept(index)}><FontAwesomeIcon icon={faCheckCircle} /></Text>
+						<Text cursor={"pointer"} color="red" size={"sm"}
+						onClick={() => handleReject(index)} ml={5}><FontAwesomeIcon icon={faTrashAlt} /></Text>
 					</Flex>
 					)}
 				</Flex> :
-				<Text>No Coordinator</Text>
+				<Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>
 			}</>}
-			
 		</CourseTabs>
 	);
 }

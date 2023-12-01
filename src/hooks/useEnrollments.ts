@@ -74,9 +74,37 @@ export function useDeleteEnrollment() {
 export function useDeleteAllEnrollmentRequests() {
 	return useMutation({
 		mutationKey: ["deleteAllEnrolmentRequests"],
-		mutationFn: async ({ course_code}: any) => {
+		mutationFn: async ({ course_code }: any) => {
 			try {
 				await http.delete(`/students/all/${course_code}`);
+			} catch (error) {
+				return error;
+			}
+		},
+	});
+}
+
+export function useAcceptInstructorRequest() {
+	return useMutation({
+		mutationKey: ["acceptInstructorRequest"],
+		mutationFn: async ({ course_code, id }: any) => {
+			try {
+				const formData = new FormData
+				formData.append("course_code", course_code)
+				await http.put(`/instructors/${id}`, formData);
+			} catch (error) {
+				return error;
+			}
+		},
+	});
+}
+
+export function useDeleteInstructorRequest() {
+	return useMutation({
+		mutationKey: ["deleteAllEnrolmentRequests"],
+		mutationFn: async ({ course_code, id }: any) => {
+			try {
+				await http.delete(`/instructors/${id}/${course_code}`);
 			} catch (error) {
 				return error;
 			}
