@@ -29,7 +29,7 @@ function CourseHeader({ course_code, title, description, units, course_photo_url
 					<Text fontSize={"xl"} as="b" color="#696CFF">
 						{title || "--"}
 					</Text>
-					{user?.is_instructor && <Text as={NavLink} to={`/lecturer/edit-course/${course_code}`} display={"flex"} alignItems={"center"}>
+					{is_course_coordinator && <Text as={NavLink} to={`/edit-course/${course_code}`} display={"flex"} alignItems={"center"}>
 						<Text color={"#696CFF"} display={{base: "none", md: "flex"}} marginRight={"5px"}>Edit</Text>
 						<FontAwesomeIcon icon={faPencil} color={"#696CFF"} size={"sm"} />
 					</Text>}
@@ -45,15 +45,12 @@ function CourseHeader({ course_code, title, description, units, course_photo_url
 					<Text fontSize="md" color={"#000000"} mt={"1.25rem"}>{description || "--"}</Text>
 					{!user?.is_instructor && 
 					<Flex mt={4} fontSize={"sm"}>
-						<Text textColor={"#343680"}>{is_enrolled ? "Enrolled" : enrollment_pending ? "Pending enroll request" : "Not enrolled"}
-						</Text>
 						<Button 
 							size="sm" 
 							ml={"auto"} 
 							minWidth={"min-content"} 
 							borderRadius={"20px"}
 							colorScheme={is_enrolled ? "red" : enrollment_pending ? "blue" : "green"}
-							isDisabled={is_enrolled}
 							onClick={handleEnroll}
 							isLoading={enrollRequestMutation.isLoading}
 						>

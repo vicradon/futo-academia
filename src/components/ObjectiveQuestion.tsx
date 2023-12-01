@@ -127,7 +127,7 @@ export default function ObjectiveQuestion() {
 					</Box>
 				</Flex>
 			</Box>
-			<Center><Button colorScheme="blue" onClick={() => {navigate(`/lecturer/courses/${id}/assessments`)}}>Done</Button></Center>
+			<Center><Button colorScheme="blue" onClick={() => {navigate(`/courses/${id}/assessments`)}}>Done</Button></Center>
 			<Box my={6} border="1px solid grey" p={4} borderRadius="8px">
 				<Heading size={"md"} width={"100%"} textAlign={"center"} color={"#696CFF"}>Add Question</Heading>
 				<Box>

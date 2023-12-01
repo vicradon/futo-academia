@@ -60,7 +60,7 @@ export default function AssessmentCard({ is_active, title, start_date, id, idx, 
 						<>
 							<Text
 								as={NavLink}
-								to={is_active ? `/exams/${idx}/${id}`: `/lecturer/courses/${idx}/assessment/${id}` }
+								to={is_active ? `/exams/${idx}/${id}`: `/courses/${idx}/assessment/${id}` }
 								mr={2}
 								cursor={"pointer"}
 							>
@@ -70,7 +70,7 @@ export default function AssessmentCard({ is_active, title, start_date, id, idx, 
 							<Text
 								cursor="pointer"
 								onClick={() => {
-									navigate(`/lecturer/courses/${idx}/assessment/add/${id}`);
+									navigate(`/courses/${idx}/assessment/add/${id}`);
 								}}
 							>
 								Edit
@@ -92,7 +92,7 @@ export default function AssessmentCard({ is_active, title, start_date, id, idx, 
 						<>
 							<Button
 								onClick={() => {
-									navigate(`/lecturer/courses/${idx}/assessment/${id}`);
+									navigate(`/courses/${idx}/assessment/${id}`);
 								}}
 								mr={2}
 							>

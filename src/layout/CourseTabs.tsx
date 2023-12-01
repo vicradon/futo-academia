@@ -18,19 +18,19 @@ export default function CourseTabs({ children }: IProps) {
 	const tabData = [
 		{
 			name: "Summary",
-			path: `/lecturer/courses/${id}`,
+			path: `/courses/${id}`,
 		},
 		{
 			name: "Assessments",
-			path: `/lecturer/courses/${id}/assessments`,
+			path: `/courses/${id}/assessments`,
 		},
 		{
 			name: "Instructors",
-			path: `/lecturer/courses/${id}/instructors`,
+			path: `/courses/${id}/instructors`,
 		},
 		{
 			name: "Students",
-			path: `/lecturer/courses/${id}/students`,
+			path: `/courses/${id}/students`,
 		},
 	];
 

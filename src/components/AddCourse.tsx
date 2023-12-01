@@ -6,7 +6,7 @@ const AddCourse = () => {
 	const navigate = useNavigate();
 
 	const handleAddCourseClick = () => {
-		navigate("/lecturer/courses-upload");
+		navigate("/courses-upload");
 	};
 	return (
 		<Box 

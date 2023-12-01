@@ -118,15 +118,15 @@ const router = createBrowserRouter(
 				<Route index element={<FirstSemesterCourses />} />
 				<Route path="second-semester" element={<SecondSemesterCourses />} />
 			</Route>
-			<Route path="lecturer/courses-upload" element={<UploadCourse />} />
-			<Route path="lecturer/edit-course/:id" element={<EditCourse />} />
-			<Route path="lecturer/courses/:id" element={<ViewCourse />} />
-			<Route path="lecturer/courses/:id/assessment" element={<Assessments />} />
-			<Route path="lecturer/courses/:id/assessment/add/:idx" element={<AddAssessment />} />
-			<Route path="lecturer/courses/:id/assessment/:idx" element={<ViewAssessment />} />
-			<Route path="lecturer/courses/:id/assessments" element={<Assignments />} />
-			<Route path="lecturer/courses/:id/students/*" element={<CourseStudents />} />
-			<Route path="lecturer/courses/:id/instructors/*" element={<CourseInstructors />} />
+			<Route path="courses-upload" element={<UploadCourse />} />
+			<Route path="edit-course/:id" element={<EditCourse />} />
+			<Route path="courses/:id" element={<ViewCourse />} />
+			<Route path="courses/:id/assessment" element={<Assessments />} />
+			<Route path="courses/:id/assessment/add/:idx" element={<AddAssessment />} />
+			<Route path="courses/:id/assessment/:idx" element={<ViewAssessment />} />
+			<Route path="courses/:id/assessments" element={<Assignments />} />
+			<Route path="courses/:id/students/*" element={<CourseStudents />} />
+			<Route path="courses/:id/instructors/*" element={<CourseInstructors />} />
 			<Route path="lecturer-profile" element={<LecturerProfile />}>
 				<Route index element={<Profile />} />
 			  	<Route path="password" element={<Password />} />
