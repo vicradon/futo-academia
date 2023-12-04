@@ -30,6 +30,19 @@ export function useMakeEnrollRequest() {
 			}
 		},
 	});
+
+}
+export function useMakeEnrollRequestInstructor() {
+	return useMutation({
+		mutationKey: ["makeEnrollmentRequest"],
+		mutationFn: async ({ course_code}: any) => {
+			try {
+				await http.post("/instructors/enroll_request", {"course_code": course_code});
+			} catch (error) {
+				return error;
+			}
+		},
+	});
 }
 
 export function useApproveEnrollment() {

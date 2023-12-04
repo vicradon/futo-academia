@@ -3,20 +3,19 @@ import http from "../utils/http";
 import { Button, Center, Flex, Grid, Input, InputGroup, InputLeftAddon, Select, Text } from "@chakra-ui/react";
 import Loader from "../components/Loaders";
 import { SearchIcon } from "@chakra-ui/icons";
-import CourseStudents from "./CourseStudents";
 import { useEffect, useState } from "react";
 import { useDeleteAllEnrollmentRequests, useDeleteEnrollment } from "../hooks/useEnrollments";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-interface CourseStudents {
+export interface CourseStudent {
   search: string,
   level: any,
 }
 
 function Enrolled({id}: any) {
 
-  const [filterParams, setFilterParams] = useState<CourseStudents>({search: "", level: ""})
+  const [filterParams, setFilterParams] = useState<CourseStudent>({search: "", level: ""})
   const [data, setData] = useState<any>([])
 
   const { isLoading, refetch } = useQuery({

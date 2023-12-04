@@ -3,17 +3,24 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import NoImage from "../assets/images/no-picture.jpg";
-import { useMakeEnrollRequest } from "../hooks/useEnrollments";
+import { useMakeEnrollRequest, useMakeEnrollRequestInstructor } from "../hooks/useEnrollments";
 
 
 function CourseHeader({ course_code, title, description, units, course_photo_url, student_count, instructor_count, user, is_course_coordinator
-, is_course_instructor, enrollment_pending, is_enrolled, refetchEnrollmentStatus}: any) {
+, is_course_instructor, enrollment_pending, is_enrolled, refetchEnrollmentStatus, instructor_enrollment_pending}: any) {
 
 	const reg_num = user?.id
 
 	const enrollRequestMutation = useMakeEnrollRequest()
 	const handleEnroll = () => {
 		enrollRequestMutation.mutate({course_code, reg_num},
+			{onSuccess: () => (console.log(enrollRequestMutation.data))})
+			refetchEnrollmentStatus()
+	}
+
+	const joinRequestMutation = useMakeEnrollRequestInstructor()
+	const handleJoin = () => {
+		joinRequestMutation.mutate({course_code},
 			{onSuccess: () => (console.log(enrollRequestMutation.data))})
 			refetchEnrollmentStatus()
 	}
@@ -50,11 +57,26 @@ function CourseHeader({ course_code, title, description, units, course_photo_url
 							ml={"auto"} 
 							minWidth={"min-content"} 
 							borderRadius={"20px"}
-							colorScheme={is_enrolled ? "red" : enrollment_pending ? "blue" : "green"}
+							colorScheme={is_enrolled ? "red" : enrollment_pending ? "red" : "green"}
 							onClick={handleEnroll}
 							isLoading={enrollRequestMutation.isLoading}
 						>
 							{is_enrolled ? "disenroll" : enrollment_pending ? "cancel request" : "request enrollment"}
+						</Button>
+					</Flex>
+					}
+					{user?.is_instructor && 
+					<Flex mt={4} fontSize={"sm"}>
+						<Button 
+							size="sm" 
+							ml={"auto"} 
+							minWidth={"min-content"} 
+							borderRadius={"20px"}
+							colorScheme={is_course_coordinator || is_course_instructor ? "red" : instructor_enrollment_pending ? "red" : "green"}
+							onClick={handleJoin}
+							isLoading={enrollRequestMutation.isLoading}
+						>
+							{is_course_instructor ? "leave course" : instructor_enrollment_pending ? "cancel request" : "request to join"}
 						</Button>
 					</Flex>
 					}
