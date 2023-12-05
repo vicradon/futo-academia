@@ -79,8 +79,14 @@ export default function Assignments() {
 				total_mark: "",
 			});
 		},
-		onError: (err) => {
-			console.log("Mutation errror", err);
+		onError: (err: any) => {
+			if (err?.response) {
+				toast({
+					status: "error",
+					description: err?.response?.data?.detail,
+					position: "top"
+				})
+			}
 		},
 	});
 
@@ -111,14 +117,14 @@ export default function Assignments() {
 	if (isLoading) return <Loader />;
 	return (
 		<CourseTabs>
-			<Flex justifyContent={"end"} mt={"20px"} alignItems={"center"}>
+			{user?.is_instructor && <Flex justifyContent={"end"} mt={"20px"} alignItems={"center"}>
 				<Box onClick={() => {onOpen()}} fontSize={"16px"} display="flex" alignItems={"center"} cursor={"pointer"}>
 				<FontAwesomeIcon icon={faPlusCircle} size="2x" color="#585AD4" fontSize={"16px"}/>
 				<Text fontSize={"16px"} color="blue" mx={"10px"}>
 					Create Assessment
 				</Text>
 				</Box>
-			</Flex>
+			</Flex>}
 			
 			{user?.is_instructor && (
 				<Box bgColor={"white"} mt={5}>
@@ -138,7 +144,7 @@ export default function Assignments() {
 									onChange={handleChange}
 								/>
 							</FormControl>
-							<FormControl isRequired flexDir={"column"} my={3}>
+							<FormControl isRequired flexDir={"column"} my={1}>
 								<FormLabel>Start date</FormLabel>
 								<Input
 									placeholder="Start Date"
@@ -148,7 +154,7 @@ export default function Assignments() {
 									onChange={handleChange}
 								/>
 							</FormControl>
-							<FormControl isRequired flexDir={"column"} my={3}>
+							<FormControl isRequired flexDir={"column"} my={1}>
 								<FormLabel>Duration (minutes)</FormLabel>
 								<Input
 									placeholder="60"
@@ -158,17 +164,7 @@ export default function Assignments() {
 									onChange={handleChange}
 								/>
 							</FormControl>
-							<FormControl isRequired flexDir={"column"} my={3}>
-								<FormLabel>Total Mark</FormLabel>
-								<Input
-									placeholder="20"
-									name="total_mark"
-									value={examSetUp["total_mark"]}
-									type="number"
-									onChange={handleChange}
-								/>
-							</FormControl>
-							<FormControl isRequired flexDir={"column"} my={3}>
+							<FormControl isRequired flexDir={"column"} my={1}>
 								<FormLabel>End date</FormLabel>
 								<Input
 									placeholder="End date"
@@ -178,7 +174,17 @@ export default function Assignments() {
 									onChange={handleChange}
 								/>
 							</FormControl>
-							<FormControl isRequired flexDir={"column"} my={3}>
+							<FormControl isRequired flexDir={"column"} my={1}>
+								<FormLabel>Total Mark</FormLabel>
+								<Input
+									placeholder="20"
+									name="total_mark"
+									value={examSetUp["total_mark"]}
+									type="number"
+									onChange={handleChange}
+								/>
+							</FormControl>
+							<FormControl isRequired flexDir={"column"} my={1}>
 								<FormLabel>Assessment type</FormLabel>
 								<Select
 									placeholder="Assesment type"
@@ -219,81 +225,115 @@ export default function Assignments() {
 				</Box>
 			)}
 			<Accordion defaultIndex={[0]} allowToggle>
-			{user?.is_instructor && (
+
+				{user?.is_instructor && (
+					<AccordionItem my={4} borderWidth={3}>
+						<AccordionButton 
+							display={"flex"} 
+							justifyContent={"space-between"} 
+							color={"#343780"}
+							_expanded={{ bg: '#343680', color: 'white' }}
+						>
+							<Text fontWeight={"bold"} fontSize={"2xl"}>
+								Drafts
+							</Text>
+							<AccordionIcon />
+						</AccordionButton>
+						<AccordionPanel>
+							{data
+								?.filter((x: any) => x?.is_marked === false && x?.is_active === false)
+								?.map((x: any, i: number) => {
+									return <AssessmentCard setExamSetUp={setExamSetUp} idx={id} key={i} {...x} />;
+								})}
+							{data?.filter((x: any) => x?.is_marked === false && x?.is_active === false)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+						</AccordionPanel>
+					</AccordionItem>
+				)}
+
 				<AccordionItem my={4} borderWidth={3}>
 					<AccordionButton 
 						display={"flex"} 
-						justifyContent={"space-between"} 
+						justifyContent={"space-between"}
 						color={"#343780"}
 						_expanded={{ bg: '#343680', color: 'white' }}
 					>
 						<Text fontWeight={"bold"} fontSize={"2xl"}>
-							Drafts
+							Active
 						</Text>
 						<AccordionIcon />
 					</AccordionButton>
 					<AccordionPanel>
 						{data
-							?.filter((x: any) => x?.is_marked === false && x?.is_active === false)
-							?.map((x: any, i: number) => {
-								return <AssessmentCard setExamSetUp={setExamSetUp} idx={id} key={i} {...x} />;
-							})}
-						{data?.filter((x: any) => x?.is_marked === false && x?.is_active === false)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+						?.filter((x: any) => x?.is_active)
+						.map((x: any, i: number) => {
+							return <AssessmentCard is_active={true} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
+						})}
+						{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
 					</AccordionPanel>
 				</AccordionItem>
-			)}
 
-			<AccordionItem my={4} borderWidth={3}>
-				<AccordionButton 
-					display={"flex"} 
-					justifyContent={"space-between"}
-					color={"#343780"}
-					_expanded={{ bg: '#343680', color: 'white' }}
-				>
+				<AccordionItem my={4} borderWidth={5}>
+					<AccordionButton
+						display={"flex"} 
+						justifyContent={"space-between"}
+						color={"#343780"}
+						_expanded={{ bg: '#343680', color: 'white' }}
+					>
 					<Text fontWeight={"bold"} fontSize={"2xl"}>
-						Active
+						Completed
 					</Text>
 					<AccordionIcon />
 				</AccordionButton>
 				<AccordionPanel>
 					{data
-					?.filter((x: any) => x?.is_active)
-					.map((x: any, i: number) => {
-						return <AssessmentCard is_active={true} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
-					})}
-					{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+						?.filter((x: any) => x?.is_marked)
+						.map((x: any, i: number) => {
+							return (
+								<AssessmentCard
+									idx={id}
+									setExamSetUp={setExamSetUp}
+									overAllClick={() => (!user?.is_instructor ? navigate(`/exam/${x?.id}/${id}/results`) : "")}
+									is_marked={true}
+									key={i}
+									{...x}
+								/>
+							);
+						})}
+					{data?.filter((x: any) => x?.is_marked)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
 				</AccordionPanel>
-			</AccordionItem>
-			<AccordionItem my={4} borderWidth={5}>
-				<AccordionButton
-					display={"flex"} 
-					justifyContent={"space-between"}
-					color={"#343780"}
-					_expanded={{ bg: '#343680', color: 'white' }}
-				>
-				<Text fontWeight={"bold"} fontSize={"2xl"}>
-					Marked
-				</Text>
-				<AccordionIcon />
-			</AccordionButton>
-			<AccordionPanel>
-				{data
-					?.filter((x: any) => x?.is_marked)
-					.map((x: any, i: number) => {
-						return (
-							<AssessmentCard
-								idx={id}
-								setExamSetUp={setExamSetUp}
-								overAllClick={() => (!user?.is_instructor ? navigate(`/exam/${x?.id}/${id}/results`) : "")}
-								is_marked={true}
-								key={i}
-								{...x}
-							/>
-						);
-					})}
-				{data?.filter((x: any) => x?.is_marked)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
-			</AccordionPanel>
-			</AccordionItem>
+				</AccordionItem>
+
+				<AccordionItem my={4} borderWidth={5}>
+					<AccordionButton
+						display={"flex"} 
+						justifyContent={"space-between"}
+						color={"#343780"}
+						_expanded={{ bg: '#343680', color: 'white' }}
+					>
+					<Text fontWeight={"bold"} fontSize={"2xl"}>
+						Marked
+					</Text>
+					<AccordionIcon />
+				</AccordionButton>
+				<AccordionPanel>
+					{data
+						?.filter((x: any) => x?.is_marked)
+						.map((x: any, i: number) => {
+							return (
+								<AssessmentCard
+									idx={id}
+									setExamSetUp={setExamSetUp}
+									overAllClick={() => (!user?.is_instructor ? navigate(`/exam/${x?.id}/${id}/results`) : "")}
+									is_marked={true}
+									key={i}
+									{...x}
+								/>
+							);
+						})}
+					{data?.filter((x: any) => x?.is_marked)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+				</AccordionPanel>
+				</AccordionItem>
+
 			</Accordion>
 		</CourseTabs>
 	);
