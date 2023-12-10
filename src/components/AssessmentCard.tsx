@@ -111,6 +111,18 @@ export default function AssessmentCard({ is_active, title, start_date, id, idx, 
 							</Text>
 						</>
 					)}
+					{!user?.is_instructor && is_active && (
+						<>
+							<Text
+								as={NavLink}
+								to={`/courses/${idx}/assessment/${id}`}
+								mr={2}
+								cursor={"pointer"}
+							>
+								Take Assessment
+							</Text>
+						</>
+					)}
 					{user?.is_instructor && is_completed && (
 						<>
 							<Button

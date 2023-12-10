@@ -23,6 +23,8 @@ export default function ViewCourse() {
 		queryFn: () => http.get(`/courses/${id}/enrollment_status`).then((r) => r.data),
 	});
 
+	const [timer, setTimer] = useState(false)
+
 	useEffect(() => {
 	  console.log(enrollmentStatus)
 	}, [enrolledIsLoading])
@@ -79,7 +81,13 @@ export default function ViewCourse() {
 	const navigate = useNavigate();
 	const user = useUser();
 
-	const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
+	const renderer1 = ({ days, hours, minutes, seconds, completed }: any) => {
+		if (completed) {
+			setTimer(!timer)
+		}
+			return <TimerBox days={days} hours={hours} minutes={minutes} seconds={seconds} />;
+	};
+	const renderer2 = ({ days, hours, minutes, seconds, completed }: any) => {
 		if (completed) {
 			return (
 				<Box
@@ -92,7 +100,7 @@ export default function ViewCourse() {
 					width="20%"
 				>
 					<Text fontWeight={"bold"} textAlign={"center"}>
-						Completed!
+						Ended!
 					</Text>
 				</Box>
 			);
@@ -130,7 +138,8 @@ export default function ViewCourse() {
 										onClick={() => {
 											if (convertToEpoch(x?.start_date) > Math.floor(Date?.now() / 1000)) {
 												toast({
-													title: "Test is yet to start",
+													title: "Test is yet to begin",
+													position: "top"
 												});
 											} else {
 												navigate(`/exams/${id}/${x?.id}`);
@@ -142,14 +151,20 @@ export default function ViewCourse() {
 												{x?.title}{" "}
 											</Box>
 											<Box>({x?.assessment_type === "Exam" ? "Examination" : x?.assessment_type})</Box>
-											<Text color="#3578D3" fontSize={"sm"}>
+											{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) ? <Text color="#3578D3" fontSize={"sm"}>
 												{new Date(x?.end_date).toDateString()}, {new Date(x?.end_date).getHours()}:{zeroPad(new Date(x?.end_date).getMinutes())}
 											</Text>
+												:
+											<Text color="#3578D3" fontSize={"sm"}>
+												Ongoing
+											</Text>
+											}
 										</Box>
 									</Flex>
 									<Spacer />
 									<Text fontWeight={"bold"} width={"20%"} textAlign={"center"} p={3} borderLeft={"1px"} as={NavLink} to={`/lecturer/courses/${x?.course_id}/assessment/${x?.id}`}>View</Text>
-									<Countdown date={x?.end_date} renderer={renderer} />
+									{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && <Countdown date={x?.start_date} renderer={renderer1} />}
+									{convertToEpoch(x?.start_date) <= Math.floor(Date?.now()/1000) && <Countdown date={x?.end_date} renderer={renderer2} />}
 								</Flex>
 							))
 							: <Text>No active assessemnt</Text>
