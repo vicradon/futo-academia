@@ -32,11 +32,14 @@ export default function Assignments() {
 	const toast = useToast();
 	const navigate = useNavigate();
 	const { isOpen, onClose, onOpen } = useDisclosure()
-	const { data, isLoading } = useQuery({
+
+
+	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["getassesments", id],
 		queryFn: () => http.get(`/courses/${id}/assessments`).then((r) => r.data),
 		onError: (err) => console.log("error", err),
 	});
+
 
 	const [examSetUp, setExamSetUp] = useState<ExamSetup>({
 		assessment_type: "",
@@ -60,6 +63,22 @@ export default function Assignments() {
 	useEffect(() => {
 		setExamSetUp({ ...examSetUp, course_id: id, is_active: false });
 	}, []);
+
+	const automaticEndAssessmentMutation = useMutation({
+		mutationFn: (id: any) => {
+			return http.put(`/assessments/${id}/end-automatic`)
+		},
+		onError: (err: any) => (
+			console.log(err)
+		)
+	})
+
+	useEffect(() => {
+		for (let i = 0; i<data?.length; i++) {
+			automaticEndAssessmentMutation.mutate(data[i].id)
+		}
+		refetch()
+	}, [new Date().getMinutes()]);
 
 	const examSetUpMutation = useMutation({
 		mutationFn: (examSetUp: ExamSetup) => {
@@ -241,11 +260,11 @@ export default function Assignments() {
 						</AccordionButton>
 						<AccordionPanel>
 							{data
-								?.filter((x: any) => x?.is_marked === false && x?.is_active === false)
+								?.filter((x: any) => !x?.is_marked && !x?.is_active && !x?.is_completed)
 								?.map((x: any, i: number) => {
 									return <AssessmentCard setExamSetUp={setExamSetUp} idx={id} key={i} {...x} />;
 								})}
-							{data?.filter((x: any) => x?.is_marked === false && x?.is_active === false)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+							{data?.filter((x: any) => x?.is_marked === false && x?.is_active === false && x?.is_completed === false)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Drafts</Text>}
 						</AccordionPanel>
 					</AccordionItem>
 				)}
@@ -268,7 +287,7 @@ export default function Assignments() {
 						.map((x: any, i: number) => {
 							return <AssessmentCard is_active={true} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
 						})}
-						{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+						{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Active Assessment</Text>}
 					</AccordionPanel>
 				</AccordionItem>
 
@@ -286,7 +305,7 @@ export default function Assignments() {
 				</AccordionButton>
 				<AccordionPanel>
 					{data
-						?.filter((x: any) => x?.is_marked)
+						?.filter((x: any) => x?.is_completed)
 						.map((x: any, i: number) => {
 							return (
 								<AssessmentCard
@@ -299,7 +318,7 @@ export default function Assignments() {
 								/>
 							);
 						})}
-					{data?.filter((x: any) => x?.is_marked)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+					{data?.filter((x: any) => x?.is_completed)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Completed Assessment</Text>}
 				</AccordionPanel>
 				</AccordionItem>
 
@@ -330,7 +349,7 @@ export default function Assignments() {
 								/>
 							);
 						})}
-					{data?.filter((x: any) => x?.is_marked)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Data here</Text>}
+					{data?.filter((x: any) => x?.is_marked)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Marked Assessments</Text>}
 				</AccordionPanel>
 				</AccordionItem>
 

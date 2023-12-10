@@ -130,7 +130,7 @@ export default function AddAssessment() {
 			</Box>
 
 			<Center>
-				<Button colorScheme="blue" onClick={() => {navigate(`/lecturer/courses/${id}/assessment/add/${idx}`)}}>
+				<Button colorScheme="blue" onClick={() => {navigate(`/courses/${id}/assessment/add/${idx}`)}}>
 					Edit
 				</Button>
 			</Center>

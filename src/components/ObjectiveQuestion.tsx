@@ -63,6 +63,25 @@ export default function ObjectiveQuestion() {
 		};
 	};
 
+	const uploadMutation = useMutation({
+		mutationFn: (id: any) => {
+			return http.put(`/assessments/${id}/activate`);
+		},
+		onSuccess: () => {
+			toast({ title: "Sucessfully updated", variant: "solid" });
+			queryClient.invalidateQueries({ queryKey: ["getassesments"] });
+		},
+		onError: (err: any) => {
+			if (err?.response) {
+				toast({
+					status: "error",
+					description: err?.response?.data?.detail,
+					position: "top"
+				})
+			}
+		},
+	});
+
 	const questionMutations = useMutation({
 		mutationFn: (question: QuestionArr) => {
 			return http.post("/questions", question);
@@ -127,7 +146,10 @@ export default function ObjectiveQuestion() {
 					</Box>
 				</Flex>
 			</Box>
-			<Center><Button colorScheme="blue" onClick={() => {navigate(`/courses/${id}/assessments`)}}>Done</Button></Center>
+			<Center columnGap={3}>
+				<Button colorScheme="blue" onClick={() => uploadMutation.mutate(idx)}>Upload</Button>
+				<Button colorScheme="blue" onClick={() => {navigate(`/courses/${id}/assessments`)}}>Done</Button>
+			</Center>
 			<Box my={6} border="1px solid grey" p={4} borderRadius="8px">
 				<Heading size={"md"} width={"100%"} textAlign={"center"} color={"#696CFF"}>Add Question</Heading>
 				<Box>

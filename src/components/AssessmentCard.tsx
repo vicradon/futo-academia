@@ -6,9 +6,8 @@ import http from "../utils/http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useToast } from "@chakra-ui/react";
-import { handleToast } from "../utils/handleToast";
 
-export default function AssessmentCard({ is_active, title, start_date, id, idx, is_marked, overAllClick, setExamSetUp }: Partial<any>) {
+export default function AssessmentCard({ is_active, title, start_date, id, idx, is_marked, is_completed, overAllClick, setExamSetUp }: Partial<any>) {
 	const navigate = useNavigate();
 	const user = useUser();
 	const toast = useToast();
@@ -38,25 +37,27 @@ export default function AssessmentCard({ is_active, title, start_date, id, idx, 
 			setExamSetUp({});
 		},
 		onError: (err: any) => {
-			handleToast(err);
+			if (err?.response) {
+				toast({
+					status: "error",
+					description: err?.response?.data?.detail,
+					position: "top"
+				})
+			}
 		},
 	});
 
 	return (
 		<Box display="flex" my={4}>
-			<Box bgColor="grey" width="100px" height="90px" display="flex" alignItems="center" justifyContent="center">
-				<Text fontSize={"80px"} color={"#fff"}>
-					{title?.["0"].toUpperCase("")}
-				</Text>
-			</Box>
 			<Box bgColor="#fff" p={3} display="flex" alignItems="center" w="100%" justifyContent="space-between">
-				<Box display="flex" flexDir="column">
-					<Text>{title}</Text>
-					<Text>{start_date?.split("T")[0]}</Text>
+				<Box display="flex" flexDir="column" mr={2}>
+					<Text mb={2}>{title}</Text>
+					<Text fontSize={"0.9rem"} textColor={"#3578D3"}>{start_date?.split("T")[0]}</Text>
+					<Text fontSize={"0.9rem"} textColor={"#3578D3"}>{start_date?.split("T")[1].substring(0,5)}</Text>
 				</Box>
 
 				<Box display="flex" alignItems="center" justifyContent="space-between">
-					{user?.is_instructor && !is_active && !is_marked && (
+					{user?.is_instructor && !is_active && !is_marked && !is_completed && (
 						<>
 							<Text
 								as={NavLink}
@@ -83,6 +84,7 @@ export default function AssessmentCard({ is_active, title, start_date, id, idx, 
 								as="button" 
 								onClick={() => uploadMutation.mutate(id)}
 								borderRadius={10}
+								size={"sm"}
 							>
 								Upload
 							</Button>
@@ -90,15 +92,37 @@ export default function AssessmentCard({ is_active, title, start_date, id, idx, 
 					)}
 					{user?.is_instructor && is_active && (
 						<>
+							<Text
+								cursor="pointer"
+								onClick={() => {
+									navigate(`/courses/${idx}/assessment/add/${id}`);
+								}}
+							>
+								Edit
+							</Text>
+							<Text mx={3}>|</Text>
+							<Text
+								as={NavLink}
+								to={`/courses/${idx}/assessment/${id}`}
+								mr={2}
+								cursor={"pointer"}
+							>
+								View
+							</Text>
+						</>
+					)}
+					{user?.is_instructor && is_completed && (
+						<>
 							<Button
 								onClick={() => {
 									navigate(`/courses/${idx}/assessment/${id}`);
 								}}
 								mr={2}
+								size={"sm"}
 							>
 								View
 							</Button>
-							<Button onClick={() => markMutation.mutate(id)} isLoading={markMutation?.isLoading}>
+							<Button onClick={() => markMutation.mutate(id)} isLoading={markMutation?.isLoading} size={"sm"}>
 								Mark
 							</Button>
 						</>

@@ -121,8 +121,8 @@ function EnrollmentRequests({id}: any) {
         <Grid templateColumns={"0.8fr 2.5fr 1.8fr 1fr 1fr 0.8fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}} key={student?.reg_num} minH={"40px"} bg={index%2 === 0 ? "#E0E0E066" : "unset"} alignContent={"center"}>
           <Text py={3} pl={1}>{index+1}</Text>
           <Text py={3}>{student?.name}</Text>
-          <Text py={3} overflowX={"scroll"}>{student?.reg_num}</Text>
-          <Text py={3} overflowX={"scroll"}>{student?.department}</Text>
+          <Text py={3} overflowX={"auto"}>{student?.reg_num}</Text>
+          <Text py={3} overflowX={"auto"}>{student?.department}</Text>
           <Text py={3}>{student?.level}</Text>
           <Text py={3} textAlign={"center"} textColor={"green"} cursor={"pointer"} onClick={() => {handleRequestAccept(index)}}>
             <Text display={{base: "flex", lg: "none"}} ><FontAwesomeIcon icon={faCheck}/></Text>
