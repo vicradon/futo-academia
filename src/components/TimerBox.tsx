@@ -13,6 +13,7 @@ export default function TimerBox({ days, hours, minutes, seconds }: any) {
 			borderRadius="8px"
 			p={2}
 			textColor={"#0007FF"}
+			maxW={"300px"}
 		>
 			<Flex alignItems="center" justifyContent="space-around" minWidth={"min-content"}>
 				<Box mr={"6px"}>
