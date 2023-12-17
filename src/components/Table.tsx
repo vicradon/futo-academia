@@ -4,7 +4,7 @@ import EmptyIcon from "../assets/images/emptyfile.svg";
 import Loader from "./Loaders";
 
 const AppTable = ({ title, header: headers, data: body = [], filterData, onSelectChange, isLoading, handleSearch }: any) => {
-	console.log({ body });
+	// console.log({ body });
 	return (
 		<Box>
 			<Flex alignItems="center" my={8} justifyContent={"space-between"}>

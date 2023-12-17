@@ -174,13 +174,12 @@ export default function ViewCourse() {
 										<ModalOverlay />
 										<ModalContent>
 										<ModalCloseButton />
-											<ModalHeader borderBottom={"1px"}>
+											<ModalHeader borderBottom={"1px"} borderColor={"gray.200"}>
 												<Text color="#3578D3">
 													{x?.title} <i>({x?.assessment_type === "Exam" ? "Examination" : x?.assessment_type})</i>
 												</Text>
 											</ModalHeader>
 											<ModalBody p={5} display={"flex"} flexDir={"column"}>
-												{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) ? <Text>Assessment begins in:</Text> : <Text>Assessment ends in:</Text>}
 												<Flex alignSelf={"center"}>
 													{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && 
 													<Countdown date={x?.start_date} renderer={renderer1} />}
@@ -225,17 +224,17 @@ export default function ViewCourse() {
 									</Flex>
 									<Spacer />
 									{
-										user?.isInstructor && <Text fontWeight={"bold"} width={"20%"} textAlign={"center"} p={3} borderLeft={"1px"} as={NavLink} to={`/lecturer/courses/${x?.course_id}/assessment/${x?.id}`}>
+										user?.is_instructor === true && <Text fontWeight={"bold"} width={"20%"} textAlign={"center"} p={3} borderLeft={"1px"} as={NavLink} to={`/courses/${x?.course_id}/assessment/${x?.id}`}>
 											View
 										</Text>
 									}
 
 									{
-										!user?.isInstructor && <Text fontWeight={"bold"} width={"20%"} textAlign={"center"} p={3} borderLeft={"1px"} cursor={"pointer"}
+										user?.is_instructor === false && <Text fontWeight={"bold"} width={"20%"} textAlign={"center"} p={3} borderLeft={"1px"} cursor={"pointer"}
 										onClick={() => {
 											if (convertToEpoch(x?.start_date) > Math.floor(Date?.now() / 1000)) {
 												toast({
-													title: "Test is yet to begin",
+													title: "Assessment is yet to begin",
 													position: "top"
 												});
 											} else {

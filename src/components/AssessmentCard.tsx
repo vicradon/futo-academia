@@ -162,6 +162,15 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 							>
 								View
 							</Text>
+							<Text mx={3}>|</Text>
+							<Text
+								as={NavLink}
+								to={`/courses/${idx}/assessment/${id}`}
+								mr={2}
+								cursor={"pointer"}
+							>
+								End
+							</Text>
 						</>
 					)}
 					{!user?.is_instructor && is_active && (
@@ -169,7 +178,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 							<Text
 								as={NavLink}
 								onClick={convertToEpoch(data?.start_date) > Math.floor(Date?.now()/1000) ? () => toast({
-									title: "Test is yet to begin",
+									title: "Assessment is yet to begin",
 									position: "top"
 								}) : onOpen}
 								mr={2}
@@ -181,13 +190,12 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 										<ModalOverlay />
 										<ModalContent>
 										<ModalCloseButton />
-											<ModalHeader borderBottom={"1px"}>
+											<ModalHeader borderBottom={"1px"} borderColor={"gray.200"}>
 												<Text color="#3578D3">
 													{data?.title} <i>({data?.assessment_type === "Exam" ? "Examination" : data?.assessment_type})</i>
 												</Text>
 											</ModalHeader>
 											<ModalBody p={5} display={"flex"} flexDir={"column"}>
-											{convertToEpoch(data?.start_date) > Math.floor(Date?.now()/1000) ? <Text>Assessment begins in:</Text> : <Text>Assessment ends in:</Text>}
 											<Flex alignSelf={"center"}>
 												{convertToEpoch(data?.start_date) > Math.floor(Date?.now()/1000) && 
 												<Countdown date={data?.start_date} renderer={renderer1} />}
