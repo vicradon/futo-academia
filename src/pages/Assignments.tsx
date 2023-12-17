@@ -285,7 +285,7 @@ export default function Assignments() {
 						{data
 						?.filter((x: any) => x?.is_active)
 						.map((x: any, i: number) => {
-							return <AssessmentCard is_active={true} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
+							return <AssessmentCard is_active={true} data={x} markMutation={markMutation} idx={id} key={i} setExamSetUp={setExamSetUp} {...x} />;
 						})}
 						{data?.filter((x: any) => x?.is_active)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Active Assessment</Text>}
 					</AccordionPanel>

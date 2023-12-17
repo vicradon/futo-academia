@@ -179,13 +179,15 @@ export default function ViewCourse() {
 													{x?.title} <i>({x?.assessment_type === "Exam" ? "Examination" : x?.assessment_type})</i>
 												</Text>
 											</ModalHeader>
-											<ModalBody p={5}>
-												<Text>Time to end of assessemnt:</Text>
-												{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && 
-												<Countdown date={x?.start_date} renderer={renderer1} />}
+											<ModalBody p={5} display={"flex"} flexDir={"column"}>
+												{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) ? <Text>Assessment begins in:</Text> : <Text>Assessment ends in:</Text>}
+												<Flex alignSelf={"center"}>
+													{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && 
+													<Countdown date={x?.start_date} renderer={renderer1} />}
 
-												{convertToEpoch(x?.start_date) <= Math.floor(Date?.now()/1000) && 
-												<Countdown date={x?.end_date} renderer={renderer2} />}
+													{convertToEpoch(x?.start_date) <= Math.floor(Date?.now()/1000) && 
+													<Countdown date={x?.end_date} renderer={renderer2} />}
+												</Flex>
 
 												<Text mt={5}>Clicking <i>"Begin"</i> starts your timer for this {x?.assessment_type === "Exam" ? "Examination".toLowerCase() : x?.assessment_type.toLowerCase}.The {x?.assessment_type === "Exam" ? "Examination".toLowerCase() : x?.assessment_type.toLowerCase} will last for <b>{x?.duration}</b> minutes.</Text>
 											</ModalBody>
