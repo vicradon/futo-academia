@@ -152,13 +152,18 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 					<Box display="flex" flexDir="column" mr={2}>
 						<Flex mb={2}>{title}<Text textColor={"#3578D3"} px={1} py={0} borderRadius={"20px"} >({data?.assessment_type === "Exam" ? "examination" : data?.assessment_type.toLowerCase()})</Text></Flex>
 						
-						{convertToEpoch(data?.start_date) > Math.floor(Date?.now()/1000) ? 
+						{
+							data?.is_completed ? 
+							<Text color="#3578D3" fontSize={"sm"}>
+								{new Date(data?.start_date).toDateString()}, {new Date(data?.start_date).getHours()}:{zeroPad(new Date(data?.start_date).getMinutes())} - {new Date(data?.end_date).toDateString()}, {new Date(data?.end_date).getHours()}:{zeroPad(new Date(data?.end_date).getMinutes())}
+							</Text> :
+						convertToEpoch(data?.start_date) > Math.floor(Date?.now()/1000) ? 
 							<Text color="#3578D3" fontSize={"sm"}>
 								{new Date(data?.start_date).toDateString()}, {new Date(data?.start_date).getHours()}:{zeroPad(new Date(data?.start_date).getMinutes())} - {new Date(data?.end_date).toDateString()}, {new Date(data?.end_date).getHours()}:{zeroPad(new Date(data?.end_date).getMinutes())}
 							</Text>
 							:
 							<Text color="#3578D3" fontSize={"sm"}>
-								Ongoing
+								Ongoing: ends {new Date(data?.end_date).toDateString()}, {new Date(data?.end_date).getHours()}:{zeroPad(new Date(data?.end_date).getMinutes())}
 							</Text>
 						}
 					</Box>
@@ -281,18 +286,21 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 						)}
 						{user?.is_instructor && is_completed && (
 							<>
-								<Button
-									onClick={() => {
-										navigate(`/courses/${idx}/assessment/${id}`);
-									}}
-									mr={2}
-									size={"sm"}
-								>
-									View
-								</Button>
-								<Button onClick={() => markMutation.mutate(id)} isLoading={markMutation?.isLoading} size={"sm"}>
-									Mark
-								</Button>
+								<Menu>
+								<MenuButton>
+									<FontAwesomeIcon icon={faEllipsisV} />
+								</MenuButton>
+								<MenuList>
+									<MenuItem
+										onClick={() => navigate(`/courses/${idx}/assessment/${id}`)}
+									>
+										<Text>View</Text>
+									</MenuItem>
+									<MenuItem onClick={() => markMutation.mutate(id)}>
+										<Text>Mark</Text>
+									</MenuItem>
+								</MenuList>
+							</Menu>
 							</>
 						)}
 	
