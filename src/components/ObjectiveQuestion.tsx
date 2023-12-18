@@ -268,7 +268,7 @@ export default function ObjectiveQuestion() {
 							<Button ref={cancelRef} onClick={alertOnClose} size={"md"}>
 								Cancel
 							</Button>
-							<Button colorScheme="red" onClick={()=>{deleteAssessment.mutate({assessment_id: idx})}} size={"md"}>
+							<Button colorScheme="red" onClick={()=>{deleteAssessment.mutate({assessment_id: id})}} size={"md"}>
 								Delete
 							</Button>
 						</AlertDialogFooter>
