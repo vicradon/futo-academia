@@ -1,6 +1,6 @@
 import AppTable from "../components/Table";
 import http from "../utils/http";
-import { Box, Text, Flex, Skeleton, Stack, Spacer, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button } from "@chakra-ui/react";
+import { Box, Text, Flex, Skeleton, Stack, Spacer, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, Grid, GridItem } from "@chakra-ui/react";
 import TimerBox from "../components/TimerBox";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
@@ -161,93 +161,112 @@ export default function ViewCourse() {
 							</Stack>
 						):
 						activeAssessments.length > 0 ? activeAssessments?.map((x: any, index: number) => (
-								<Flex 
-									alignItems={"center"} 
-									justifyContent={"space-between"} 
-									bg={"white"} 
-									w="100%" 
-									p={4} 
-									// flexDir={{base: "column", md: "row"}} 
-									key={x?.id}
-								>
-									<Modal isOpen={modalsStates[index]} onClose={onClose} key={x?.id}>
-										<ModalOverlay />
-										<ModalContent>
-										<ModalCloseButton />
-											<ModalHeader borderBottom={"1px"} borderColor={"gray.200"}>
-												<Text color="#3578D3">
-													{x?.title} <i>({x?.assessment_type === "Exam" ? "Examination" : x?.assessment_type})</i>
+							<>
+								<Grid templateColumns={"repeat(10, 1fr)"} width={"100%"} alignItems={"center"} my={2} bg={"white"} p={3} columnGap={"2"}>
+									<GridItem colSpan={{base: 7, md: 4, lg: 5}} colStart={1} rowStart={1} justifySelf={"start"}>
+										<Flex
+											justifyContent="space-around"
+											justifySelf={"start"}
+										>
+											<Box ml={2} display={"flex"} justifyContent={"space-around"} flexDir={"column"}>
+												<Box fontWeight={"bold"}>
+													{x?.title}{" "}
+												</Box>
+												<Box>({x?.assessment_type === "Exam" ? "Examination" : x?.assessment_type})</Box>
+												{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) ? <Text color="#3578D3" fontSize={"sm"}>
+													{new Date(x?.start_date).toDateString()}, {new Date(x?.start_date).getHours()}:{zeroPad(new Date(x?.start_date).getMinutes())} - {new Date(x?.end_date).toDateString()}, {new Date(x?.end_date).getHours()}:{zeroPad(new Date(x?.end_date).getMinutes())}
 												</Text>
-											</ModalHeader>
-											<ModalBody p={5} display={"flex"} flexDir={"column"}>
-												<Flex alignSelf={"center"}>
-													{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && 
-													<Countdown date={x?.start_date} renderer={renderer1} />}
-
-													{convertToEpoch(x?.start_date) <= Math.floor(Date?.now()/1000) && 
-													<Countdown date={x?.end_date} renderer={renderer2} />}
-												</Flex>
-
-												<Text mt={5}>Clicking <i>"Begin"</i> starts your timer for this {x?.assessment_type === "Exam" ? "Examination".toLowerCase() : x?.assessment_type.toLowerCase}.The {x?.assessment_type === "Exam" ? "Examination".toLowerCase() : x?.assessment_type.toLowerCase} will last for <b>{x?.duration}</b> minutes.</Text>
-											</ModalBody>
-											<ModalFooter>
-												<Button 
-													minWidth={"min-content"} 
-													variant={"solid"} 
-													colorScheme="blue"
-													onClick={() => handleBegin({course_code: x?.course_id, assessment_id: x?.id})}
-													isLoading={startTimerMutation.isLoading}
-												>
-													Begin
-												</Button>
-											</ModalFooter>
-										</ModalContent>
-									</Modal>
-									<Flex
-										flexDir={{base: "column", md: "row"}}
-										justifyContent="space-around"
-									>
-										<Box ml={2} display={"flex"} justifyContent={"space-around"} flexDir={"column"}>
-											<Box fontWeight={"bold"}>
-												{x?.title}{" "}
+													:
+												<Text color="#3578D3" fontSize={"sm"}>
+													Ongoing
+												</Text>
+												}
 											</Box>
-											<Box>({x?.assessment_type === "Exam" ? "Examination" : x?.assessment_type})</Box>
-											{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) ? <Text color="#3578D3" fontSize={"sm"}>
-												{new Date(x?.start_date).toDateString()}, {new Date(x?.start_date).getHours()}:{zeroPad(new Date(x?.start_date).getMinutes())} - {new Date(x?.end_date).toDateString()}, {new Date(x?.end_date).getHours()}:{zeroPad(new Date(x?.end_date).getMinutes())}
-											</Text>
-												:
-											<Text color="#3578D3" fontSize={"sm"}>
-												Ongoing
-											</Text>
-											}
-										</Box>
-									</Flex>
-									<Spacer />
-									{
-										user?.is_instructor === true && <Text fontWeight={"bold"} width={"20%"} textAlign={"center"} p={3} borderLeft={"1px"} as={NavLink} to={`/courses/${x?.course_id}/assessment/${x?.id}`}>
-											View
-										</Text>
-									}
+										</Flex>
+									</GridItem>
+									
+									<GridItem colSpan={{base: 10, md: 5, lg: 4}} display={'flex'} justifySelf={{base: "center", md: "end"}} >
+										<Flex 
+											justifyItems={"center"}
+										>
+											{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && <Box gridColumn={{base: "span 10", md: "span 4"}} width={"100%"}><Countdown date={x?.start_date} renderer={renderer1} /></Box>}
+											{convertToEpoch(x?.start_date) <= Math.floor(Date?.now()/1000) && <Box width={"100%"}><Countdown date={x?.end_date} renderer={renderer2} /></Box>}
+										</Flex>
+									</GridItem>
 
-									{
-										user?.is_instructor === false && <Text fontWeight={"bold"} width={"20%"} textAlign={"center"} p={3} borderLeft={"1px"} cursor={"pointer"}
-										onClick={() => {
-											if (convertToEpoch(x?.start_date) > Math.floor(Date?.now() / 1000)) {
-												toast({
-													title: "Assessment is yet to begin",
-													position: "top"
-												});
-											} else {
-												onOpen(index)
-											}
-										}}>
-											Take Assessment
-										</Text>
-									}
-									{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && <Countdown date={x?.start_date} renderer={renderer1} />}
-									{convertToEpoch(x?.start_date) <= Math.floor(Date?.now()/1000) && <Countdown date={x?.end_date} renderer={renderer2} />}
-								</Flex>
-							))
+									<GridItem colSpan={{base: 3, md: 1}} rowStart={1} colStart={{base: 8, md: 10}} justifySelf={"end"}>
+										<Flex>
+										{
+											user?.is_instructor ? 
+											<Button
+												fontWeight={"bold"}
+												textAlign={"right"}
+												variant={"outline"}
+												colorScheme="blue"
+												size={"sm"}
+												onClick={() => navigate(`/courses/${x?.course_id}/assessment/${x?.id}`)}
+											>
+												View
+											</Button>
+											:
+											<Button
+												fontWeight={"bold"}
+												textAlign={"right"}
+												variant={"outline"}
+												colorScheme="blue"
+												size={"sm"}
+												onClick={() => {
+													if (convertToEpoch(x?.start_date) > Math.floor(Date?.now() / 1000)) {
+														toast({
+															title: "Assessment is yet to begin",
+															position: "top"
+														});
+													} else {
+														onOpen(index)
+													}
+												}}
+											>
+												Take
+											</Button>
+										}
+										</Flex>
+									</GridItem>
+
+								</Grid>
+								<Modal isOpen={modalsStates[index]} onClose={onClose} key={x?.id}>
+									<ModalOverlay />
+									<ModalContent>
+									<ModalCloseButton />
+										<ModalHeader borderBottom={"1px"} borderColor={"gray.200"}>
+											<Text color="#3578D3">
+												{x?.title} <i>({x?.assessment_type === "Exam" ? "Examination" : x?.assessment_type})</i>
+											</Text>
+										</ModalHeader>
+										<ModalBody p={5} display={"flex"} flexDir={"column"}>
+											<Flex alignSelf={"center"}>
+												{convertToEpoch(x?.start_date) > Math.floor(Date?.now()/1000) && 
+												<Countdown date={x?.start_date} renderer={renderer1} />}
+
+												{convertToEpoch(x?.start_date) <= Math.floor(Date?.now()/1000) && 
+												<Countdown date={x?.end_date} renderer={renderer2} />}
+											</Flex>
+
+											<Text mt={5}>Clicking <i>"Begin"</i> starts your timer for this {x?.assessment_type === "Exam" ? "Examination".toLowerCase() : x?.assessment_type.toLowerCase}.The {x?.assessment_type === "Exam" ? "Examination".toLowerCase() : x?.assessment_type.toLowerCase} will last for <b>{x?.duration}</b> minutes.</Text>
+										</ModalBody>
+										<ModalFooter>
+											<Button 
+												minWidth={"min-content"} 
+												variant={"solid"} 
+												colorScheme="blue"
+												onClick={() => handleBegin({course_code: x?.course_id, assessment_id: x?.id})}
+												isLoading={startTimerMutation.isLoading}
+											>
+												Begin
+											</Button>
+										</ModalFooter>
+									</ModalContent>
+								</Modal>
+								</>))
 							:
 							<Text alignSelf={"center"} textColor={"#696CFF"}>No active assessemnt</Text>
 						}
@@ -285,7 +304,7 @@ export default function ViewCourse() {
 	);
 }
 
-export const convertToEpoch = (timestamp: any) => {
+const convertToEpoch = (timestamp: any) => {
 	const dt = new Date(timestamp);
 	const epochTime = dt.getTime() / 1000;
 

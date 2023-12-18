@@ -6,7 +6,6 @@ import http from "../utils/http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useToast } from "@chakra-ui/react";
-import { convertToEpoch } from "../pages/ViewCourse";
 import Countdown, { zeroPad } from "react-countdown";
 import TimerBox from "./TimerBox";
 import { useState } from "react";
@@ -97,7 +96,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 		<Box display="flex" my={4}>
 			<Box bgColor="#fff" p={3} display="flex" alignItems="center" w="100%" justifyContent="space-between">
 				<Box display="flex" flexDir="column" mr={2}>
-					<Flex mb={2} columnGap={1}>{title}<Text textColor={"#3578D3"} px={1} py={0} borderRadius={"20px"} >({data?.assessment_type === "Exam" ? "examination" : data?.assessment_type.toLowerCase()})</Text></Flex>
+					<Flex mb={2}>{title}<Text textColor={"#3578D3"} px={1} py={0} borderRadius={"20px"} >({data?.assessment_type === "Exam" ? "examination" : data?.assessment_type.toLowerCase()})</Text></Flex>
 					
 					{convertToEpoch(data?.start_date) > Math.floor(Date?.now()/1000) ? <Text color="#3578D3" fontSize={"sm"}>
 												{new Date(data?.start_date).toDateString()}, {new Date(data?.start_date).getHours()}:{zeroPad(new Date(data?.start_date).getMinutes())} - {new Date(data?.end_date).toDateString()}, {new Date(data?.end_date).getHours()}:{zeroPad(new Date(data?.end_date).getMinutes())}
@@ -184,7 +183,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 								mr={2}
 								cursor={"pointer"}
 							>
-								Take Assessment
+								Take
 							</Text>
 							<Modal isOpen={isOpen} onClose={onClose}>
 										<ModalOverlay />
@@ -245,3 +244,10 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 		</Box>
 	);
 }
+
+const convertToEpoch = (timestamp: any) => {
+	const dt = new Date(timestamp);
+	const epochTime = dt.getTime() / 1000;
+
+	return Math.floor(epochTime);
+};
