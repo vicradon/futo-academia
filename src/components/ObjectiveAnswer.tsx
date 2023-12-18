@@ -37,7 +37,7 @@ function ObjectiveAnswer({ question, answers, question_type, stu_mark, mark, stu
 					<>
 						{answers?.map((x: any, i: number) => {
 							return (
-								<Flex gap={4}><Text fontWeight={"bold"} key={i}>Answer: </Text>{x?.option}</Flex>
+								<Flex gap={4} key={i}><Text fontWeight={"bold"}>Answer: </Text>{x?.option}</Flex>
 							);
 						})}
 					</>

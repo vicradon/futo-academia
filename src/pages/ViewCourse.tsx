@@ -33,7 +33,7 @@ export default function ViewCourse() {
 		onSuccess(data) {
 			setActiveAssessments(data?.filter((x: any) => {
 					return x?.is_active && !(Math.floor(Date?.now() / 1000) > convertToEpoch(x?.end_date));
-				}))
+				}).sort((a: any, b: any) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime()))
 				setModalsStates([...Array(activeAssessments.length).fill(false)]);
 		},
 	});
@@ -161,8 +161,8 @@ export default function ViewCourse() {
 							</Stack>
 						):
 						activeAssessments.length > 0 ? activeAssessments?.map((x: any, index: number) => (
-							<>
-								<Grid templateColumns={"repeat(10, 1fr)"} width={"100%"} alignItems={"center"} my={2} bg={"white"} p={3} columnGap={"2"}>
+							<Flex key={index} width={"100%"}>
+								<Grid templateColumns={"repeat(10, 1fr)"} width={"100%"} alignItems={"center"} my={2} bg={"white"} p={3} columnGap={"2"} rowGap={"2"}>
 									<GridItem colSpan={{base: 7, md: 4, lg: 5}} colStart={1} rowStart={1} justifySelf={"start"}>
 										<Flex
 											justifyContent="space-around"
@@ -266,7 +266,7 @@ export default function ViewCourse() {
 										</ModalFooter>
 									</ModalContent>
 								</Modal>
-								</>))
+								</Flex>))
 							:
 							<Text alignSelf={"center"} textColor={"#696CFF"}>No active assessemnt</Text>
 						}

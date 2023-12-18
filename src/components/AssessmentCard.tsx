@@ -1,9 +1,11 @@
-import { Box, Text, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, useDisclosure, Flex, Menu, MenuButton, MenuList, MenuItem, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useToast } from "@chakra-ui/react";
+import { Box, Text, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, useDisclosure, Flex, Menu, MenuButton, MenuList, MenuItem, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 
 import http from "../utils/http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { useToast } from "@chakra-ui/react";
 import Countdown, { zeroPad } from "react-countdown";
 import TimerBox from "./TimerBox";
 import { useRef, useState } from "react";
@@ -41,6 +43,25 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 		},
 		onSuccess: () => {
 			toast({ title: "Sucessfully updated", variant: "solid" });
+			queryClient.invalidateQueries({ queryKey: ["getassesments"] });
+			setExamSetUp({});
+		},
+		onError: (err: any) => {
+			if (err?.response) {
+				toast({
+					status: "error",
+					description: err?.response?.data?.detail,
+					position: "top"
+				})
+			}
+		},
+	});
+	const deactivateMutation = useMutation({
+		mutationFn: (id) => {
+			return http.put(`/assessments/${id}/deactivate`);
+		},
+		onSuccess: () => {
+			toast({ title: "Sucessfully deactivated", variant: "solid" });
 			queryClient.invalidateQueries({ queryKey: ["getassesments"] });
 			setExamSetUp({});
 		},
@@ -178,7 +199,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 									>
 										<Text>End</Text>
 									</MenuItem>
-									<MenuItem>
+									<MenuItem onClick={() => deactivateMutation.mutate(id)}>
 										<Text>Move to drafts</Text>
 									</MenuItem>
 									<MenuItem  onClick={alertOnOpen}>

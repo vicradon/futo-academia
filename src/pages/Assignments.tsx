@@ -32,13 +32,21 @@ export default function Assignments() {
 	const toast = useToast();
 	const navigate = useNavigate();
 	const { isOpen, onClose, onOpen } = useDisclosure()
+	const [data, setData] = useState<any>([])
 
 
-	const { data, isLoading, refetch } = useQuery({
+	const { isLoading, refetch } = useQuery({
 		queryKey: ["getassesments", id],
 		queryFn: () => http.get(`/courses/${id}/assessments`).then((r) => r.data),
+		onSuccess: (data: any) => setData(data),
 		onError: (err) => console.log("error", err),
 	});
+
+	useEffect(() => {
+		const arrangedData = data?.sort((a: any, b: any) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
+		setData(arrangedData)
+	}, [data])
+	
 
 
 	const [examSetUp, setExamSetUp] = useState<ExamSetup>({
