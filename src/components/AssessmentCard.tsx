@@ -56,12 +56,32 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 			}
 		},
 	});
+
 	const deactivateMutation = useMutation({
 		mutationFn: (id) => {
 			return http.put(`/assessments/${id}/deactivate`);
 		},
 		onSuccess: () => {
-			toast({ title: "Sucessfully deactivated", variant: "solid" });
+			toast({ title: "Assessment deactivated", variant: "solid" });
+			queryClient.invalidateQueries({ queryKey: ["getassesments"] });
+			setExamSetUp({});
+		},
+		onError: (err: any) => {
+			if (err?.response) {
+				toast({
+					status: "error",
+					description: err?.response?.data?.detail,
+					position: "top"
+				})
+			}
+		},
+	});
+	const endAssessment = useMutation({
+		mutationFn: (id) => {
+			return http.put(`/assessments/${id}/end-manual`);
+		},
+		onSuccess: () => {
+			toast({ title: "Assessment ended", variant: "solid" });
 			queryClient.invalidateQueries({ queryKey: ["getassesments"] });
 			setExamSetUp({});
 		},
@@ -195,8 +215,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 									>
 										<Text>View</Text>
 									</MenuItem>
-									<MenuItem
-									>
+									<MenuItem onClick={() => endAssessment.mutate(id)}>
 										<Text>End</Text>
 									</MenuItem>
 									<MenuItem onClick={() => deactivateMutation.mutate(id)}>

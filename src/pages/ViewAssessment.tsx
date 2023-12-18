@@ -35,6 +35,7 @@ export default function AddAssessment() {
 		queryKey: ["getAssessment", idx],
 		queryFn: () => http.get(`/assessments/${idx}`).then((r) => r.data),
 	});
+	console.log(assessmentData)
 
 	useEffect(() => {
 	  setExamSetUp({
@@ -45,7 +46,7 @@ export default function AddAssessment() {
 		is_active: assessmentData?.is_active,
 		start_date: assessmentData?.start_date,
 		title: assessmentData?.title,
-		total_mark: assessmentData?.total_mark,
+		total_mark: assessmentData?.total_mark
 	})
 	}, [assessmentDataIsloading])
 
@@ -137,7 +138,7 @@ export default function AddAssessment() {
 				</Flex>
 			</Box>
 
-			<Center columnGap={10} mt={10}>
+			{!assessmentData?.is_completed && <Center columnGap={10} mt={10}>
 				<Button colorScheme="blue" variant={"ghost"} onClick={() => {navigate(`/courses/${id}/assessment/add/${idx}`)}} minWidth={"min-content"}>
 					Edit Assessment
 				</Button>
@@ -145,7 +146,7 @@ export default function AddAssessment() {
 					Delete Assessment
 				</Button>
 
-			</Center>
+			</Center>}
 
 			<AlertDialog 
 				leastDestructiveRef={cancelRef} 
