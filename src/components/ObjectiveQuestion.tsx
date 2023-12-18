@@ -1,11 +1,11 @@
-import { Box, Flex, Input, Select, Text, Textarea, Button, useToast, Heading, FormControl, FormLabel, Center } from "@chakra-ui/react";
+import { Box, Flex, Input, Select, Text, Textarea, Button, useToast, Heading, FormControl, FormLabel, Center, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure } from "@chakra-ui/react";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "../utils/http";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ObjectiveAnswer from "./ObjectiveAnswer";
 import { handleToast } from "../utils/handleToast";
 
@@ -27,6 +27,8 @@ export default function ObjectiveQuestion() {
 	const [answers, setAnswers] = useState("");
 	const [tolerence, setTolerance] = useState("");
 	const [dataID, setDataID] = useState("");
+	const cancelRef = useRef(null)
+	const { isOpen: alertIsOpen, onClose: alertOnClose, onOpen: alertOnOpen} = useDisclosure();
 
 	const { id, idx } = useParams();
 
@@ -129,7 +131,14 @@ export default function ObjectiveQuestion() {
 		setQuestionArr({ ...questionArr, [e?.target?.name]: e?.target?.value });
 	};
 
-	// console.log({ questionChoice });
+	const deleteAssessment = useMutation({
+		mutationFn: async ({ assessment_id }: any) => {
+				return await http.delete(`/assessments/${assessment_id}`);
+			},
+			onSuccess: () => {navigate(`/courses/${id}/assessments`)},
+			onError: (error: any) => {console.log(error)}
+		});
+
 	return (
 		<>
 			<Box>
@@ -139,6 +148,8 @@ export default function ObjectiveQuestion() {
 					</Heading>
 				</Flex>
 				<Flex w="100%" justifyContent="space-around">
+					{answerData?.questions.length === 0 && 
+					<Text>No Questions</Text>}
 					<Box width="100%">
 						{answerData?.questions.map((x: any, i: number) => (
 							<ObjectiveAnswer {...x} index={i + 1} key={i} />
@@ -146,10 +157,6 @@ export default function ObjectiveQuestion() {
 					</Box>
 				</Flex>
 			</Box>
-			<Center columnGap={3}>
-				<Button colorScheme="blue" onClick={() => uploadMutation.mutate(idx)}>Upload</Button>
-				<Button colorScheme="blue" onClick={() => {navigate(`/courses/${id}/assessments`)}}>Done</Button>
-			</Center>
 			<Box my={6} border="1px solid grey" p={4} borderRadius="8px">
 				<Heading size={"md"} width={"100%"} textAlign={"center"} color={"#696CFF"}>Add Question</Heading>
 				<Box>
@@ -237,6 +244,37 @@ export default function ObjectiveQuestion() {
 					</Box>
 				</Box>
 			</Box>
+
+			<Center columnGap={3} mt={10}>
+				<Button variant={"outline"} colorScheme="blue" onClick={() => {navigate(`/courses/${id}/assessments`)}}minWidth={"min-content"}>Done</Button>
+				<Button variant={"solid"} colorScheme="blue" onClick={() => uploadMutation.mutate(idx)} minWidth={"min-content"}>Make Active</Button>
+				<Button variant={"solid"} colorScheme="red" onClick={alertOnOpen} minWidth={"min-content"}>Delete assessment</Button>
+			</Center>
+
+			<AlertDialog 
+				leastDestructiveRef={cancelRef} 
+				isOpen={alertIsOpen} 
+				onClose={alertOnClose}
+					>
+				<AlertDialogOverlay>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							Delete Assessment
+						</AlertDialogHeader>
+						<AlertDialogBody>
+							Are you sure? This action cannot be undone!
+						</AlertDialogBody>
+						<AlertDialogFooter gap={2}>
+							<Button ref={cancelRef} onClick={alertOnClose} size={"md"}>
+								Cancel
+							</Button>
+							<Button colorScheme="red" onClick={()=>{deleteAssessment.mutate({assessment_id: idx})}} size={"md"}>
+								Delete
+							</Button>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialogOverlay>
+			</AlertDialog>
 		</>
 	);
 }

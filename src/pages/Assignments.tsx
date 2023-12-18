@@ -262,7 +262,7 @@ export default function Assignments() {
 							{data
 								?.filter((x: any) => !x?.is_marked && !x?.is_active && !x?.is_completed)
 								?.map((x: any, i: number) => {
-									return <AssessmentCard setExamSetUp={setExamSetUp} idx={id} key={i} {...x} />;
+									return <AssessmentCard is_active={false} setExamSetUp={setExamSetUp} idx={id} key={i} {...x} data={x}/>;
 								})}
 							{data?.filter((x: any) => x?.is_marked === false && x?.is_active === false && x?.is_completed === false)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Drafts</Text>}
 						</AccordionPanel>
@@ -315,6 +315,7 @@ export default function Assignments() {
 									is_marked={true}
 									key={i}
 									{...x}
+									data={x}
 								/>
 							);
 						})}
@@ -346,6 +347,7 @@ export default function Assignments() {
 									is_marked={true}
 									key={i}
 									{...x}
+									data={x}
 								/>
 							);
 						})}

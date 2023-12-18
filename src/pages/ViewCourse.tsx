@@ -1,9 +1,9 @@
 import AppTable from "../components/Table";
 import http from "../utils/http";
-import { Box, Text, Flex, Skeleton, Stack, Spacer, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Text, Flex, Skeleton, Stack, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, Grid, GridItem } from "@chakra-ui/react";
 import TimerBox from "../components/TimerBox";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CourseTabs from "../layout/CourseTabs";
 import { useUser } from "../hooks/useUser";
 import { useEffect, useState } from "react";

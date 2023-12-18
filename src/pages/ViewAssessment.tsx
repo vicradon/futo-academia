@@ -1,18 +1,22 @@
 import http from "../utils/http";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExamSetup } from "./Assignments";
 import CourseTabs from "../layout/CourseTabs";
 import { InstructionObject } from "./Instructions";
 
-import { Box, Flex, Text, Heading, UnorderedList, ListItem, Center, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Heading, UnorderedList, ListItem, Center, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, useDisclosure } from "@chakra-ui/react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { handleToast } from "../utils/handleToast";
 import ObjectiveAnswer from "../components/ObjectiveAnswer";
 
 export default function AddAssessment() {
 	const { id, idx } = useParams();
+
+	const { isOpen: alertIsOpen, onClose: alertOnClose, onOpen: alertOnOpen} = useDisclosure();
+	const cancelRef = useRef(null)
+
 
 	//Header
 	const navigate = useNavigate();
@@ -65,6 +69,14 @@ export default function AddAssessment() {
 		onError: (err) => handleToast(err),
 	});
 
+	const deleteAssessment = useMutation({
+		mutationFn: async ({ assessment_id }: any) => {
+				return await http.delete(`/assessments/${assessment_id}`);
+			},
+			onSuccess: () => {navigate(`/courses/${id}/assessments`)},
+			onError: (error: any) => {console.log(error)}
+		});
+
 
 	return (
 		<CourseTabs>
@@ -88,10 +100,6 @@ export default function AddAssessment() {
 						<Text>{examSetUp?.duration} minutes</Text>
 					</Flex>
 				</Flex>
-				<Text ml={"auto"} color={"#696CFF"} onClick={() => {navigate(`/lecturer/courses/${id}/assessment/add/${idx}`)}} cursor={"pointer"} _hover={{
-					transform: "scale(1.05)",
-					boxShadow: "md",
-				}} transition="transform 0.3s, box-shadow 0.3s">Edit assessment</Text>
 			</Box>
 
 			<Box>
@@ -129,11 +137,40 @@ export default function AddAssessment() {
 				</Flex>
 			</Box>
 
-			<Center>
-				<Button colorScheme="blue" onClick={() => {navigate(`/courses/${id}/assessment/add/${idx}`)}}>
-					Edit
+			<Center columnGap={10} mt={10}>
+				<Button colorScheme="blue" variant={"ghost"} onClick={() => {navigate(`/courses/${id}/assessment/add/${idx}`)}} minWidth={"min-content"}>
+					Edit Assessment
 				</Button>
+				<Button colorScheme="red" variant={"ghost"} onClick={alertOnOpen}>
+					Delete Assessment
+				</Button>
+
 			</Center>
+
+			<AlertDialog 
+				leastDestructiveRef={cancelRef} 
+				isOpen={alertIsOpen} 
+				onClose={alertOnClose}
+					>
+				<AlertDialogOverlay>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							Delete Assessment
+						</AlertDialogHeader>
+						<AlertDialogBody>
+							Are you sure? This action cannot be undone!
+						</AlertDialogBody>
+						<AlertDialogFooter gap={2}>
+							<Button ref={cancelRef} onClick={alertOnClose} size={"md"}>
+								Cancel
+							</Button>
+							<Button colorScheme="red" onClick={()=>{deleteAssessment.mutate({assessment_id: assessmentData?.id})}} size={"md"}>
+								Delete
+							</Button>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialogOverlay>
+			</AlertDialog>
 
 		</CourseTabs>
 	);
