@@ -1,4 +1,4 @@
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Flex, Heading, UnorderedList, ListItem } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +12,9 @@ export default function ExamResult() {
 	const { data, isLoading } = useQuery({
 		queryKey: ["getRes", id],
 		queryFn: () => http.get(`assessments/${id}/stu_results`),
+		onSuccess(data) {
+			console.log(data)
+		},
 	});
 
 	const { data: examData } = useQuery({
@@ -64,10 +67,26 @@ export default function ExamResult() {
 							<b>ALLOCATED TIME:</b> {data?.data?.duration} MINUTES
 						</Text>
 					</Flex>
-
-					<Box textAlign={"center"} my={10}>
-						<b>INSTRUCTION: ANSWER ALL QUESTIONS</b>
-					</Box>
+				<Box>
+					<Flex my={3} flexDir={"column"}>
+						<Box width={"100%"} bg={"whiteAlpha.900"} p={5}>
+							<Heading as={"h4"} size={"sm"}>
+								<i>Instructions</i>
+							</Heading>
+							{data?.data?.instructions.length === 0 ? 
+								<Text><i>No instructions.</i></Text>
+								: 
+								<UnorderedList>
+									{data?.data?.instructions.map((instruction: any, index: number) => <ListItem key={index} my={2} boxShadow={"sm"}>
+										<Flex gap={2} alignItems={"start"}>
+											<Text>{instruction.instruction}</Text>
+										</Flex>
+									</ListItem>)}
+								</UnorderedList>
+							}
+						</Box>
+					</Flex>
+				</Box>
 				</>
 				<Flex justifyContent={"space-between"}>
 					<Text fontSize={"xl"}>End Date: {data?.data?.end_date.split("T")[0]}</Text>
@@ -76,7 +95,7 @@ export default function ExamResult() {
 
 				<Box>
 					<Text fontSize={"4xl"} mb={15} fontWeight={"black"}>
-						Exam Score: {data?.data?.total}/{data?.data?.total_mark}
+						Score: {data?.data?.total}/{data?.data?.total_mark}
 					</Text>
 				</Box>
 

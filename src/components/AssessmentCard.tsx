@@ -284,8 +284,9 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 										</Modal>
 							</>
 						)}
-						{user?.is_instructor && is_completed && (
+						{user?.is_instructor && is_completed && !is_marked && (
 							<>
+							{markMutation.isLoading && <Text>Marking...</Text>}
 								<Menu>
 								<MenuButton>
 									<FontAwesomeIcon icon={faEllipsisV} />

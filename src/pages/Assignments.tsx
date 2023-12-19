@@ -313,7 +313,7 @@ export default function Assignments() {
 				</AccordionButton>
 				<AccordionPanel>
 					{data
-						?.filter((x: any) => x?.is_completed)
+						?.filter((x: any) => x?.is_completed && !x?.is_marked)
 						.map((x: any, i: number) => {
 							return (
 								<AssessmentCard
