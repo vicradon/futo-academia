@@ -10,20 +10,10 @@ export function useAssessment(assessment: any, name: string) {
 		queryKey: ["getTableData", assessment, name],
 		queryFn: async () => {
 			
-			const { data } = await http.get(`/assessments/${assessment}/results?name=${name}`);
+			const { data } = await http.get(`/assessments/${assessment}/results?search=${name}`);
 
-			const uniqueEntries = [];
-			const seenSet = new Set();
 
-			for (const entry of data) {
-				const entryKey = entry.reg_num;
-				if (!seenSet.has(entryKey)) {
-					uniqueEntries.push(entry);
-					seenSet.add(entryKey);
-				}
-			}
-
-			return uniqueEntries;
+			return data;
 		},
 	});
 }

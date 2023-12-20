@@ -33,7 +33,7 @@ import AddAssessment from "./pages/AddAssessment";
 import ViewCourseStudent from "./pages/ViewCourseStudent";
 import CourseStudents from "./pages/CourseStudents";
 import CourseInstructors from "./pages/CourseInstructors";
-import { ResultsTable } from "./components/ResultsTable";
+import { AssessmentResults } from "./pages/AssessmentResults";
 
 const colors = {
 	brand: {
@@ -121,12 +121,11 @@ const router = createBrowserRouter(
 			</Route>
 			<Route path="courses-upload" element={<UploadCourse />} />
 			<Route path="edit-course/:id" element={<EditCourse />} />
-			<Route path="courses/:id" element={<ViewCourse />}>
-				<Route path="results/:idx" element={<ResultsTable />}/>
-			</Route>
+			<Route path="courses/:id" element={<ViewCourse />} />
 			<Route path="courses/:id/assessment" element={<Assessments />} />
 			<Route path="courses/:id/assessment/add/:idx" element={<AddAssessment />} />
 			<Route path="courses/:id/assessment/:idx" element={<ViewAssessment />} />
+			<Route path="courses/:id/assessment/result/:idx" element={<AssessmentResults />} />
 			<Route path="courses/:id/assessments" element={<Assignments />} />
 			<Route path="courses/:id/students/*" element={<CourseStudents />} />
 			<Route path="courses/:id/instructors/*" element={<CourseInstructors />} />

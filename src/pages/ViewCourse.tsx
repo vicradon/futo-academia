@@ -318,8 +318,8 @@ export default function ViewCourse() {
 								{courseResultsStats?.length > 0 ? courseResultsStats?.map((assessment: any, index: number) => 
 								<Tr key={index} 
 									cursor={"pointer"}
-									_hover={{ transform: "scale(1.02)", transition: "transform 0.2s ease-in-out" }}
-									onClick={() => navigate(`/courses/${id}/assessments/results/${assessment?.id}`)}
+									_hover={{ transform: "scale(1.01)", transition: "transform 0.2s ease-in-out" }}
+									onClick={() => navigate(`/courses/${id}/assessment/result/${assessment?.id}`)}
 								>
 									<Td>{index+1}</Td>
 									<Td maxW={"200px"} overflowX={"hidden"}>{assessment?.title}</Td>
