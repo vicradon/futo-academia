@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Loader from "../components/Loaders"
 import { useQuery } from "@tanstack/react-query"
 import http from "../utils/http"
-import { Avatar, Box, Container, Input, Table, TableContainer, Text, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import { Avatar, Box, Container, Input, Table, TableContainer, Text, Tbody, Td, Th, Thead, Tr, Flex } from "@chakra-ui/react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { useUser } from "../hooks/useUser"
@@ -17,7 +17,7 @@ export const AssessmentResults = () => {
     const navigate = useNavigate()
 
     if (!user.is_instructor) {
-        navigate(`assessment/${idx}/${id}/results`)
+        navigate(`courses/assessment/${idx}/${id}/results`)
     }
 
     const { data: assessmentResultsStats } = useQuery({
@@ -86,6 +86,12 @@ export const AssessmentResults = () => {
 		},
 	];
 
+    const colorScale = {
+        0: 'red',
+        50: 'orange',
+        100: 'green',
+      };
+
     if (isLoading) {
         return (
             <CourseTabs>
@@ -107,8 +113,13 @@ export const AssessmentResults = () => {
                 {assessmentResultsStats?.num_students}<br/>
                 {assessmentResultsStats?.num_students_percentage}<br/>
 
-                <Text></Text>
             </Box>
+            <Flex>
+                <Flex columnGap={3}>
+                    <Text>Average Score (%):</Text>
+                    <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}> {assessmentResultsStats?.avg_score} ({assessmentResultsStats?.avg_score_percentage})</Text>
+                </Flex>
+            </Flex>
 
             <Container width={"100%"} display={"flex"} columnGap={2}>
                 <Input bgColor={"white"} placeholder="search by student name or registration number" name="search" value={search} onChange={handleSearch} />
