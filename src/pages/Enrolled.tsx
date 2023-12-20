@@ -94,10 +94,10 @@ function Enrolled({id}: any) {
       {data?.map((student: any, index: number) => 
         <Grid templateColumns={"0.8fr 3fr 2fr 1fr 1fr 0.8fr"} border={"none"} fontSize={{base: "xs", md: "md"}} key={student?.reg_num} minH={"40px"} bg={index%2 === 0 ? "#E0E0E066" : "unset"} alignContent={"center"}>
           <Text py={3} pl={1}>{index+1}</Text>
-          <Text py={3} overflowX={"scroll"}>{student?.name}</Text>
-          <Text py={3} overflowX={"scroll"}>{student?.reg_num}</Text>
-          <Text py={3} overflowX={"scroll"}>{student?.department}</Text>
-          <Text py={3} overflowX={"scroll"}>{student?.level}</Text>
+          <Text py={3}>{student?.name}</Text>
+          <Text py={3} overflowX={"auto"}>{student?.reg_num}</Text>
+          <Text py={3} overflowX={"auto"}>{student?.department}</Text>
+          <Text py={3}>{student?.level}</Text>
           <Text py={3} textAlign={"center"} textColor={"red"} cursor={"pointer"}onClick={() => {handleRequestDeny(index)}}>
           <Text display={{base: "flex", lg: "none"}} ><FontAwesomeIcon icon={faTrash}/></Text>
             <Text display={{base: "none", lg: "flex"}} >Remove</Text>

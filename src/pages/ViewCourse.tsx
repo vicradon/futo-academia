@@ -1,40 +1,67 @@
-import AppTable from "../components/Table";
 import http from "../utils/http";
-import { Box, Text, Flex, Skeleton, Stack, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Text, Flex, Skeleton, Stack, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, Grid, GridItem, Input, Menu, MenuButton, MenuList, MenuItem, Table, TableContainer, Tbody, Th, Thead, Tr, Td } from "@chakra-ui/react";
 import TimerBox from "../components/TimerBox";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import CourseTabs from "../layout/CourseTabs";
 import { useUser } from "../hooks/useUser";
 import { useEffect, useState } from "react";
 
 import Countdown, { zeroPad } from "react-countdown";
 import { useToast } from "@chakra-ui/react";
-import { useAssessment } from "../hooks/useAssessment";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 export default function ViewCourse() {
-	
+	const navigate = useNavigate();
+	const user = useUser();
 	const { id } = useParams();
-	// const { isOpen, onClose, onOpen } = useDisclosure();
 	const [activeAssessments, setActiveAssessments] = useState<any>([])
 	const [modalsStates, setModalsStates] = useState<boolean[]>([])
 	const toast = useToast();
-
-	// const { data: enrollmentStatus, isLoading: enrolledIsLoading } = useQuery({
-	// 	queryKey: ["getEnrollmentStatus", id],
-	// 	queryFn: () => http.get(`/courses/${id}/enrollment_status`).then((r) => r.data),
-	// });
-
+	const [markedIDs, setMarkedIDs] = useState<[]>([])
+	const [search, setSearch] = useState<any>("")
+	const [currentId, setCurrentId] = useState<any>(null)
+	const [currentTitle, setCurrentTitle] = useState<any>(null)
+	
 	const [timer, setTimer] = useState(false)
 
-	const { data: allAssessments, isLoading, refetch } = useQuery({
+	const { isLoading, refetch } = useQuery({
 		queryKey: ["getAssessments", id],
-		queryFn: () => http.get(`/courses/${id}/assessments`).then((r) => r.data),
+		queryFn: () => http.get(`/courses/${id}/assessments`, {
+			params: {
+			is_active: true,
+			},
+		  }).then((r) => r.data),
 		onSuccess(data) {
-			setActiveAssessments(data?.filter((x: any) => {
-					return x?.is_active && !(Math.floor(Date?.now() / 1000) > convertToEpoch(x?.end_date));
-				}).sort((a: any, b: any) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime()))
+			setActiveAssessments(data?.sort((a: any, b: any) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime()))
+				
 				setModalsStates([...Array(activeAssessments.length).fill(false)]);
+		},
+	});
+
+	const { data: markedAssessmments } = useQuery({
+		queryKey: ["getAllAssessments", id],
+		queryFn: () => http.get(`/courses/${id}/assessments`, {
+			params: {
+			is_marked: true,
+			},
+		  }).then((r) => r.data),
+		onSuccess(data) {
+			// console.log(data)
+			const allNames = data?.map((obj: any) => obj.id);
+    		setMarkedIDs(allNames);
+		},
+	});
+
+	const { data: courseResultsStats } = useQuery({
+		queryKey: ["courseResultsStats", id],
+		queryFn: () => http.get(`/courses/assessments_results_stats/${id}`, {
+			params: {
+			is_marked: true,
+			},
+		  }).then((r) => r.data),
+		onSuccess(data) {
+			// console.log(data)
 		},
 	});
 
@@ -57,11 +84,20 @@ export default function ViewCourse() {
 	})
 
 	useEffect(() => {
-		for (let i = 0; i<activeAssessments?.length; i++) {
-			automaticEndAssessmentMutation.mutate(activeAssessments[i].id)
-		}
-		refetch()
-	}, [new Date().getMinutes()]);
+		const intervalId = setInterval(() => {
+		  // Iterate through active assessments and call the mutation
+		  activeAssessments.forEach((assessment: any) => {
+			automaticEndAssessmentMutation.mutate(assessment.id);
+		  });
+	  
+		  // Refetch data
+		  refetch();
+		}, 60000); // Set the interval to 60 seconds (or adjust as needed)
+	  
+		// Cleanup function to clear the interval when the component unmounts
+		return () => clearInterval(intervalId);
+	  }, []);
+	  
 
 	const startTimerMutation = useMutation({
 			mutationFn: async ({ course_code, assessment_id }: any) => {
@@ -75,46 +111,54 @@ export default function ViewCourse() {
 		startTimerMutation.mutate({course_code, assessment_id})
 	}
 
-	const [assessment, setAssessment] = useState("");
-	const [name, setName] = useState("");
+	// const [assessment, setAssessment] = useState("");
 
 	const handleSearch = (e: any) => {
-		setName(e?.target?.value);
+		setSearch(e?.target?.value);
 	};
-
-	const onSelectChange = (e: any) => {
-		console.log("The id of select change", e?.target?.value);
-		setAssessment(e?.target?.value);
-	};
-
-	const { data: tableData, isLoading: isTableLoading, isFetching } = useAssessment(assessment, name);
-
-
-	useEffect(() => {
-		setAssessment(allAssessments?.filter((x: any) => x?.is_marked)[0]?.id);
-	}, [isTableLoading]);
-
 
 	const header = [
 		{
-			title: "Name",
-			key: "name",
+			title: "S/N",
+			key: "s/n",
 			align: "left",
 		},
 		{
-			title: "Reg No",
-			key: "reg_num",
+			title: "Title",
+			key: "title",
 			align: "left",
 		},
 		{
-			title: "Total (Score)",
-			key: "total",
+			title: "Type",
+			key: "type",
+			align: "left",
+		},
+		{
+			title: "Students (%)",
+			key: "students",
+			align: "right",
+		},
+		{
+			title: "Avg. score(%)",
+			key: "average score",
+			align: "right",
+		},
+		{
+			title: "Min",
+			key: "minimum",
+			align: "right",
+		},
+		{
+			title: "Max",
+			key: "maximum",
+			align: "right",
+		},
+		{
+			title: "Avg. time (mins)",
+			key: "students",
 			align: "right",
 		},
 	];
-
-	const navigate = useNavigate();
-	const user = useUser();
 
 	const renderer1 = ({ days, hours, minutes, seconds, completed }: any) => {
 		if (completed) {
@@ -274,16 +318,51 @@ export default function ViewCourse() {
 					</Flex>
 				</Box>
 				{user?.is_instructor && (
-					<AppTable
-						title="Results"
-						isLoading={isTableLoading || isLoading}
-						isFetching={isFetching}
-						data={tableData}
-						header={header}
-						filterData={allAssessments?.filter((x: any) => x?.is_marked)}
-						onSelectChange={onSelectChange}
-						handleSearch={handleSearch}
-					/>
+					<>
+						<Flex alignItems="center" justifyContent={"space-between"} columnGap={5} my={8}>
+							<Text fontSize="24px" fontWeight="bold" >
+								Results
+							</Text>
+							<Input placeholder="Search" ml={3} width="50%" onChange={handleSearch} bgColor="#fff" />
+					</Flex>
+					<TableContainer mx="auto" mt={6}>
+						<Table variant="striped">
+							<Thead bgColor="brand.800" textColor="white">
+								<Tr>
+									{header.map((header: any) => (
+										<Th
+											key={header?.title}
+											sx={{
+												color: "#fff",
+												textAlign: header?.align,
+											}}
+										>
+											{header.title}
+										</Th>
+									))}
+								</Tr>
+							</Thead>
+							<Tbody>
+								{courseResultsStats?.length > 0 ? courseResultsStats?.map((assessment: any, index: number) => 
+								<Tr key={index} 
+									cursor={"pointer"}
+									_hover={{ transform: "scale(1.02)", transition: "transform 0.2s ease-in-out" }}
+									onClick={() => navigate(`/courses/${id}/assessments/results/${assessment?.id}`)}
+								>
+									<Td>{index+1}</Td>
+									<Td maxW={"200px"} overflowX={"hidden"}>{assessment?.title}</Td>
+									<Td>{assessment?.type}</Td>
+									<Td textAlign={"right"}>{assessment?.num_students} ({assessment?.percentage_submissions})</Td>
+									<Td textAlign={"right"}>{assessment?.avg_score} ({assessment?.avg_score_percentage})</Td>
+									<Td textAlign={"right"}>{assessment?.lowest_score}</Td>
+									<Td textAlign={"right"}>{assessment?.highest_score}</Td>
+									<Td textAlign={"right"}>{assessment?.avg_time}</Td>
+								</Tr>):
+								<Text>No results here</Text>}
+							</Tbody>
+						</Table>
+					</TableContainer>
+					</>
 				)}
 				{!user?.is_instructor && (
 					<Flex flexDir={"column"}>

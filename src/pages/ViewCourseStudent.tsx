@@ -1,23 +1,19 @@
-import AppTable from "../components/Table";
 import http from "../utils/http";
 import { Box, Text, Flex, Skeleton, Stack, Spacer } from "@chakra-ui/react";
 import TimerBox from "../components/TimerBox";
 import { useQuery } from "@tanstack/react-query";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import CourseTabs from "../layout/CourseTabs";
-import { useUser } from "../hooks/useUser";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import Countdown, { zeroPad } from "react-countdown";
 import { useToast } from "@chakra-ui/react";
-import { useAssessment } from "../hooks/useAssessment";
 
 export default function ViewCourse() {
 	
 	const { id } = useParams();
 	const toast = useToast();
 	const navigate = useNavigate();
-	const user = useUser();
 
 	const { data: enrolled, isLoading: enrolledIsLoading } = useQuery({
 		queryKey: ["getEnrollmentStatus", id],
@@ -39,19 +35,7 @@ export default function ViewCourse() {
 			}
 	});
 
-	const [assessment, setAssessment] = useState("");
-	const [name, setName] = useState("");
 
-	const handleSearch = (e: any) => {
-		setName(e?.target?.value);
-	};
-
-	const onSelectChange = (e: any) => {
-		console.log("The id of select change", e?.target?.value);
-		setAssessment(e?.target?.value);
-	};
-
-	const { data: tableData, isLoading: isTableLoading, isFetching } = useAssessment(assessment, name);
 
 
 	useEffect(() => {
@@ -59,29 +43,11 @@ export default function ViewCourse() {
 			"idddd",
 			currUp?.filter((x: any) => x?.is_marked)
 		);
-		setAssessment(currUp?.filter((x: any) => x?.is_marked)[0]?.id);
 		console.log(currUp)
-	}, [isTableLoading]);
+	}, []);
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-	const header = [
-		{
-			title: "Name",
-			key: "name",
-			align: "left",
-		},
-		{
-			title: "Reg No",
-			key: "reg_num",
-			align: "left",
-		},
-		{
-			title: "Total (Score)",
-			key: "total",
-			align: "right",
-		},
-	];
 
 
 	const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
@@ -162,18 +128,6 @@ export default function ViewCourse() {
 
 					</Flex>
 				</Box>
-				{user?.is_instructor && (
-					<AppTable
-						title="Results"
-						isLoading={isTableLoading || isLoading}
-						isFetching={isFetching}
-						data={tableData}
-						header={header}
-						filterData={currUp?.filter((x: any) => x?.is_marked)}
-						onSelectChange={onSelectChange}
-						handleSearch={handleSearch}
-					/>
-				)}
 			</CourseTabs>
 		</>
 	);

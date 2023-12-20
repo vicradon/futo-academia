@@ -173,7 +173,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 							<>
 								<Menu>
 								<MenuButton>
-									<FontAwesomeIcon icon={faEllipsisV} />
+									<FontAwesomeIcon icon={faEllipsisV} size="lg" width={"3rem"}/>
 								</MenuButton>
 								<MenuList>
 									<MenuItem 
@@ -205,7 +205,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 							<>
 							<Menu>
 								<MenuButton>
-									<FontAwesomeIcon icon={faEllipsisV} />
+									<FontAwesomeIcon icon={faEllipsisV} size="lg" width={"3rem"}/>
 								</MenuButton>
 								<MenuList>
 									<MenuItem 
@@ -289,7 +289,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 							{markMutation.isLoading && <Text>Marking...</Text>}
 								<Menu>
 								<MenuButton>
-									<FontAwesomeIcon icon={faEllipsisV} />
+									<FontAwesomeIcon icon={faEllipsisV} size="lg" width={"3rem"}/>
 								</MenuButton>
 								<MenuList>
 									<MenuItem

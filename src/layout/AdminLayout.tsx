@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
 	return (
-		<Box bg={"#F3F6FF"} minH={"100vh"}>
+		<Box bg={"#F3F6FF"} minH={"100vh"} width={"100%"}>
 			<Navbar bgColor="#F3F6FF" />
 			<Flex gap={"2vw"} paddingTop={"110px"}>
 				<Sidebar />

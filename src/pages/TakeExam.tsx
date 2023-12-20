@@ -18,6 +18,7 @@ import {
 	ModalCloseButton,
 	OrderedList,
 	ListItem,
+	Input,
 } from "@chakra-ui/react";
 import { NavLink, useParams } from "react-router-dom";
 
@@ -48,9 +49,6 @@ export default function TakeExam() {
 	const { data: answerData, isLoading } = useQuery({
 		queryKey: ["getAnswersss", idx],
 		queryFn: () => http.get(`/assessments/${idx}/assessment_questions`).then((r) => r.data),
-		// onSuccess(data) {
-		// 	console.log("Quess", data);
-		// },
 		onError: (err: any) => {
 			console.log("Error", err);
 			if (err?.response?.status === 405) {
@@ -61,9 +59,6 @@ export default function TakeExam() {
 						color: "white",
 					},
 				});
-				setTimeout(() => {
-					// navigate(`/courses/${id}`);
-				}, 10);
 			}
 		},
 		// onSuccess: (data: any) => {console.log(data)}
@@ -324,9 +319,15 @@ function ObjectiveAnswer({ question, answers, question_id, question_type, mark, 
 								})}
 							</RadioGroup>
 						</Stack>
-					) : (
-						<Textarea as={"input"} onChange={handleAnswering} type={question_type === "maths" ? "number" : ""} placeholder="Answer" />
-					)}
+					): 
+					question_type === "math" ? (
+						<Input type="number" onChange={handleAnswering} />
+						):
+						question_type === "sub_obj" ? (
+							<Input type="number" onChange={handleAnswering} />
+					) : 
+						<Textarea onChange={handleAnswering} placeholder="Answer" />
+					}
 				</Box>
 			</Box>
 		</div>

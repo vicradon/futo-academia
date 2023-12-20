@@ -18,7 +18,7 @@ function ObjectiveAnswer({ question, answers, question_type, stu_mark, mark, stu
 				border={"2px solid #C5C8FF"}
 				bg={
 					stu_mark !== undefined ? 
-						stu_mark/mark === 0 ? "red.100" : stu_mark/mark === 0.5 ? "orange.100" : stu_mark/mark === 1 ? "green.100" : "white" : "white"}
+						stu_mark/mark === 0 ? "red.100" : stu_mark/mark === 0.5 ? "yellow.100" : stu_mark/mark === 1 ? "green.100" : "white" : "white"}
 			>
 				<Box my={2} p={3}>
 					<Flex alignItems={"center"} justifyContent={"space-between"}>

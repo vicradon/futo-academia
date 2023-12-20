@@ -172,22 +172,25 @@ export default function Assignments() {
 								/>
 							</FormControl>
 							<FormControl isRequired flexDir={"column"} my={1}>
+								<FormLabel>Assessment type</FormLabel>
+								<Select
+									placeholder="Assesment type"
+									name="assessment_type"
+									value={examSetUp["assessment_type"]}
+									onChange={handleChange}
+								>
+									<option value="Assignment">Assignment</option>
+									<option value="Exam">Examination</option>
+									<option value="Test">Test</option>
+								</Select>
+							</FormControl>
+							<FormControl isRequired flexDir={"column"} my={1}>
 								<FormLabel>Start date</FormLabel>
 								<Input
 									placeholder="Start Date"
 									name="start_date"
 									value={examSetUp["start_date"]}
 									type="datetime-local"
-									onChange={handleChange}
-								/>
-							</FormControl>
-							<FormControl isRequired flexDir={"column"} my={1}>
-								<FormLabel>Duration (minutes)</FormLabel>
-								<Input
-									placeholder="60"
-									name="duration"
-									value={examSetUp["duration"]}
-									type="number"
 									onChange={handleChange}
 								/>
 							</FormControl>
@@ -202,6 +205,17 @@ export default function Assignments() {
 								/>
 							</FormControl>
 							<FormControl isRequired flexDir={"column"} my={1}>
+								<FormLabel>Duration (minutes)</FormLabel>
+								<Input
+									placeholder="60"
+									name="duration"
+									value={examSetUp["duration"]}
+									type="number"
+									onChange={handleChange}
+								/>
+							</FormControl>
+							
+							<FormControl isRequired flexDir={"column"} my={1}>
 								<FormLabel>Total Mark</FormLabel>
 								<Input
 									placeholder="20"
@@ -211,19 +225,7 @@ export default function Assignments() {
 									onChange={handleChange}
 								/>
 							</FormControl>
-							<FormControl isRequired flexDir={"column"} my={1}>
-								<FormLabel>Assessment type</FormLabel>
-								<Select
-									placeholder="Assesment type"
-									name="assessment_type"
-									value={examSetUp["assessment_type"]}
-									onChange={handleChange}
-								>
-									<option value="Assignment">Assignment</option>
-									<option value="Exam">Examination</option>
-									<option value="Test">Test</option>
-								</Select>
-							</FormControl>
+							
 
 							<Box display="flex" alignSelf="end" gap={"10px"}>
 								<Button
@@ -327,7 +329,7 @@ export default function Assignments() {
 								/>
 							);
 						})}
-					{data?.filter((x: any) => x?.is_completed)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Completed Assessment</Text>}
+					{data?.filter((x: any) => x?.is_completed && !x?.is_marked)?.length === 0 && <Text textAlign={"center"} fontSize={"2xl"} fontWeight={"bold"} textColor={"blue"}>No Completed Assessment</Text>}
 				</AccordionPanel>
 				</AccordionItem>
 
