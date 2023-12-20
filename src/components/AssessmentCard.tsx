@@ -306,6 +306,7 @@ export default function AssessmentCard({ is_active, title, id, idx, is_marked, i
 						)}
 	
 						{is_marked && !user?.is_instructor && overAllClick && <Button onClick={() => overAllClick()}>View Result</Button>}
+						{is_marked && user?.is_instructor && overAllClick && <Button onClick={() => overAllClick()}>View Result</Button>}
 						{user?.is_instructor &&
 							<AlertDialog 
 							leastDestructiveRef={cancelRef} 

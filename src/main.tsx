@@ -143,7 +143,7 @@ const router = createBrowserRouter(
 			</Route>
 			<Route path="course/header" element={<CourseHeader />} />
 			<Route path="exams/:id/:courseId" element={<TakeExam />} />
-			<Route path="exam/:id/:idx/results" element={<ExamResult />} />
+			<Route path="courses/assessment/:id/:idx/results" element={<ExamResult />} />
 			<Route path="course/header/obj" element={<ObjectiveAnswer />} />
 			<Route path="student-profile" element={<StudentProfile />}>
 				<Route index element={<ProfileStudent />} />

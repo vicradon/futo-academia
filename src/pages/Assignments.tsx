@@ -353,7 +353,7 @@ export default function Assignments() {
 								<AssessmentCard
 									idx={id}
 									setExamSetUp={setExamSetUp}
-									overAllClick={() => (!user?.is_instructor ? navigate(`/exam/${x?.id}/${id}/results`) : "")}
+									overAllClick={() => (!user?.is_instructor ? navigate(`/courses/assessment/${x?.id}/${id}/results`) : navigate(`/courses/${id}/assessment/result/${x?.id}`))}
 									is_marked={true}
 									key={i}
 									{...x}

@@ -1,26 +1,30 @@
 import { Box, Text, Flex, Heading, UnorderedList, ListItem } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useQuery } from "@tanstack/react-query";
 import http from "../utils/http";
 import AdminLayout from "../layout/AdminLayout";
 import ObjectiveAnswer from "../components/ObjectiveAnswer";
 import Loader from "../components/Loaders";
+import { useUser } from "../hooks/useUser";
 
 export default function ExamResult() {
+	const user = useUser()
+	const navigate = useNavigate()
 	const { id, idx } = useParams();
+
+	if (user.is_instructor) {
+        navigate(`courses/${idx}/assessment/result/${id}`)
+    }
+
 	const { data, isLoading } = useQuery({
 		queryKey: ["getRes", id],
 		queryFn: () => http.get(`assessments/${id}/stu_results`),
-		onSuccess(data) {
-			console.log(data)
-		},
 	});
 
 	const { data: examData } = useQuery({
 		queryKey: ["getCourseID", idx],
 		queryFn: () => http.get(`/courses/${idx}`).then((r) => r.data),
-		onSuccess: (data: any) => console.log("Exam Successful", data),
 		onError: (err) => console.log("error", err),
 	});
 
@@ -100,8 +104,8 @@ export default function ExamResult() {
 				</Box>
 
 				<Box>
-					{data?.data?.questions?.map((x: any, i: any) => (
-						<ObjectiveAnswer index={i + 1} {...x} studentAnswer={() => handleAns(x, x?.question_type)} />
+					{data?.data?.questions?.map((x: any, i: number) => (
+						<ObjectiveAnswer key={i} index={i + 1} {...x} studentAnswer={() => handleAns(x, x?.question_type)} />
 					))}
 				</Box>
 			</Box>

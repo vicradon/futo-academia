@@ -10,7 +10,7 @@ const AppTable = ({ assessments }: any) => {
 	const [currentId, setCurrentId] = useState<any>(null)
 	const [tableData, setTableData] = useState<any>(null)
 
-	const { data, isLoading: isTableLoading, isFetching } = useAssessment(currentId, search);
+	const { data, isLoading: isTableLoading } = useAssessment(currentId, search);
 
 	useEffect(() => {
 		setTableData(data)
