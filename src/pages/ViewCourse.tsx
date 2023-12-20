@@ -1,15 +1,14 @@
 import http from "../utils/http";
-import { Box, Text, Flex, Skeleton, Stack, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, Grid, GridItem, Input, Menu, MenuButton, MenuList, MenuItem, Table, TableContainer, Tbody, Th, Thead, Tr, Td } from "@chakra-ui/react";
+import { Box, Text, Flex, Skeleton, Stack, Modal, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, ModalOverlay, ModalContent, Button, Grid, GridItem, Table, TableContainer, Tbody, Th, Thead, Tr, Td } from "@chakra-ui/react";
 import TimerBox from "../components/TimerBox";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CourseTabs from "../layout/CourseTabs";
 import { useUser } from "../hooks/useUser";
 import { useEffect, useState } from "react";
 
 import Countdown, { zeroPad } from "react-countdown";
 import { useToast } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 
 export default function ViewCourse() {
 	const navigate = useNavigate();
@@ -18,10 +17,6 @@ export default function ViewCourse() {
 	const [activeAssessments, setActiveAssessments] = useState<any>([])
 	const [modalsStates, setModalsStates] = useState<boolean[]>([])
 	const toast = useToast();
-	const [markedIDs, setMarkedIDs] = useState<[]>([])
-	const [search, setSearch] = useState<any>("")
-	const [currentId, setCurrentId] = useState<any>(null)
-	const [currentTitle, setCurrentTitle] = useState<any>(null)
 	
 	const [timer, setTimer] = useState(false)
 
@@ -39,20 +34,6 @@ export default function ViewCourse() {
 		},
 	});
 
-	const { data: markedAssessmments } = useQuery({
-		queryKey: ["getAllAssessments", id],
-		queryFn: () => http.get(`/courses/${id}/assessments`, {
-			params: {
-			is_marked: true,
-			},
-		  }).then((r) => r.data),
-		onSuccess(data) {
-			// console.log(data)
-			const allNames = data?.map((obj: any) => obj.id);
-    		setMarkedIDs(allNames);
-		},
-	});
-
 	const { data: courseResultsStats } = useQuery({
 		queryKey: ["courseResultsStats", id],
 		queryFn: () => http.get(`/courses/assessments_results_stats/${id}`, {
@@ -60,9 +41,6 @@ export default function ViewCourse() {
 			is_marked: true,
 			},
 		  }).then((r) => r.data),
-		onSuccess(data) {
-			// console.log(data)
-		},
 	});
 
 	const onOpen = (index: number) => {
@@ -110,12 +88,6 @@ export default function ViewCourse() {
 	const handleBegin = ({course_code, assessment_id}: any) => {
 		startTimerMutation.mutate({course_code, assessment_id})
 	}
-
-	// const [assessment, setAssessment] = useState("");
-
-	const handleSearch = (e: any) => {
-		setSearch(e?.target?.value);
-	};
 
 	const header = [
 		{
@@ -323,7 +295,7 @@ export default function ViewCourse() {
 							<Text fontSize="24px" fontWeight="bold" >
 								Results
 							</Text>
-							<Input placeholder="Search" ml={3} width="50%" onChange={handleSearch} bgColor="#fff" />
+							
 					</Flex>
 					<TableContainer mx="auto" mt={6}>
 						<Table variant="striped">
